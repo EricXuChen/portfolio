@@ -1,18 +1,47 @@
+import { ARTWORKS, PROFILE, WATCHES } from "./content";
 import type { Artwork, Profile, Watch } from "./types";
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000";
+/**
+ * Portfolio content lives in this Next.js app so Vercel works without a
+ * separate Python server. Optionally set NEXT_PUBLIC_API_URL to use FastAPI locally.
+ */
+const REMOTE = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") || "";
 
 async function getJson<T>(path: string): Promise<T> {
-  const res = await fetch(`${API}${path}`, { cache: "no-store" });
+  const res = await fetch(`${REMOTE}${path}`, { cache: "no-store" });
   if (!res.ok) {
     throw new Error(`Could not load ${path}`);
   }
   return res.json() as Promise<T>;
 }
 
+async function fromRemoteOrLocal<T>(path: string, local: () => T): Promise<T> {
+  if (!REMOTE) {
+    return local();
+  }
+  try {
+    return await getJson<T>(path);
+  } catch {
+    return local();
+  }
+}
+
 export const api = {
-  profile: () => getJson<Profile>("/api/profile"),
-  artworks: () => getJson<Artwork[]>("/api/artworks"),
-  artwork: (id: string) => getJson<Artwork>(`/api/artworks/${id}`),
-  watches: () => getJson<Watch[]>("/api/watches"),
+  profile: () => fromRemoteOrLocal<Profile>("/api/profile", () => PROFILE),
+  artworks: () => fromRemoteOrLocal<Artwork[]>("/api/artworks", () => ARTWORKS),
+  artwork: async (id: string) => {
+    if (REMOTE) {
+      try {
+        return await getJson<Artwork>(`/api/artworks/${id}`);
+      } catch {
+        /* fall through to local */
+      }
+    }
+    const work = ARTWORKS.find((item) => item.id === id);
+    if (!work) {
+      throw new Error(`Artwork not found: ${id}`);
+    }
+    return work;
+  },
+  watches: () => fromRemoteOrLocal<Watch[]>("/api/watches", () => WATCHES),
 };

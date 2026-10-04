@@ -8,9 +8,21 @@ export type Profile = {
   education?: {
     school: string;
     programme: string;
+    description?: string;
   };
   activities?: { title: string; detail: string }[];
   skills?: string[];
+  sections?: {
+    catalogue?: string;
+    about?: string;
+    education?: string;
+    activities?: string;
+    skills?: string;
+    selected_work?: string;
+    watches?: string;
+    gallery?: string;
+    watches_page?: string;
+  };
 };
 
 export type Artwork = {

@@ -2,7 +2,10 @@ import { api } from "@/lib/api";
 
 export default async function WatchesPage() {
   try {
-    const watches = await api.watches();
+    const [watches, profile] = await Promise.all([api.watches(), api.profile()]);
+    const intro =
+      profile.sections?.watches_page ??
+      "A small, active set of mechanical and vintage watches I wear, study, or resell.";
 
     return (
       <main>
@@ -10,10 +13,10 @@ export default async function WatchesPage() {
           <header className="page-intro">
             <p className="kicker">Horology</p>
             <h1>Watches</h1>
-            <p>
-              Pieces I actually wear and learn from. Not a vault — a small collection with a reason
-              for each one.
+            <p className="page-intro__lead">
+              {watches.length} entries from my research desk and Barcelona flea-market circuit.
             </p>
+            <p className="section-desc">{intro}</p>
           </header>
           <div className="watch-list" style={{ paddingTop: "1.2rem" }}>
             {watches.map((watch, index) => (
@@ -36,6 +39,8 @@ export default async function WatchesPage() {
       </main>
     );
   } catch {
-    return <p className="error">Could not load the watch collection from the API.</p>;
+    return (
+      <p className="error">Could not load the watch collection from the API. Is the backend running?</p>
+    );
   }
 }

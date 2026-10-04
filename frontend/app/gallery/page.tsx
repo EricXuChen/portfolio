@@ -3,7 +3,11 @@ import Link from "next/link";
 
 export default async function GalleryPage() {
   try {
-    const artworks = await api.artworks();
+    const [artworks, profile] = await Promise.all([api.artworks(), api.profile()]);
+    const count = artworks.length;
+    const intro =
+      profile.sections?.gallery ??
+      "Open any work for the full image, medium, and process notes.";
 
     return (
       <main>
@@ -11,42 +15,48 @@ export default async function GalleryPage() {
           <header className="page-intro">
             <p className="kicker">Studio wall</p>
             <h1>Gallery</h1>
-            <p>
-              Four pieces from my sketchbooks and studio table — charcoal, oil, line, and
-              watercolor. Open any work for the full image and notes.
+            <p className="page-intro__lead">
+              {count} piece{count === 1 ? "" : "s"} from my sketchbooks and studio table — charcoal,
+              oil, line, and watercolor.
             </p>
+            <p className="section-desc">{intro}</p>
           </header>
 
           <div className="gallery-stack">
             {artworks.map((work, index) => (
-              <Link className="gallery-piece" href={`/gallery/${work.id}`} key={work.id}>
-                <div className="gallery-frame">
+              <article className="gallery-piece" key={work.id}>
+                <Link className="gallery-frame" href={`/gallery/${work.id}`} aria-label={work.title}>
                   {work.image ? (
-                    <img src={work.image} alt={work.title} />
+                    <img src={work.image} alt={`${work.title} — ${work.medium}, ${work.year}`} />
                   ) : (
                     <div
                       className="gallery-fallback"
                       style={{ background: `linear-gradient(145deg, ${work.accent}, ${work.wash})` }}
                     />
                   )}
-                </div>
+                </Link>
                 <div className="gallery-copy">
                   <span className="idx">{String(index + 1).padStart(2, "0")}</span>
                   <div>
-                    <h2>{work.title}</h2>
+                    <h2>
+                      <Link href={`/gallery/${work.id}`}>{work.title}</Link>
+                    </h2>
                     <p className="meta-line">
-                      {work.year} · {work.medium}
+                      {work.year} · {work.medium} · {work.size}
                     </p>
                     <p>{work.note}</p>
+                    <Link className="text-link" href={`/gallery/${work.id}`}>
+                      View full piece →
+                    </Link>
                   </div>
                 </div>
-              </Link>
+              </article>
             ))}
           </div>
         </div>
       </main>
     );
   } catch {
-    return <p className="error">Could not load artworks from the API.</p>;
+    return <p className="error">Could not load artworks from the API. Is the Python backend running?</p>;
   }
 }

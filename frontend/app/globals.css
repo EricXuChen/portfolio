@@ -244,9 +244,10 @@ a {
 
 .panel h2,
 .section-head h2,
+.section-head__text h2,
 .info-band h2 {
   font-family: var(--display);
-  font-weight: 650;
+  font-weight: 700;
   font-size: clamp(1.7rem, 3.2vw, 2.4rem);
   letter-spacing: -0.02em;
 }
@@ -278,11 +279,33 @@ a {
   color: #3d3a44;
 }
 
+.section-desc {
+  margin-top: 0.65rem;
+  max-width: 38rem;
+  color: #5a5563;
+  line-height: 1.65;
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+.panel .section-desc {
+  margin-bottom: 0.2rem;
+}
+
+.about .section-desc {
+  color: #5a5563;
+}
+
 .section-head {
   display: flex;
   justify-content: space-between;
   align-items: end;
+  gap: 1.5rem;
   padding: 3.2rem 2.4rem 1.2rem;
+}
+
+.section-head__text {
+  max-width: 42rem;
 }
 
 .section-head span {
@@ -291,6 +314,79 @@ a {
   text-transform: uppercase;
   font-size: 0.72rem;
   font-weight: 600;
+  white-space: nowrap;
+}
+
+.page-intro__lead {
+  margin-top: 0.85rem;
+  max-width: 36rem;
+  color: var(--ink);
+  line-height: 1.65;
+  font-weight: 500;
+}
+
+.programme-line {
+  margin-top: 0.35rem;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.skills-title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: -0.02em;
+  margin-top: 0.35rem;
+}
+
+.card-blurb {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 0.55rem !important;
+  color: #5a5563 !important;
+  font-size: 0.86rem !important;
+  line-height: 1.45 !important;
+}
+
+.text-link {
+  display: inline-block;
+  margin-top: 0.85rem;
+  color: var(--splash-blue);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.text-link:hover {
+  color: var(--splash-magenta);
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.7rem 1rem;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
+a:focus-visible,
+.btn:focus-visible,
+.site-nav a:focus-visible,
+.text-link:focus-visible {
+  outline: 2px solid var(--splash-blue);
+  outline-offset: 3px;
 }
 
 .grid-art {
@@ -349,7 +445,7 @@ a {
 .watch-row h3,
 .activity-card h3 {
   font-family: var(--display);
-  font-weight: 650;
+  font-weight: 700;
   font-size: 1.3rem;
   letter-spacing: -0.02em;
 }

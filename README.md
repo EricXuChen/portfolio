@@ -1,34 +1,18 @@
-# Eric — local portfolio
+# Eric Xu — local portfolio
 
-Personal site for **Eric**, 14, artist and watch collector.
+Personal site for **Eric Xu**: student at BFIS Barcelona, debate & MUN, vintage watches, entrepreneurship, and studio art.
 
 - **Backend:** Python (FastAPI) on `http://127.0.0.1:8000`
-- **Frontend:** React with **Next.js** on `http://localhost:3000`
-
-Nest.js is a Node backend framework. This project uses **Next.js** (React) for the frontend and **Python** for the backend, which is the usual split.
+- **Frontend:** Next.js (React) on `http://localhost:3000`
 
 ## What you need once
 
-1. **Python 3** — already on this Mac.
-2. **Node.js LTS** — https://nodejs.org/ (needed for the React site).
-
-If Node is installed under `~/.local/node`, the start scripts add that folder to `PATH` automatically.
+1. **Python 3**
+2. **Node.js LTS** — https://nodejs.org/
 
 ## Run the site (every time)
 
-### On this Mac (zsh / Terminal)
-
-```bash
-cd /Users/eric/Desktop/ericwebsite
-chmod +x start-local.sh
-./start-local.sh
-```
-
-The script installs packages if needed, starts Python + React, then **opens `http://localhost:3000` in your browser**.
-
-Leave the Terminal window open. Press **Ctrl+C** to stop.
-
-### On Windows (PowerShell)
+### Windows (PowerShell)
 
 ```powershell
 cd path\to\ericwebsite
@@ -36,25 +20,28 @@ Set-ExecutionPolicy -Scope Process Bypass
 .\start-local.ps1
 ```
 
-Or Explorer: right-click `start-local.ps1` → **Run with PowerShell**.
+Or right-click `start-local.ps1` → **Run with PowerShell**.
 
-It also waits until the site is ready and **opens the localhost URL** in your default browser.
-
-### PowerShell on macOS (optional)
-
-If you install PowerShell 7 (`pwsh`):
+### macOS / Linux
 
 ```bash
-pwsh ./start-local.ps1
+cd path/to/ericwebsite
+chmod +x start-local.sh
+./start-local.sh
 ```
+
+The script installs packages if needed, starts Python + React, then opens `http://localhost:3000`.
+
+Leave the terminal open. Press **Ctrl+C** to stop.
 
 ## Pages
 
 | URL | What it is |
 | --- | --- |
-| http://localhost:3000 | About Eric |
-| http://localhost:3000/art | Artwork |
+| http://localhost:3000 | Home / about |
+| http://localhost:3000/gallery | Artwork gallery |
+| http://localhost:3000/gallery/[id] | Single artwork |
 | http://localhost:3000/watches | Watch collection |
-| http://127.0.0.1:8000/api/profile | Python API (JSON) |
+| http://127.0.0.1:8000/api/profile | Profile API (JSON) |
 
 To change bio, art, or watches, edit `backend/app.py` and refresh the browser (the API reloads on save).

@@ -99,7 +99,7 @@ Push-Location (Join-Path $Root "frontend")
 & $Npm install
 Pop-Location
 
-$Backend = Start-Process -FilePath $VenvPython -ArgumentList @("-m", "uvicorn", "app:app", "--reload", "--host", "127.0.0.1", "--port", "8000") -WorkingDirectory (Join-Path $Root "backend") -PassThru -NoNewWindow
+$Backend = Start-Process -FilePath $VenvPython -ArgumentList @("-m", "uvicorn", "app:app", "--reload", "--host", "0.0.0.0", "--port", "8000") -WorkingDirectory (Join-Path $Root "backend") -PassThru -NoNewWindow
 $Frontend = Start-Process -FilePath $Npm -ArgumentList @("run", "dev") -WorkingDirectory (Join-Path $Root "frontend") -PassThru -NoNewWindow
 
 $Url = "http://localhost:3000"
@@ -132,9 +132,19 @@ if ($env:OS -eq "Windows_NT") {
   Start-Process $Url
 }
 
+$LanIp = $null
+try {
+  $LanIp = Get-NetIPAddress -AddressFamily IPv4 |
+    Where-Object { $_.IPAddress -notlike "127.*" -and $_.PrefixOrigin -ne "WellKnown" } |
+    Select-Object -ExpandProperty IPAddress -First 1
+} catch {}
+
 Write-Host ""
 Write-Host "Portfolio is running."
-Write-Host "  Site:    $Url"
+Write-Host "  On this PC:  $Url"
+if ($LanIp) {
+  Write-Host "  On phone/other device (same Wi-Fi):  http://$LanIp:3000"
+}
 Write-Host "  API:     http://127.0.0.1:8000/api/profile"
 Write-Host "Press Ctrl+C to stop, or close this window."
 Write-Host ""

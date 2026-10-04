@@ -1,4 +1,5 @@
 import { ArtworkVisual } from "@/components/ArtworkVisual";
+import { SectionIntro } from "@/components/SectionIntro";
 import { api } from "@/lib/api";
 import Link from "next/link";
 
@@ -9,9 +10,14 @@ export default async function HomePage() {
       api.artworks(),
       api.watches(),
     ]);
+    const sections = profile.sections ?? {};
 
     return (
       <main>
+        <a className="skip-link" href="#about">
+          Skip to content
+        </a>
+
         <section className="hero-splash">
           <div className="hero-splash__bg" aria-hidden="true" />
           <div className="hero-splash__veil" aria-hidden="true" />
@@ -37,6 +43,7 @@ export default async function HomePage() {
             <div className="panel tint">
               <p className="kicker">At a glance</p>
               <h2>Catalogue</h2>
+              {sections.catalogue ? <p className="section-desc">{sections.catalogue}</p> : null}
               <dl className="facts">
                 {profile.facts.map((fact) => (
                   <div key={fact.label}>
@@ -49,6 +56,7 @@ export default async function HomePage() {
             <div className="panel about">
               <p className="kicker">Profile</p>
               <h2>About me</h2>
+              {sections.about ? <p className="section-desc">{sections.about}</p> : null}
               {profile.about.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
@@ -59,15 +67,22 @@ export default async function HomePage() {
             <section className="info-band">
               <p className="kicker">Education</p>
               <h2>{profile.education.school}</h2>
-              <p>{profile.education.programme}</p>
+              <p className="programme-line">{profile.education.programme}</p>
+              {profile.education.description || sections.education ? (
+                <p className="section-desc">
+                  {profile.education.description ?? sections.education}
+                </p>
+              ) : null}
             </section>
           ) : null}
 
           {profile.activities?.length ? (
             <>
-              <div className="section-head">
-                <h2>Activities & interests</h2>
-              </div>
+              <SectionIntro
+                kicker="Outside class"
+                title="Activities & interests"
+                description={sections.activities}
+              />
               <div className="activity-grid">
                 {profile.activities.map((item) => (
                   <article className="activity-card" key={item.title}>
@@ -82,6 +97,8 @@ export default async function HomePage() {
           {profile.skills?.length ? (
             <section className="skills-band">
               <p className="kicker">Skills</p>
+              <h2 className="skills-title">What I practice</h2>
+              {sections.skills ? <p className="section-desc">{sections.skills}</p> : null}
               <ul className="skill-list">
                 {profile.skills.map((skill) => (
                   <li key={skill}>{skill}</li>
@@ -90,14 +107,18 @@ export default async function HomePage() {
             </section>
           ) : null}
 
-          <div className="section-head">
-            <h2>Selected work</h2>
-            <Link href="/gallery">
-              <span>Gallery →</span>
-            </Link>
-          </div>
+          <SectionIntro
+            kicker="Studio"
+            title="Selected work"
+            description={sections.selected_work}
+            action={
+              <Link href="/gallery">
+                <span>Full gallery →</span>
+              </Link>
+            }
+          />
           <div className="grid-art">
-            {artworks.slice(0, 4).map((work) => (
+            {artworks.map((work) => (
               <Link className="art-card" href={`/gallery/${work.id}`} key={work.id}>
                 <ArtworkVisual work={work} />
                 <div className="art-meta">
@@ -105,23 +126,35 @@ export default async function HomePage() {
                   <p className="meta-line">
                     {work.year} · {work.medium}
                   </p>
+                  <p className="card-blurb">{work.note}</p>
                 </div>
               </Link>
             ))}
           </div>
 
-          <div className="section-head">
-            <h2>On the wrist</h2>
-            <Link href="/watches">
-              <span>Collection →</span>
-            </Link>
-          </div>
+          <SectionIntro
+            kicker="Horology"
+            title="On the wrist"
+            description={sections.watches}
+            action={
+              <Link href="/watches">
+                <span>Full collection →</span>
+              </Link>
+            }
+          />
           <div className="watch-list">
-            {watches.slice(0, 3).map((watch, index) => (
+            {watches.map((watch, index) => (
               <article className="watch-row" key={watch.id}>
                 <div className="idx">{String(index + 1).padStart(2, "0")}</div>
-                <h3>{watch.name}</h3>
-                <p className="meta-line">{watch.movement}</p>
+                <div>
+                  <h3>{watch.name}</h3>
+                  <p className="meta-line">Acquired {watch.year_acquired}</p>
+                </div>
+                <p className="meta-line">
+                  {watch.movement}
+                  <br />
+                  {watch.origin}
+                </p>
                 <p>{watch.note}</p>
               </article>
             ))}
