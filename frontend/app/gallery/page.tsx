@@ -1,5 +1,26 @@
 import { api } from "@/lib/api";
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Art Gallery | Eric Xu | Original Artwork & Sketches in Barcelona",
+  description:
+    "Browse Eric Xu's art gallery featuring original drawings, paintings, sketches, and Barcelona-inspired studio work from a student artist.",
+  keywords: [
+    "Eric Xu art gallery",
+    "student artist portfolio",
+    "original artwork Barcelona",
+    "paintings and drawings",
+    "art sketches",
+  ],
+  alternates: { canonical: "/gallery" },
+  openGraph: {
+    title: "Eric Xu Art Gallery | Original Artwork & Sketches",
+    description:
+      "Original art, drawings, and paintings by Eric Xu from his Barcelona studio practice.",
+    images: [{ url: "/artworks/picture4.jpg", alt: "Watercolor study of a Paris street" }],
+  },
+};
 
 export default async function GalleryPage() {
   try {
@@ -19,7 +40,10 @@ export default async function GalleryPage() {
               {count} piece{count === 1 ? "" : "s"} from my sketchbooks and studio table — charcoal,
               oil, line, and watercolor.
             </p>
-            <p className="section-desc">{intro}</p>
+            <p className="section-desc">
+              {intro} Each work begins with looking closely: noticing how color changes a form,
+              how a loose line can hold movement, or how a quiet wash can suggest a whole street.
+            </p>
           </header>
 
           <div className="gallery-stack">

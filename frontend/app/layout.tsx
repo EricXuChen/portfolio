@@ -1,11 +1,44 @@
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
+import { siteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Eric Xu — Student · Watches · Art",
+  metadataBase: siteUrl,
+  title: {
+    default: "Eric Xu | Student Artist, Watch Collector & Portfolio in Barcelona",
+    template: "%s | Eric Xu",
+  },
   description:
-    "Eric Xu — Grade 8 at BFIS Barcelona. Debate & MUN, vintage watches, entrepreneurship, and studio art.",
+    "Eric Xu is a student artist and vintage watch collector in Barcelona, creating original art, researching watches, and sharing his portfolio and interests.",
+  keywords: [
+    "Eric Xu",
+    "student artist Barcelona",
+    "vintage watches",
+    "watch collector",
+    "art portfolio",
+    "Benjamin Franklin International School",
+    "Barcelona artist",
+    "student entrepreneur",
+  ],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Eric Xu Portfolio",
+    url: siteUrl.toString(),
+    title: "Eric Xu | Student Artist, Watch Collector & Portfolio in Barcelona",
+    description:
+      "Original artwork, vintage watch research, and creative projects by Eric Xu in Barcelona.",
+    images: [{ url: new URL("/paint-splash.png", siteUrl).toString(), alt: "Colorful paint used in Eric Xu's art portfolio" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Eric Xu | Student Artist, Watch Collector & Portfolio in Barcelona",
+    description:
+      "Original artwork, vintage watch research, and creative projects by Eric Xu in Barcelona.",
+    images: [new URL("/paint-splash.png", siteUrl).toString()],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

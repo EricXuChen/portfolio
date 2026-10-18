@@ -44,4 +44,10 @@ Leave the terminal open. Press **Ctrl+C** to stop.
 | http://localhost:3000/watches | Watch collection |
 | http://127.0.0.1:8000/api/profile | Profile API (JSON) |
 
-To change bio, art, or watches, edit `backend/app.py` and refresh the browser (the API reloads on save).
+The portfolio uses the built-in Next.js content by default. To change the live site's bio, art, or
+watches, edit `frontend/lib/content.ts`. The optional Python API is available for local API testing;
+when `NEXT_PUBLIC_API_URL` is set, its data can override the built-in content.
+
+For deployment, set `NEXT_PUBLIC_SITE_URL` to the public site origin (for example,
+`https://your-domain.com`) in the frontend environment. This is used for canonical metadata and the
+sitemap; on Vercel, the configured production project URL is used as a fallback.

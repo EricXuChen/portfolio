@@ -1,9 +1,35 @@
 import { api } from "@/lib/api";
+import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{ id: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  const work = await api.artwork(id).catch(() => null);
+
+  if (!work) {
+    return { title: "Artwork Not Found" };
+  }
+
+  const description = `${work.title} (${work.year}) is an original ${work.medium.toLowerCase()} artwork by Eric Xu. ${work.note}`;
+  const title = `${work.title} | ${work.medium}`;
+
+  return {
+    title,
+    description: description.length > 160 ? `${description.slice(0, 157).trimEnd()}...` : description,
+    alternates: { canonical: `/gallery/${work.id}` },
+    openGraph: {
+      type: "article",
+      title,
+      description,
+      images: work.image ? [{ url: work.image, alt: `${work.title}, ${work.medium}, ${work.year}` }] : [],
+    },
+  };
+}
 
 export default async function ArtworkDetailPage({ params }: Props) {
   const { id } = await params;
@@ -22,24 +48,7 @@ export default async function ArtworkDetailPage({ params }: Props) {
 
   const work = artworks.find((item) => item.id === id);
   if (!work) {
-    return (
-      <main>
-        <div className="page-shell">
-          <header className="page-intro">
-            <p className="kicker">Gallery</p>
-            <h1>Artwork not found</h1>
-            <p className="section-desc">
-              That piece is not in the collection. It may have been renamed or removed.
-            </p>
-            <p style={{ marginTop: "1.2rem" }}>
-              <Link className="text-link" href="/gallery">
-                ← Back to gallery
-              </Link>
-            </p>
-          </header>
-        </div>
-      </main>
-    );
+    notFound();
   }
 
   const index = artworks.findIndex((item) => item.id === work.id);
@@ -59,8 +68,8 @@ export default async function ArtworkDetailPage({ params }: Props) {
             {work.year} · {work.medium} · {work.size}
           </p>
           <p className="section-desc">
-            Process note and full view for this studio piece. Use the links below to move through
-            the collection.
+            A closer look at the materials and decisions behind this studio piece. The process note
+            below describes what I focused on while making it.
           </p>
         </header>
 

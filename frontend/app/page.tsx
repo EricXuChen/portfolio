@@ -1,7 +1,21 @@
 import { ArtworkVisual } from "@/components/ArtworkVisual";
 import { SectionIntro } from "@/components/SectionIntro";
 import { api } from "@/lib/api";
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Eric Xu | Student Artist, Watch Collector & Portfolio in Barcelona",
+  description:
+    "Explore Eric Xu's portfolio in Barcelona featuring original art, vintage watch collecting, debate, and creative projects.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "Eric Xu | Student Artist, Watch Collector & Portfolio in Barcelona",
+    description:
+      "A portfolio of original art, watch collecting, and creative work by Eric Xu in Barcelona.",
+    url: "/",
+  },
+};
 
 export default async function HomePage() {
   try {
