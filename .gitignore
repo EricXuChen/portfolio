@@ -1,14 +1,12 @@
-__pycache__/
-*.py[cod]
-.venv/
-venv/
-.env
-.env.local
-.env*.local
 node_modules/
 .next/
 out/
-dist/
+.vercel/
+.env*.local
+.env
+tsconfig.tsbuildinfo
+next-env.d.ts
 .DS_Store
 *.log
-.python-version
+# first version of the site, no longer used
+lib/

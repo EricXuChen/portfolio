@@ -2,50 +2,106 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { nav, site } from "@/content/site";
+import { T } from "./T";
 
-const links = [
-  { href: "/", label: "Home", match: (path: string) => path === "/" },
-  { href: "/#about", label: "About", match: () => false },
-  { href: "/gallery", label: "Gallery", match: (path: string) => path.startsWith("/gallery") },
-  { href: "/watches", label: "Watches", match: (path: string) => path.startsWith("/watches") },
-];
+type Lang = "en" | "zh";
+
+function readLang(): Lang {
+  if (typeof document === "undefined") return "en";
+  return document.documentElement.getAttribute("data-lang") === "zh" ? "zh" : "en";
+}
 
 export default function Nav() {
-  const pathname = usePathname();
+  const pathname = usePathname() || "/";
+  const [open, setOpen] = useState(false);
+  const [lang, setLang] = useState<Lang>("en");
 
-  function goAbout(event: React.MouseEvent<HTMLAnchorElement>) {
-    if (pathname !== "/") return;
-    event.preventDefault();
-    const target = document.getElementById("about");
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-      window.history.replaceState(null, "", "/#about");
+  useEffect(() => {
+    setLang(readLang());
+  }, []);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  function switchLang(next: Lang) {
+    document.documentElement.setAttribute("data-lang", next);
+    document.documentElement.setAttribute("lang", next === "zh" ? "zh-Hans" : "en");
+    try {
+      localStorage.setItem("lang", next);
+    } catch {
+      /* storage unavailable — the switch still works for this visit */
     }
+    setLang(next);
   }
 
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  const left = nav.slice(0, 2);
+  const right = nav.slice(2);
+
+  const renderLinks = (items: typeof nav) =>
+    items.map((item) => {
+      const active = isActive(item.href);
+      return (
+        <li key={item.href}>
+          <Link href={item.href} className={active ? "active" : undefined} aria-current={active ? "page" : undefined}>
+            <T v={item.label} />
+          </Link>
+        </li>
+      );
+    });
+
   return (
-    <nav className="site-nav" aria-label="Main">
-      <Link className="mark" href="/" translate="no">
-        Eric Xu
-      </Link>
-      <ul>
-        {links.map((link) => {
-          const isActive = link.match(pathname);
-          const isAbout = link.label === "About";
-          return (
-            <li key={link.label}>
-              <Link
-                href={link.href}
-                className={isActive ? "active" : undefined}
-                aria-current={isActive ? "page" : undefined}
-                onClick={isAbout ? goAbout : undefined}
-              >
-                {link.label}
+    <header className={`site-header${open ? " is-open" : ""}`}>
+      <div className="site-header-inner">
+        <nav className="site-nav site-nav-left" aria-label="Main">
+          <ul>{renderLinks(left)}</ul>
+        </nav>
+
+        <Link className="mark" href="/" aria-label={`${site.mark} — home`}>
+          {site.mark}
+        </Link>
+
+        <div className="site-nav-right">
+          <nav className="site-nav" aria-label="Main, continued">
+            <ul>{renderLinks(right)}</ul>
+          </nav>
+          <div className="lang-switch" role="group" aria-label="Language / 语言">
+            <button type="button" onClick={() => switchLang("en")} aria-pressed={lang === "en"}>
+              EN
+            </button>
+            <span aria-hidden="true">·</span>
+            <button type="button" onClick={() => switchLang("zh")} aria-pressed={lang === "zh"}>
+              中文
+            </button>
+          </div>
+          <button
+            type="button"
+            className="menu-btn"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span className="menu-lines" aria-hidden="true" />
+            <span className="sr-only">Menu</span>
+          </button>
+        </div>
+      </div>
+
+      <nav id="mobile-menu" className="mobile-nav" aria-label="Mobile">
+        <ul>
+          {nav.map((item) => (
+            <li key={item.href}>
+              <Link href={item.href}>
+                <span className="nav-num">{item.num}</span>
+                <T v={item.label} />
               </Link>
             </li>
-          );
-        })}
-      </ul>
-    </nav>
+          ))}
+        </ul>
+      </nav>
+    </header>
   );
 }

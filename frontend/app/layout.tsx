@@ -1,65 +1,52 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
-import { siteUrl } from "@/lib/site-url";
+import { site } from "@/content/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: siteUrl,
+  metadataBase: new URL(site.url),
   title: {
-    default: "Eric Xu | Student Artist, Watch Collector & Portfolio in Barcelona",
-    template: "%s | Eric Xu",
+    default: site.title,
+    template: `%s — ${site.mark} Personal Archive`,
   },
-  description:
-    "Eric Xu is a student artist and vintage watch collector in Barcelona, creating original art, researching watches, and sharing his portfolio and interests.",
-  keywords: [
-    "Eric Xu",
-    "student artist Barcelona",
-    "vintage watches",
-    "watch collector",
-    "art portfolio",
-    "Benjamin Franklin International School",
-    "Barcelona artist",
-    "student entrepreneur",
-  ],
-  alternates: { canonical: "/" },
+  description: site.description,
   openGraph: {
+    title: site.title,
+    description: site.description,
     type: "website",
-    locale: "en_US",
-    siteName: "Eric Xu Portfolio",
-    url: siteUrl.toString(),
-    title: "Eric Xu | Student Artist, Watch Collector & Portfolio in Barcelona",
-    description:
-      "Original artwork, vintage watch research, and creative projects by Eric Xu in Barcelona.",
-    images: [{ url: new URL("/paint-splash.png", siteUrl).toString(), alt: "Colorful paint used in Eric Xu's art portfolio" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Eric Xu | Student Artist, Watch Collector & Portfolio in Barcelona",
-    description:
-      "Original artwork, vintage watch research, and creative projects by Eric Xu in Barcelona.",
-    images: [new URL("/paint-splash.png", siteUrl).toString()],
+    siteName: site.title,
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#F3EFE6",
+};
+
+/* Runs before first paint so the page opens in the visitor's saved (or browser) language. */
+const LANG_SCRIPT = `try{var l=localStorage.getItem("lang");if(l!=="en"&&l!=="zh"){l=(navigator.language||"").toLowerCase().indexOf("zh")===0?"zh":"en"}var d=document.documentElement;d.setAttribute("data-lang",l);d.setAttribute("lang",l==="zh"?"zh-Hans":"en")}catch(e){}`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" data-lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: LANG_SCRIPT }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;600;700&family=Sora:wght@300;400;500;600&display=swap"
           rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap"
         />
       </head>
-      <body suppressHydrationWarning>
-        <div className="grain" aria-hidden="true" />
+      <body>
+        <a className="skip-link" href="#main">
+          Skip to content
+        </a>
         <Nav />
-        {children}
-        <footer className="site-footer">
-          <span translate="no">Eric Xu · BFIS Barcelona</span>
-          <span>Paint · Time · Ideas</span>
-        </footer>
+        <main id="main" className="page">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

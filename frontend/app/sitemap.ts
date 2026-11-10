@@ -1,14 +1,12 @@
 import type { MetadataRoute } from "next";
-import { ARTWORKS } from "@/lib/content";
-import { siteUrl } from "@/lib/site-url";
+import { site } from "@/content/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages = ["/", "/gallery", "/watches"].map((path) => ({
-    url: new URL(path, siteUrl).toString(),
+  const lastModified = new Date(site.lastUpdated);
+  return ["", "/about", "/watches", "/experiences", "/artwork"].map((path) => ({
+    url: `${site.url}${path}`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority: path === "" ? 1 : 0.8,
   }));
-  const artworks = ARTWORKS.map((work) => ({
-    url: new URL(`/gallery/${work.id}`, siteUrl).toString(),
-  }));
-
-  return [...pages, ...artworks];
 }

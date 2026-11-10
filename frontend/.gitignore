@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+.vercel/
+.env*.local
+.env
+tsconfig.tsbuildinfo
+next-env.d.ts
+.DS_Store
+*.log
+# first version of the site, no longer used
+lib/

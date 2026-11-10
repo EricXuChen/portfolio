@@ -1,53 +1,74 @@
-# Eric Xu — local portfolio
+# EXU. — The Personal Archive
 
-Personal site for **Eric Xu**: student at BFIS Barcelona, debate & MUN, vintage watches, entrepreneurship, and studio art.
+Personal website of Eric Xu: **About · Watches · Experiences · Artwork**, in English and Chinese.
 
-- **Backend:** Python (FastAPI) on `http://127.0.0.1:8000`
-- **Frontend:** Next.js (React) on `http://localhost:3000`
+- Framework: **Next.js** (React + TypeScript), in the `frontend` folder
+- Hosting: **Vercel**
+- No database or Python server needed any more — all content lives in `frontend/content/`
 
-## What you need once
+> The old `backend/` (Python) and `frontend/lib/` folders are from the first version and are no longer used. They can be deleted.
 
-1. **Python 3**
-2. **Node.js LTS** — https://nodejs.org/
+## Updating the content
 
-## Run the site (every time)
+Everything you see on the site is in four files. Open them in VS Code or Cursor, edit the text, save.
 
-### Windows (PowerShell)
+| File | What it holds |
+| --- | --- |
+| `frontend/content/site.ts` | Home page, About page, navigation, "last updated" date |
+| `frontend/content/watches.ts` | Watchmakers (M-001…), collection & wishlist (W-001…), complications, watch business |
+| `frontend/content/experiences.ts` | Timeline (E-001…) and experience chapters (E-101…) |
+| `frontend/content/artwork.ts` | Artist statement and artworks (A-001…) |
 
-```powershell
-cd path\to\ericwebsite
-Set-ExecutionPolicy -Scope Process Bypass
-.\start-local.ps1
-```
+Rules that keep the archive tidy:
 
-Or right-click `start-local.ps1` → **Run with PowerShell**.
+1. Every text has an English and a Chinese version: `{ en: "…", zh: "…" }`.
+2. Every entry has an archive number (`id`), a date (`updated: "YYYY-MM-DD"`) and `visibility`.
+3. To hide an entry without deleting it, set `visibility: "draft"`. Only `"public"` entries are shown.
+4. When you change something, update its `updated` date — and `lastUpdated` in `site.ts`.
+5. The numbers in the footer (watchmakers, watch entries, experiences, artworks) are counted automatically.
 
-### macOS / Linux
+### Adding an artwork photo
+
+1. Put the photo in `frontend/public/artworks/` (for example `night-and-time.jpg`).
+2. In `artwork.ts`, add an `image` to the entry:
+   ```ts
+   image: { src: "/artworks/night-and-time.jpg", width: 1280, height: 1600, alt: "The Night and Time" },
+   ```
+
+### Privacy checklist (public site)
+
+Do not publish: school name or location, grade, age, home city/address, daily routine, contact details, client details, supplier locations, prices or other financial figures.
+
+## Run it on this Mac
 
 ```bash
-cd path/to/ericwebsite
-chmod +x start-local.sh
+cd ~/Desktop/ericwebsite
 ./start-local.sh
 ```
 
-The script installs packages if needed, starts Python + React, then opens `http://localhost:3000`.
+Opens http://localhost:3000. Press **Ctrl+C** to stop.
 
-Leave the terminal open. Press **Ctrl+C** to stop.
+## Publish to the web (Vercel)
+
+Easiest: double-click **发布网站.command** in the `ericwebsite` folder.
+
+Or in Terminal:
+
+```bash
+cd ~/Desktop/ericwebsite/frontend
+npx vercel --prod
+```
+
+The first time, Vercel asks you to log in and to link the folder to a project — choose your existing **portfolio** project so the same web address is updated.
 
 ## Pages
 
-| URL | What it is |
+| Address | Page |
 | --- | --- |
-| http://localhost:3000 | Home / about |
-| http://localhost:3000/gallery | Artwork gallery |
-| http://localhost:3000/gallery/[id] | Single artwork |
-| http://localhost:3000/watches | Watch collection |
-| http://127.0.0.1:8000/api/profile | Profile API (JSON) |
+| `/` | Cover |
+| `/about` | 01 — About Me |
+| `/watches` | 02 — Watches & Horology |
+| `/experiences` | 03 — Life Experiences |
+| `/artwork` | 04 — Artwork & Creativity |
 
-The portfolio uses the built-in Next.js content by default. To change the live site's bio, art, or
-watches, edit `frontend/lib/content.ts`. The optional Python API is available for local API testing;
-when `NEXT_PUBLIC_API_URL` is set, its data can override the built-in content.
-
-For deployment, set `NEXT_PUBLIC_SITE_URL` to the public site origin (for example,
-`https://your-domain.com`) in the frontend environment. This is used for canonical metadata and the
-sitemap; on Vercel, the configured production project URL is used as a fallback.
+Old addresses `/gallery` and `/art` redirect to `/artwork`.
