@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArchiveTag, Kicker, T } from "@/components/T";
 import Timeline from "@/components/Timeline";
-import { categoryLabel, chapters, experiencesIntro, recognition } from "@/content/experiences";
+import { categoryLabel, chapters, experiencesIntro, recognition, chapterHref } from "@/content/experiences";
 import { trading } from "@/content/trading";
 import Image from "next/image";
 import { posters } from "@/content/antiques";
 import { publicOnly } from "@/content/types";
+import PageMast from "@/components/PageMast";
 
 export const metadata: Metadata = {
   title: "Life Experiences",
@@ -17,18 +18,21 @@ export const metadata: Metadata = {
 export default function ExperiencesPage() {
   return (
     <>
-      <header className="page-head wrap page-head-poster">
-        <div className="poster-bg" aria-hidden="true">
-          <Image src={posters.zenith.src} width={posters.zenith.width} height={posters.zenith.height} alt="" sizes="560px" priority />
+      <PageMast
+        word="EXPERIENCE."
+        layout="vertical"
+        num="III"
+        kicker={{ en: "Experiences", zh: "经历" }}
+        title={experiencesIntro.title}
+        lede={experiencesIntro.lede}
+        tone="burgundy"
+        voice="cond"
+        stamp={{ top: "EXU · LIFE EXPERIENCES", bottom: "MMXXV — MMXXVI", mid: "III" }}
+      >
+        <div className="poster-bg mast-poster" aria-hidden="true">
+          <Image src={posters.zenith.src} width={posters.zenith.width} height={posters.zenith.height} alt="" sizes="460px" priority />
         </div>
-        <Kicker num="03" v={{ en: "Experiences", zh: "经历" }} />
-        <h1 className="display">
-          <T v={experiencesIntro.title} />
-        </h1>
-        <p className="lede">
-          <T v={experiencesIntro.lede} />
-        </p>
-      </header>
+      </PageMast>
 
       <section className="wrap feature-band" aria-label="Case study">
         <Link href={`/experiences/${trading.slug}`} className="case-card corners">
@@ -54,7 +58,7 @@ export default function ExperiencesPage() {
         </Link>
       </section>
 
-      <section className="wrap section band-ivory" aria-labelledby="tl-title">
+      <section className="wrap section" aria-labelledby="tl-title">
         <div className="section-head">
           <Kicker num="A" v={{ en: "Timeline", zh: "时间线" }} />
           <h2 id="tl-title" className="h-section">
@@ -109,7 +113,9 @@ export default function ExperiencesPage() {
                 <T v={categoryLabel[ch.category]} />
               </p>
               <h3 className="h-card h-card-lg">
-                <T v={ch.title} />
+                <Link href={chapterHref(ch.id)} className="chapter-title-link">
+                  <T v={ch.title} />
+                </Link>
               </h3>
               <dl className="chapter-dl">
                 <div>
@@ -137,6 +143,9 @@ export default function ExperiencesPage() {
                   </dd>
                 </div>
               </dl>
+              <Link className="text-link" href={chapterHref(ch.id)}>
+                <T v={{ en: "Read the chapter", zh: "阅读这一篇" }} /> →
+              </Link>
               {ch.category === "entrepreneurship" ? (
                 <Link href={`/experiences/${trading.slug}`} className="text-link chapter-link">
                   <T v={{ en: "Read the case study", zh: "阅读完整案例" }} /> →

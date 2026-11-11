@@ -570,3 +570,30 @@ export const artworks: Artwork[] = [
     },
   },
 ];
+
+/** Every work also has a plate of its own: /artwork/the-night-and-time … */
+export function artHref(slug: string) {
+  return `/artwork/${slug}`;
+}
+
+const ROMAN_TABLE: [number, string][] = [
+  [50, "L"],
+  [40, "XL"],
+  [10, "X"],
+  [9, "IX"],
+  [5, "V"],
+  [4, "IV"],
+  [1, "I"],
+];
+
+/** Plate numbers in the old style: 1 → I, 24 → XXIV. */
+export function roman(n: number) {
+  let out = "";
+  for (const [v, s] of ROMAN_TABLE) {
+    while (n >= v) {
+      out += s;
+      n -= v;
+    }
+  }
+  return out;
+}

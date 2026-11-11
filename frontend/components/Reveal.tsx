@@ -27,13 +27,24 @@ const SELECTOR = [
   ".archive-strip li",
   ".step",
   ".stage",
+  ".ed-reveal",
+  ".toc-row",
+  ".teaser-piece",
+  ".giant",
+  ".lone-line",
+  ".ex-item",
+  ".ex-work",
+  ".coll-piece",
+  ".tl-row",
+  ".proj",
 ].join(",");
 
 /**
  * Scroll motion for the whole site, in one place:
  * - blocks below the first screen fade up as they arrive;
  * - figures marked data-count count up from zero once;
- * - images marked data-parallax drift slightly against the scroll.
+ * - images marked data-parallax drift slightly against the scroll;
+ * - giant words marked data-drift slide sideways as the page moves.
  * Without JavaScript, or with reduced motion, everything is simply shown.
  */
 export default function Reveal() {
@@ -91,8 +102,9 @@ export default function Reveal() {
     );
     counters.forEach((el) => countIo.observe(el));
 
-    /* parallax */
+    /* parallax (vertical) and drift (giant words sliding sideways) */
     const layers = Array.from(document.querySelectorAll<HTMLElement>("[data-parallax]"));
+    const drifters = Array.from(document.querySelectorAll<HTMLElement>("[data-drift]"));
     let frame = 0;
     const paint = () => {
       frame = 0;
@@ -104,11 +116,18 @@ export default function Reveal() {
         const offset = (box.top + box.height / 2 - vh / 2) * -speed;
         el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
       }
+      for (const el of drifters) {
+        const box = el.getBoundingClientRect();
+        if (box.bottom < -200 || box.top > vh + 200) continue;
+        const speed = Number(el.dataset.drift) || 0.2;
+        const offset = (box.top + box.height / 2 - vh / 2) * speed;
+        el.style.translate = `${offset.toFixed(1)}px 0`;
+      }
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(paint);
     };
-    if (layers.length) {
+    if (layers.length || drifters.length) {
       paint();
       window.addEventListener("scroll", onScroll, { passive: true });
       window.addEventListener("resize", onScroll);

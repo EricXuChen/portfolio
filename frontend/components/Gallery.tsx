@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Bi } from "@/content/types";
 import { T } from "./T";
@@ -129,9 +130,9 @@ export default function Gallery({ items, filters = false, label }: { items: Gall
               </button>
               <p className="g-cap">
                 <span className="archive-id">{it.id}</span>
-                <span className="g-title">
+                <Link className="g-title" href={`/artwork/${it.slug}`}>
                   <T v={{ en: it.title, zh: `《${it.titleZh}》` }} />
-                </span>
+                </Link>
                 <span className="g-meta">
                   {it.medium ? <T v={it.medium} /> : null}
                   {it.year ? <> · {it.year}</> : null}
@@ -217,6 +218,9 @@ export default function Gallery({ items, filters = false, label }: { items: Gall
                   ))}
                 </dl>
               ) : null}
+              <Link className="text-link viewer-plate" href={`/artwork/${current.slug}`}>
+                <T v={{ en: "Open the plate", zh: "打开图版页" }} /> →
+              </Link>
             </div>
 
             <button type="button" className="viewer-close" onClick={() => dialog.current?.close()} aria-label="Close">

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { nav, site } from "@/content/site";
+import { nav, site, navMore } from "@/content/site";
 import { T } from "./T";
 
 type Lang = "en" | "zh";
@@ -117,7 +117,7 @@ export default function Nav() {
 
       <nav id="mobile-menu" className="mobile-nav" aria-label="Mobile">
         <ul>
-          {nav.map((item) => (
+          {[...nav, ...navMore].map((item) => (
             <li key={item.href}>
               <Link href={item.href}>
                 <span className="nav-num">{item.num}</span>

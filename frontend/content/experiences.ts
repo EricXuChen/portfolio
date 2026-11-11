@@ -330,3 +330,21 @@ export const recognition: Recognition[] = [
     },
   },
 ];
+
+/* Each chapter also has a page of its own: /experiences/international-education … */
+const CHAPTER_SLUGS: Record<string, string> = {
+  "E-101": "international-education",
+  "E-102": "watch-reselling",
+  "E-103": "debate-and-mun",
+  "E-104": "business-systems",
+  "E-105": "personal-development",
+  "E-106": "future-aspirations",
+};
+
+export function chapterSlug(id: string) {
+  return CHAPTER_SLUGS[id] ?? id.toLowerCase();
+}
+
+export function chapterHref(id: string) {
+  return `/experiences/${chapterSlug(id)}`;
+}

@@ -73,3 +73,66 @@ export function Rocaille({ className }: { className?: string }) {
     </svg>
   );
 }
+
+/** A round rubber archive stamp, slightly uneven like real ink. */
+export function Stamp({ className, top = "EXU · PERSONAL ARCHIVE", bottom = "BARCELONA · MMXXVI", mid = "Nº" }: { className?: string; top?: string; bottom?: string; mid?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+      <defs>
+        <path id="stamp-top" d="M 30 100 A 70 70 0 0 1 170 100" />
+        <path id="stamp-bottom" d="M 22 100 A 78 78 0 0 0 178 100" />
+        <filter id="stamp-ink" x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n" />
+          <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.55" result="mask" />
+          <feComposite in="SourceGraphic" in2="mask" operator="in" />
+        </filter>
+      </defs>
+      <g filter="url(#stamp-ink)" fill="currentColor" stroke="currentColor">
+        <circle cx="100" cy="100" r="94" fill="none" strokeWidth="3" />
+        <circle cx="100" cy="100" r="86" fill="none" strokeWidth="1" />
+        <circle cx="100" cy="100" r="46" fill="none" strokeWidth="1" />
+        <text fontFamily="DM Mono, monospace" fontSize="13" letterSpacing="3" stroke="none">
+          <textPath href="#stamp-top" startOffset="50%" textAnchor="middle">
+            {top}
+          </textPath>
+        </text>
+        <text fontFamily="DM Mono, monospace" fontSize="12" letterSpacing="3" stroke="none">
+          <textPath href="#stamp-bottom" startOffset="50%" textAnchor="middle">
+            {bottom}
+          </textPath>
+        </text>
+        <text x="100" y="114" textAnchor="middle" fontFamily="Bodoni Moda, serif" fontStyle="italic" fontSize="38" stroke="none">
+          {mid}
+        </text>
+        <path d="M 40 100 h 10 M 150 100 h 10" strokeWidth="1.5" />
+      </g>
+    </svg>
+  );
+}
+
+/** A printer's fleuron between two hairlines — the old catalogue section break. */
+export function Fleuron({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 240 24" aria-hidden="true" focusable="false">
+      <g fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round">
+        <path d="M0 12 H92 M148 12 H240" />
+        <path d="M120 3 C 108 3, 104 12, 112 16 C 117 18, 120 14, 120 12 C 120 14, 123 18, 128 16 C 136 12, 132 3, 120 3 Z" />
+        <path d="M120 12 V 21 M104 12 C 100 8, 96 8, 94 12 M136 12 C 140 8, 144 8, 146 12" />
+        <circle cx="120" cy="9" r="1.4" fill="currentColor" />
+      </g>
+    </svg>
+  );
+}
+
+/** A pointing hand (manicule), the oldest way to say “look here”. */
+export function Manicule({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 48 20" aria-hidden="true" focusable="false">
+      <g fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M2 7 H12 C 14 4, 18 4, 20 6 H44 C 47 6, 47 10, 44 10 H28" />
+        <path d="M28 10 C 31 10, 31 13, 28 13 H24 C 27 13, 27 16, 24 16 H20 C 22 16, 22 19, 19 19 H12 C 8 19, 6 16, 2 16" />
+        <path d="M2 7 V 16" />
+      </g>
+    </svg>
+  );
+}

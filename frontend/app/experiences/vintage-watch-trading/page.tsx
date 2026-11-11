@@ -121,7 +121,7 @@ export default function TradingPage() {
         </div>
       </section>
 
-      <section className="wrap section band-ivory">
+      <section className="wrap section">
         <div className="section-head">
           <Kicker num="B" v={{ en: "How it works", zh: "运作方式" }} />
           <h2 className="h-section">
@@ -189,7 +189,7 @@ export default function TradingPage() {
         </ul>
       </section>
 
-      <section className="wrap section split-2 split-wide band-ivory">
+      <section className="wrap section split-2 split-wide">
         <div>
           <Kicker num="D" v={{ en: "Development", zh: "发展阶段" }} />
           <h2 className="h-section">

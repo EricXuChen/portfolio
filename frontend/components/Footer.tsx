@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { artworks } from "@/content/artwork";
 import { chapters, timeline } from "@/content/experiences";
-import { nav, site } from "@/content/site";
+import { nav, site, navMore } from "@/content/site";
 import { publicOnly } from "@/content/types";
 import { collection } from "@/content/watches";
 import { DecoRule, Sunburst } from "./Deco";
@@ -52,7 +52,7 @@ export default function Footer() {
 
         <nav className="footer-nav" aria-label="Footer">
           <ul>
-            {nav.map((item) => (
+            {[...nav, ...navMore].map((item) => (
               <li key={item.href}>
                 <Link href={item.href}>
                   <span className="nav-num">{item.num}</span> <T v={item.label} />

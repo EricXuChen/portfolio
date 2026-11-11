@@ -1,9 +1,11 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Kicker, T } from "@/components/T";
 
 export default function NotFound() {
   return (
     <section className="page-head wrap not-found">
+      <Image className="nf-watch" src="/objects/gold-pocket-watch.png" width={619} height={860} alt="" aria-hidden="true" sizes="260px" />
       <Kicker num="404" v={{ en: "Not in the archive", zh: "档案中没有这一页" }} />
       <h1 className="display">
         <T v={{ en: "This page has stopped.", zh: "这一页停摆了。" }} />

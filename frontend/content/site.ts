@@ -25,6 +25,13 @@ export const nav: { href: string; num: string; label: Bi }[] = [
   { href: "/artwork", num: "04", label: { en: "Artwork", zh: "艺术作品" } },
 ];
 
+/* Further pages, listed in the menu and the footer (not in the top bar). */
+export const navMore: { href: string; num: string; label: Bi }[] = [
+  { href: "/projects", num: "05", label: { en: "Projects", zh: "进行中的项目" } },
+  { href: "/catalogue", num: "06", label: { en: "Catalogue", zh: "总目录" } },
+  { href: "/colophon", num: "—", label: { en: "Colophon", zh: "版本说明" } },
+];
+
 /* ------------------------------------------------------------------ */
 /*  Home (cover)                                                       */
 /* ------------------------------------------------------------------ */
@@ -75,6 +82,24 @@ export const home = {
       text: {
         en: "Paintings, drawings and The Night and Time — a work about a watch, a gift and the speed of modern life.",
         zh: "绘画、素描，以及《The Night and Time》——一件关于腕表、礼物与现代生活节奏的作品。",
+      },
+    },
+    {
+      href: "/projects",
+      num: "05",
+      title: { en: "Ongoing Projects", zh: "进行中的项目" },
+      text: {
+        en: "Ideas still in development: systems, straps, a watch of my own design — and this archive itself.",
+        zh: "仍在发展中的想法：系统、表带、自己设计的腕表——以及这个档案本身。",
+      },
+    },
+    {
+      href: "/catalogue",
+      num: "06",
+      title: { en: "The Catalogue", zh: "总目录" },
+      text: {
+        en: "Every entry in the archive on one page, numbered like an old collection catalogue.",
+        zh: "档案里的每一个条目都在这一页，像老式藏品目录一样编号。",
       },
     },
   ] as { href: string; num: string; title: Bi; text: Bi }[],

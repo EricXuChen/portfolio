@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import ViewSwitch from "@/components/ViewSwitch";
-import { Kicker, T } from "@/components/T";
+import { T } from "@/components/T";
 import { blurFor } from "@/content/placeholders";
 import { publicOnly } from "@/content/types";
 import { collection, collectionIntro, pieceHref } from "@/content/watches";
+import PageMast from "@/components/PageMast";
 
 export const metadata: Metadata = {
   title: "The Collection",
@@ -18,21 +19,24 @@ export default function CollectionPage() {
 
   return (
     <>
-      <header className="page-head wrap page-head-center">
-        <Kicker num="02" v={{ en: "Horology", zh: "制表" }} />
-        <h1 className="display">
-          <T v={collectionIntro.title} />
-        </h1>
-        <p className="lede">
-          <T v={collectionIntro.lede} />
-        </p>
-        <p className="count-line">
+      <PageMast
+        word="OBJECTS."
+        layout="split"
+        metal
+        num="II"
+        kicker={{ en: "Horology", zh: "制表" }}
+        title={collectionIntro.title}
+        lede={collectionIntro.lede}
+        voice="bodoni"
+        stamp={{ top: "EXU · THE COLLECTION", bottom: `${String(watches.length).padStart(2, "0")} PIECES · MMXXVI`, mid: "W." }}
+      >
+        <p className="count-line mast-count">
           <span className="count-num">{String(watches.length).padStart(2, "0")}</span>
           <T v={{ en: "pieces in the archive", zh: "件收藏" }} />
         </p>
-      </header>
+      </PageMast>
 
-      <section className="wrap section" aria-label="Watches">
+      <section className="wrap section exhibit" aria-label="Watches">
         <ViewSwitch>
           {/* Gallery */}
           <div className="collection-grid">

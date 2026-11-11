@@ -8,6 +8,7 @@ import { ArchiveTag, Kicker, T } from "@/components/T";
 import { type Artwork, artworkIntro, artworks } from "@/content/artwork";
 import { blurFor } from "@/content/placeholders";
 import { publicOnly } from "@/content/types";
+import PageMast from "@/components/PageMast";
 
 export const metadata: Metadata = {
   title: "Artwork & Creativity",
@@ -47,15 +48,17 @@ export default function ArtworkPage() {
 
   return (
     <>
-      <header className="page-head wrap">
-        <Kicker num="04" v={{ en: "Artwork", zh: "艺术作品" }} />
-        <h1 className="display">
-          <T v={artworkIntro.title} />
-        </h1>
-        <p className="lede">
-          <T v={artworkIntro.lede} />
-        </p>
-      </header>
+      <PageMast
+        word="Studio"
+        layout="centered"
+        metal
+        num="IV"
+        kicker={{ en: "Artwork", zh: "艺术作品" }}
+        title={artworkIntro.title}
+        lede={artworkIntro.lede}
+        voice="italic"
+        stamp={{ top: "EXU · STUDIO · PLATES", bottom: "INK · CHARCOAL · COLOUR", mid: "Pl." }}
+      />
 
       <figure className="wrap plate">
         <div className="plate-frame">
@@ -164,7 +167,7 @@ export default function ArtworkPage() {
         </section>
       ) : null}
 
-      <section className="wrap section band-ivory" aria-label="Gallery">
+      <section className="wrap section salon" aria-label="Gallery">
         <div className="section-head">
           <Kicker num="B" v={{ en: "Gallery", zh: "画廊" }} />
           <h2 className="h-section">

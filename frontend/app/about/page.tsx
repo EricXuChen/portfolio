@@ -7,6 +7,7 @@ import { artworks } from "@/content/artwork";
 import { blurFor } from "@/content/placeholders";
 import { about } from "@/content/site";
 import { publicOnly } from "@/content/types";
+import PageMast from "@/components/PageMast";
 
 export const metadata: Metadata = {
   title: "About",
@@ -19,15 +20,20 @@ export default function AboutPage() {
 
   return (
     <>
-      <header className="page-head wrap has-decor">
-        <DecorWatch which="pendant" className="decor-head" />
-        <Kicker num="01" v={{ en: "About Me", zh: "个人简介" }} />
-        <h1 className="display">
-          <T v={about.title} />
-        </h1>
-      </header>
+      <PageMast
+        word="EXU."
+        layout="overlap"
+        num="I"
+        kicker={{ en: "About Me", zh: "个人简介" }}
+        title={{ en: "A student, a collector, a maker of small things.", zh: "一个学生，一个收藏者，一个做小东西的人。" }}
+        tone="burgundy"
+        voice="italic"
+        stamp={{ top: "EXU · ABOUT · ERIC XU", bottom: "BARCELONA · MMXXVI", mid: "E.X." }}
+      >
+        <DecorWatch which="pendant" className="decor-mast" />
+      </PageMast>
 
-      <section className="wrap about-intro band-ivory">
+      <section className="wrap about-intro">
         <div className="prose prose-lg">
           {about.intro.map((p, i) => (
             <p key={i}>
@@ -124,7 +130,7 @@ export default function AboutPage() {
         </ol>
       </section>
 
-      <section className="wrap section split-2 band-ivory">
+      <section className="wrap section split-2">
         <div>
           <Kicker num="C" v={about.styleTitle} />
           <p className="prose-p">
