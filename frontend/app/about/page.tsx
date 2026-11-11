@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import DecorWatch from "@/components/DecorWatch";
 import { Kicker, T } from "@/components/T";
 import { artworks } from "@/content/artwork";
 import { blurFor } from "@/content/placeholders";
@@ -18,7 +19,8 @@ export default function AboutPage() {
 
   return (
     <>
-      <header className="page-head wrap">
+      <header className="page-head wrap has-decor">
+        <DecorWatch which="pendant" className="decor-head" />
         <Kicker num="01" v={{ en: "About Me", zh: "个人简介" }} />
         <h1 className="display">
           <T v={about.title} />

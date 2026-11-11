@@ -3448,13 +3448,10 @@ a.next-card:hover {
 }
 
 .float-caption {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 14px;
-  align-items: baseline;
   font-family: var(--serif);
-  font-size: 22px;
-  line-height: 1.35;
+  font-style: italic;
+  font-size: clamp(24px, 2.4vw, 34px);
+  line-height: 1.3;
   color: var(--ivory);
 }
 
@@ -4393,4 +4390,85 @@ a.next-card:hover .next-title {
 .g-count {
   color: var(--champagne-bright);
   background: rgba(42, 16, 20, 0.82);
+}
+
+/* ------------------------------------------------------------------
+   Decorative antique watches — ornament only, never captioned
+   ------------------------------------------------------------------ */
+.has-decor {
+  position: relative;
+}
+
+.page-head.has-decor {
+  overflow: hidden;
+  overflow: clip;
+}
+
+.has-decor > :not(.decor-watch) {
+  position: relative;
+}
+
+.decor-watch {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(closest-side, #000 52%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 52%, transparent 100%);
+}
+
+.decor-watch img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Cover: a rococo silver case drifting in from the lower left */
+.cover-band > .cover {
+  position: relative;
+  z-index: 1;
+}
+
+.decor-cover {
+  left: max(-160px, calc((100vw - var(--max)) / 2 - 300px));
+  bottom: -220px;
+  width: 560px;
+  opacity: 0.32;
+  transform: rotate(-14deg);
+}
+
+/* Collection teaser: a gold watch glowing behind the heading */
+.decor-trio {
+  left: 50%;
+  top: clamp(-40px, -2vw, 0px);
+  width: 360px;
+  opacity: 0.2;
+  transform: translateX(-50%);
+}
+
+/* Page heads: an Art Deco pendant at the right */
+.decor-head {
+  right: 0;
+  top: 50%;
+  width: min(360px, 34vw);
+  opacity: 0.32;
+  transform: translateY(-46%) rotate(8deg);
+}
+
+@media (max-width: 640px) {
+  .decor-cover {
+    left: -140px;
+    bottom: -180px;
+    width: 380px;
+    opacity: 0.2;
+  }
+  .decor-trio {
+    width: 280px;
+    opacity: 0.16;
+  }
+  .decor-head {
+    width: 190px;
+    right: 0;
+    opacity: 0.24;
+  }
 }

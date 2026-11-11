@@ -17,7 +17,7 @@ Everything you see on the site is in these files. Open them in VS Code or Cursor
 | `frontend/content/experiences.ts` | Timeline (E-001 …), chapters (E-101 …) and recognition (R-001 …) |
 | `frontend/content/trading.ts` | The vintage watch trading case study |
 | `frontend/content/artwork.ts` | Artist statement and artworks (A-001 …) |
-| `frontend/content/antiques.ts` | The Cabinet (nine antique watches from museums and public collections), the floating pocket watch, the Art Deco posters, and the picture credits |
+| `frontend/content/antiques.ts` | The decorative antique watches, the floating pocket watch, the Art Deco posters, and their picture credits |
 
 Rules that keep the archive tidy:
 
@@ -44,14 +44,14 @@ Rules that keep the archive tidy:
 3. `kind` puts it on a shelf of the gallery filter: `"ink"`, `"pencil"` (pencil & charcoal) or `"colour"`.
 4. For a sketch or a work that isn't finished, add `status: "draft"` — it then appears under **Drafts & works in progress**. When it's done, delete that line and it moves into the gallery.
 
-### The Cabinet, posters and picture credits
+### Decorative watches, posters and picture credits
 
-The antique watches on the home page (C-01 … C-09), the floating gold pocket watch and the Cappiello posters are **not** Eric's — they come from museums and Wikimedia Commons under public-domain or Creative Commons licences. Each one has a `credit` in `antiques.ts` (author, source, licence, and what was changed), and all of them are listed automatically on **/credits**. If you add or swap one:
+The faded antique watches in the background (home cover, collection teaser, About page), the floating gold pocket watch and the Cappiello posters are **not** Eric's and are **decoration only** — never captioned or introduced. They come from museums and Wikimedia Commons under public-domain or Creative Commons licences. Each one has a `credit` in `antiques.ts` (author, source, licence, what was changed), and all of them are listed automatically on **/credits** (linked in the footer). If you add or swap one:
 
-1. Use only real antique watches or pocket watches, from a museum or Wikimedia Commons, with a licence that allows reuse (Public domain, CC0, CC BY, CC BY-SA).
-2. Crop it to 4:5 (800 × 1000) and put it in `frontend/public/antiques/`.
+1. Use only real antique watches or pocket watches, with a licence that allows reuse (Public domain, CC0, CC BY, CC BY-SA).
+2. Tone it in champagne on a black background (800 × 1000) and put it in `frontend/public/decor/`; place it with `<DecorWatch which="…" />`.
 3. Fill in its `credit` — the licence requires it for CC BY / CC BY-SA pictures.
-4. Describe it by era, place and craft, **not by brand** — no maker names in titles, captions, alt texts or file names. This is a personal archive, not a shop. (Posters get their lettering removed for the same reason.)
+4. No maker names anywhere — not in captions, alt texts or file names. This is a personal archive, not a shop. (Posters get their lettering removed for the same reason.)
 
 Photos of artworks are straightened (perspective-corrected) and cropped to the sheet before they go in `public/artworks/`.
 

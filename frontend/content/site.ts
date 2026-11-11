@@ -31,13 +31,13 @@ export const nav: { href: string; num: string; label: Bi }[] = [
 
 export const home = {
   kicker: { en: "Eric Xu · Personal Archive", zh: "Eric Xu · 个人档案" } as Bi,
-  title: { en: "An Archive of Time, Objects & Experiences.", zh: "关于时间、物件与经历的档案。" } as Bi,
-  roles: { en: "Collector · Entrepreneur · Art Enthusiast", zh: "收藏者 · 创业者 · 艺术爱好者" } as Bi,
+  title: { en: "Hello, I’m Eric.", zh: "你好，我是 Eric。" } as Bi,
+  roles: { en: "Horology · Entrepreneurship · Art · History · Debate", zh: "制表 · 创业 · 艺术 · 历史 · 辩论" } as Bi,
   lede: {
-    en: "Collecting objects. Building ideas. Documenting experiences. A personal archive of horology, entrepreneurship, art — and the experiences that shape them.",
-    zh: "收藏物件，构建想法，记录经历。一个关于制表、创业与艺术，以及塑造这一切的经历的个人档案。",
+    en: "I’m a student at an international school in Barcelona, on the IB pathway. I collect and study mechanical watches, draw and paint, read history and enjoy a good debate — and I learned business by trying it. This is where I keep the record.",
+    zh: "我在巴塞罗那的一所国际学校读书，走 IB 路线。我收藏、研究机械腕表，画画，读历史，也喜欢一场好的辩论——商业则是我边做边学的。这里是我留存这一切的地方。",
   } as Bi,
-  cta: { en: "Explore the archive", zh: "进入档案" } as Bi,
+  cta: { en: "More about me", zh: "更多关于我" } as Bi,
   interestsKicker: { en: "Selected Interests", zh: "四个板块" } as Bi,
   interestsTitle: { en: "A life beyond the dial.", zh: "表盘之外的生活。" } as Bi,
   sections: [
@@ -79,8 +79,8 @@ export const home = {
     },
   ] as { href: string; num: string; title: Bi; text: Bi }[],
   closing: {
-    en: "I am a student at an international school in Barcelona, with a long-standing interest in mechanical watchmaking, business and design. This archive is updated as the work grows.",
-    zh: "我在巴塞罗那的一所国际学校读书，长期关注机械制表、商业与设计。这个档案会随着作品和经历的积累持续更新。",
+    en: "Watches taught me to notice small mechanisms and slow rituals. Everything here — the collection, the projects, the drawings — grew out of that. The archive keeps growing with the work.",
+    zh: "腕表教会我留意细小的机构和缓慢的仪式。这里的一切——收藏、项目、画作——都由此而来。这个档案会随着作品不断更新。",
   } as Bi,
 };
 

@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { DecoRule, Rocaille, Sunburst } from "@/components/Deco";
+import { Rocaille, Sunburst } from "@/components/Deco";
+import DecorWatch from "@/components/DecorWatch";
 import { Figure } from "@/components/Figure";
 import FloatingWatch from "@/components/FloatingWatch";
 import { Kicker, T } from "@/components/T";
-import { cabinet, cabinetIntro, posters } from "@/content/antiques";
+import { posters } from "@/content/antiques";
 import { artworks } from "@/content/artwork";
 import { recognition } from "@/content/experiences";
 import { trading } from "@/content/trading";
@@ -24,6 +25,7 @@ export default function HomePage() {
   return (
     <>
       <section className="cover-band">
+      <DecorWatch which="silver" className="decor-cover" />
       <div className="cover wrap">
         <div className="cover-text">
           <p className="edition">
@@ -93,7 +95,8 @@ export default function HomePage() {
         </ol>
       </section>
 
-      <section className="wrap section">
+      <section className="wrap section has-decor">
+        <DecorWatch which="gold" className="decor-trio" />
         <div className="section-head section-head-center">
           <Kicker num="02" v={{ en: "From the Collection", zh: "收藏选录" }} />
           <h2 className="h-section">
@@ -157,57 +160,6 @@ export default function HomePage() {
           </span>
         </figcaption>
       </figure>
-
-      <section className="wrap section band-ivory cabinet">
-        <div className="section-head section-head-center">
-          <Kicker v={cabinetIntro.kicker} />
-          <h2 className="h-section">
-            <T v={cabinetIntro.title} />
-          </h2>
-          <p className="section-sub-text centered-text">
-            <T v={cabinetIntro.lede} />
-          </p>
-          <DecoRule className="deco-rule" />
-        </div>
-        <ul className="cab-grid">
-          {cabinet.map((c) => (
-            <li key={c.id} className="cab-item">
-              <figure>
-                <div className="cab-plate">
-                  <Image
-                    src={c.image.src}
-                    width={c.image.width}
-                    height={c.image.height}
-                    alt={c.image.alt}
-                    sizes="(max-width: 640px) 50vw, (max-width: 960px) 33vw, 300px"
-                    placeholder={blurFor(c.image.src) ? "blur" : "empty"}
-                    blurDataURL={blurFor(c.image.src)}
-                  />
-                </div>
-                <figcaption>
-                  <span className="cab-maker">
-                    <T v={c.name} />
-                  </span>
-                  <span className="cab-meta">
-                    <T v={c.place} /> · <T v={c.date} />
-                  </span>
-                  <span className="cab-title">
-                    <T v={c.title} />
-                  </span>
-                  <span className="cab-holder">
-                    <T v={c.holder} />
-                  </span>
-                </figcaption>
-              </figure>
-            </li>
-          ))}
-        </ul>
-        <p className="fine-print centered">
-          <Link href="/credits" className="plain-link">
-            <T v={{ en: "Picture credits and licences", zh: "图片来源与授权" }} /> →
-          </Link>
-        </p>
-      </section>
 
       <FloatingWatch />
 

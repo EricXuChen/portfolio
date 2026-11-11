@@ -67,11 +67,11 @@ export default function FloatingWatch() {
   const img = floatingWatch.image;
 
   return (
-    <section ref={stage} className="float-stage" aria-label="An antique pocket watch">
+    <section ref={stage} className="float-stage" aria-label="Why watches">
       <div className="wrap float-grid">
         <div className="float-copy float-copy-top">
           <p className="kicker">
-            <T v={{ en: "The unexpected object", zh: "意外的物件" }} />
+            <T v={{ en: "Why watches", zh: "为什么是腕表" }} />
           </p>
           <h2 className="float-title">
             <T
@@ -95,16 +95,10 @@ export default function FloatingWatch() {
 
         <div className="float-copy float-copy-bottom">
           <p className="float-caption">
-            <span className="caption-num">
-              <T v={floatingWatch.label} />
-            </span>
-            <T v={floatingWatch.caption} />
-          </p>
-          <p className="float-note">
             <T
               v={{
-                en: "Roman numerals, a fluted crown, nothing more — restraint, made in gold.",
-                zh: "罗马数字、带凹槽的表冠，别无其他——用黄金写成的克制。",
+                en: "What draws me is never the name on the dial, but the history behind it.",
+                zh: "吸引我的，从来不是表盘上的名字，而是它背后的历史。",
               }}
             />
           </p>
