@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { nav, site } from "@/content/site";
 import { T } from "./T";
 
@@ -17,6 +17,8 @@ export default function Nav() {
   const pathname = usePathname() || "/";
   const [open, setOpen] = useState(false);
   const [lang, setLang] = useState<Lang>("en");
+  const [scrolled, setScrolled] = useState(false);
+  const header = useRef<HTMLElement>(null);
 
   useEffect(() => {
     setLang(readLang());
@@ -24,6 +26,29 @@ export default function Nav() {
 
   useEffect(() => {
     setOpen(false);
+  }, [pathname]);
+
+  /* A gold hairline under the header fills as the page is read. */
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      header.current?.style.setProperty("--progress", progress.toFixed(4));
+      setScrolled(window.scrollY > 24);
+    };
+    const onScroll = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, [pathname]);
 
   function switchLang(next: Lang) {
@@ -54,7 +79,7 @@ export default function Nav() {
     });
 
   return (
-    <header className={`site-header${open ? " is-open" : ""}`}>
+    <header ref={header} className={`site-header${open ? " is-open" : ""}${scrolled ? " is-scrolled" : ""}`}>
       <div className="site-header-inner">
         <nav className="site-nav site-nav-left" aria-label="Main">
           <ul>{renderLinks(left)}</ul>

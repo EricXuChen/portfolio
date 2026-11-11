@@ -8,10 +8,10 @@ export const site = {
   mark: "EXU.",
   name: "Eric Xu",
   title: "EXU. — The Personal Archive",
-  edition: { en: "Personal Archive · 2026 Edition", zh: "个人档案 · 2026 年版" } as Bi,
+  edition: { en: "Barcelona · 2026", zh: "巴塞罗那 · 2026" } as Bi,
   description:
-    "The personal archive of Eric Xu — mechanical watchmaking, a small vintage watch business, life experiences and artwork.",
-  lastUpdated: "2026-11-10",
+    "The personal archive of Eric Xu, Barcelona — a watch collection, a vintage watch business, life experiences and artwork.",
+  lastUpdated: "2026-11-11",
   /* Filled in automatically by Vercel at build time; localhost when running on this Mac. */
   url: process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
@@ -30,11 +30,12 @@ export const nav: { href: string; num: string; label: Bi }[] = [
 /* ------------------------------------------------------------------ */
 
 export const home = {
-  kicker: { en: "A Personal Journey", zh: "一段个人旅程" } as Bi,
-  title: { en: "Time, Experience & Creativity.", zh: "时间、经历与创作。" } as Bi,
+  kicker: { en: "Eric Xu · Personal Archive", zh: "Eric Xu · 个人档案" } as Bi,
+  title: { en: "An Archive of Time, Objects & Experiences.", zh: "关于时间、物件与经历的档案。" } as Bi,
+  roles: { en: "Collector · Entrepreneur · Art Enthusiast", zh: "收藏者 · 创业者 · 艺术爱好者" } as Bi,
   lede: {
-    en: "A personal archive of horology, experiences and creative work — the things I study, the projects I build and the pieces I make.",
-    zh: "一个关于腕表、人生经历与艺术创作的个人档案——记录我研究的事物、建立的项目和完成的作品。",
+    en: "Collecting objects. Building ideas. Documenting experiences. A personal archive of horology, entrepreneurship, art — and the experiences that shape them.",
+    zh: "收藏物件，构建想法，记录经历。一个关于制表、创业与艺术，以及塑造这一切的经历的个人档案。",
   } as Bi,
   cta: { en: "Explore the archive", zh: "进入档案" } as Bi,
   interestsKicker: { en: "Selected Interests", zh: "四个板块" } as Bi,
@@ -63,8 +64,8 @@ export const home = {
       num: "03",
       title: { en: "Life Experiences", zh: "人生经历" },
       text: {
-        en: "A timeline of projects and turning points: entrepreneurship, debate and MUN, international education.",
-        zh: "按时间记录的项目与转折：创业实践、辩论与模拟联合国、国际教育。",
+        en: "Projects and turning points: a vintage watch business, debate and MUN, an essay prize and international education.",
+        zh: "项目与转折：古董表生意、辩论与模拟联合国、论文奖项，以及国际教育。",
       },
     },
     {
@@ -78,8 +79,8 @@ export const home = {
     },
   ] as { href: string; num: string; title: Bi; text: Bi }[],
   closing: {
-    en: "I am a student in international education with a long-standing interest in mechanical watchmaking, business and design. This archive is updated as the work grows.",
-    zh: "我是一名在国际教育环境中学习的学生，长期关注机械制表、商业与设计。这个档案会随着作品和经历的积累持续更新。",
+    en: "I am a student at an international school in Barcelona, with a long-standing interest in mechanical watchmaking, business and design. This archive is updated as the work grows.",
+    zh: "我在巴塞罗那的一所国际学校读书，长期关注机械制表、商业与设计。这个档案会随着作品和经历的积累持续更新。",
   } as Bi,
 };
 
@@ -91,8 +92,8 @@ export const about = {
   title: { en: "About Me", zh: "个人简介" } as Bi,
   intro: [
     {
-      en: "I am an internationally minded student with a strong interest in mechanical watchmaking, business, art and design.",
-      zh: "我是一名具有国际视野的学生，对机械制表、商业、艺术和设计有浓厚的兴趣。",
+      en: "I am a student based in Barcelona, with a strong interest in mechanical watchmaking, business, art and design.",
+      zh: "我是一名生活在巴塞罗那的学生，对机械制表、商业、艺术和设计有浓厚的兴趣。",
     },
     {
       en: "My interests extend beyond the objects themselves. I enjoy exploring the history, craftsmanship and ideas behind mechanical watches, while also building practical experience in the vintage watch market and small-scale business operations.",
@@ -109,7 +110,7 @@ export const about = {
   ] as Bi[],
   card: [
     { label: { en: "Name", zh: "姓名" }, value: { en: "Eric Xu", zh: "Eric Xu" } },
-    { label: { en: "Based in", zh: "所在地" }, value: { en: "Europe", zh: "欧洲" } },
+    { label: { en: "Based in", zh: "所在地" }, value: { en: "Barcelona, Spain", zh: "西班牙 · 巴塞罗那" } },
     {
       label: { en: "Education", zh: "教育" },
       value: { en: "International school · IB pathway", zh: "国际学校 · IB 课程体系" },
@@ -120,7 +121,14 @@ export const about = {
     },
     {
       label: { en: "Main interests", zh: "主要兴趣" },
-      value: { en: "Watchmaking · Business · History · Art", zh: "制表 · 商业 · 历史 · 艺术" },
+      value: { en: "Horology · Entrepreneurship · Art · History · Debate", zh: "制表 · 创业 · 艺术 · 历史 · 辩论" },
+    },
+    {
+      label: { en: "Recognition", zh: "荣誉" },
+      value: {
+        en: "John Locke Global Essay Prize 2026 — Commendation, Theology",
+        zh: "2026 约翰·洛克全球论文奖——神学类嘉许（Commendation）",
+      },
     },
     {
       label: { en: "Direction", zh: "发展方向" },

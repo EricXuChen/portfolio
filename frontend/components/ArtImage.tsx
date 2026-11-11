@@ -11,10 +11,11 @@ type Props = {
   caption: React.ReactNode;
   priority?: boolean;
   sizes?: string;
+  blurDataURL?: string;
 };
 
 /** Artwork image in a 4:5 frame; click to see the full, uncropped piece. */
-export default function ArtImage({ src, width, height, alt, caption, priority, sizes }: Props) {
+export default function ArtImage({ src, width, height, alt, caption, priority, sizes, blurDataURL }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
 
   return (
@@ -27,6 +28,8 @@ export default function ArtImage({ src, width, height, alt, caption, priority, s
           alt={alt}
           priority={priority}
           sizes={sizes ?? "(max-width: 900px) 100vw, 50vw"}
+          placeholder={blurDataURL ? "blur" : "empty"}
+          blurDataURL={blurDataURL}
         />
         <span className="art-frame-hint" aria-hidden="true">
           ⤢

@@ -243,3 +243,12 @@ export const collection: CollectionWatch[] = [
     },
   },
 ];
+
+/** Address of a watch's own page: "W-005" → /watches/w-005 */
+export function pieceSlug(id: string) {
+  return id.toLowerCase();
+}
+
+export function pieceHref(id: string) {
+  return `/watches/${pieceSlug(id)}`;
+}

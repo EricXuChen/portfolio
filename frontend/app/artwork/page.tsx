@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import ArtImage from "@/components/ArtImage";
+import Gallery, { type GalleryItem } from "@/components/Gallery";
 import { TourbillonNight } from "@/components/Illustrations";
-import { ArchiveTag, Both, Kicker, T } from "@/components/T";
-import { artworkIntro, artworks } from "@/content/artwork";
+import { ArchiveTag, Kicker, T } from "@/components/T";
+import { type Artwork, artworkIntro, artworks } from "@/content/artwork";
+import { blurFor } from "@/content/placeholders";
 import { publicOnly } from "@/content/types";
 
 export const metadata: Metadata = {
@@ -12,10 +15,35 @@ export const metadata: Metadata = {
     "Paintings, drawings and The Night and Time — artwork by Eric Xu with concept, process and reflection for each piece.",
 };
 
+/* Turn an archive entry into what the gallery wall and viewer need. */
+function toItem(w: Artwork): GalleryItem {
+  const texts = [
+    { label: { en: "About the work", zh: "关于作品" }, body: w.note },
+    { label: { en: "Concept", zh: "创作理念" }, body: w.concept },
+    { label: { en: "Process", zh: "创作过程" }, body: w.process },
+    { label: { en: "Reflection", zh: "创作后的思考" }, body: w.reflection },
+  ].filter((t): t is { label: { en: string; zh: string }; body: { en: string; zh: string } } => Boolean(t.body));
+  return {
+    id: w.id,
+    slug: w.slug,
+    title: w.title,
+    titleZh: w.titleZh,
+    year: w.year,
+    medium: w.medium,
+    kind: w.kind,
+    draft: w.status === "draft",
+    texts,
+    views: (w.images ?? []).map((im) => ({ ...im, blur: blurFor(im.src) })),
+  };
+}
+
 export default function ArtworkPage() {
   const works = publicOnly(artworks);
   const featured = works.find((w) => w.featured);
-  const gallery = works.filter((w) => !w.featured);
+  const withPhotos = works.filter((w) => !w.featured && w.images?.length);
+  const finished = withPhotos.filter((w) => w.status !== "draft");
+  const drafts = withPhotos.filter((w) => w.status === "draft");
+  const banner = artworkIntro.banner;
 
   return (
     <>
@@ -29,7 +57,26 @@ export default function ArtworkPage() {
         </p>
       </header>
 
-      <section className="wrap section split-2 split-wide statement">
+      <figure className="wrap plate">
+        <div className="plate-frame">
+          <Image
+            src={banner.src}
+            width={banner.width}
+            height={banner.height}
+            alt={banner.alt}
+            priority
+            sizes="(max-width: 1240px) 100vw, 1180px"
+            placeholder={blurFor(banner.src) ? "blur" : "empty"}
+            blurDataURL={blurFor(banner.src)}
+          />
+        </div>
+        <figcaption className="caption">
+          <span className="caption-num">Fig. 02</span>
+          <T v={banner.caption} />
+        </figcaption>
+      </figure>
+
+      <section className="wrap section split-2 split-wide statement band-ivory">
         <Kicker num="A" v={artworkIntro.statementTitle} />
         <div className="prose prose-lg">
           {artworkIntro.statement.map((p, i) => (
@@ -44,13 +91,27 @@ export default function ArtworkPage() {
         <section id={featured.slug} className="featured-work">
           <div className="wrap featured-inner">
             <figure className="featured-figure">
-              <TourbillonNight className="night" />
+              {featured.images?.[0] ? (
+                <div className="velvet corners">
+                  <ArtImage
+                    src={featured.images[0].src}
+                    width={featured.images[0].width}
+                    height={featured.images[0].height}
+                    alt={featured.images[0].alt}
+                    sizes="(max-width: 960px) 100vw, 46vw"
+                    blurDataURL={blurFor(featured.images[0].src)}
+                    caption={<T v={{ en: `${featured.title} — ${featured.medium?.en ?? ""}`, zh: `《${featured.titleZh}》——${featured.medium?.zh ?? ""}` }} />}
+                  />
+                </div>
+              ) : (
+                <TourbillonNight className="night" />
+              )}
               <figcaption className="caption caption-light">
-                <span className="caption-num">Fig. 03</span>
-                <Both
+                <span className="caption-num">{featured.id}</span>
+                <T
                   v={{
-                    en: "Motif study for The Night and Time — photograph of the work to be added",
-                    zh: "《The Night and Time》母题草图——作品照片待添加",
+                    en: `${featured.title}${featured.medium ? `, ${featured.medium.en.toLowerCase()}` : ""}`,
+                    zh: `《${featured.titleZh}》${featured.medium ? `，${featured.medium.zh}` : ""}`,
                   }}
                 />
               </figcaption>
@@ -63,14 +124,16 @@ export default function ArtworkPage() {
               <h2 className="h-feature">{featured.title}</h2>
               <p className="title-zh">《{featured.titleZh}》</p>
               <dl className="work-dl">
-                <div>
-                  <dt>
-                    <T v={{ en: "Concept", zh: "创作理念" }} />
-                  </dt>
-                  <dd>
-                    <T v={featured.concept} />
-                  </dd>
-                </div>
+                {featured.concept ? (
+                  <div>
+                    <dt>
+                      <T v={{ en: "Concept", zh: "创作理念" }} />
+                    </dt>
+                    <dd>
+                      <T v={featured.concept} />
+                    </dd>
+                  </div>
+                ) : null}
                 {featured.inspiration ? (
                   <div>
                     <dt>
@@ -101,114 +164,27 @@ export default function ArtworkPage() {
         </section>
       ) : null}
 
-      <section className="wrap section" aria-label="Portfolio">
+      <section className="wrap section band-ivory" aria-label="Gallery">
         <div className="section-head">
-          <Kicker num="B" v={{ en: "Portfolio", zh: "作品集" }} />
+          <Kicker num="B" v={{ en: "Gallery", zh: "画廊" }} />
           <h2 className="h-section">
-            <T v={{ en: "Studio work, 2025.", zh: "2025 年画室作品。" }} />
+            <T v={{ en: "Drawings and paintings, 2024 — 2026.", zh: "2024—2026 年的素描与绘画。" }} />
           </h2>
         </div>
+        <Gallery items={finished.map(toItem)} filters label="Gallery" />
+      </section>
 
-        <div className="works">
-          {gallery.map((w, i) => (
-            <article key={w.id} id={w.slug} className={`work${i % 2 ? " work-flip" : ""}`}>
-              {w.image ? (
-                <figure className="work-figure">
-                  <ArtImage
-                    src={w.image.src}
-                    width={w.image.width}
-                    height={w.image.height}
-                    alt={w.image.alt}
-                    priority={i === 0}
-                    caption={
-                      <Both
-                        v={{
-                          en: `${w.title}, ${w.year ?? ""} — ${w.medium?.en ?? ""}`,
-                          zh: `《${w.titleZh}》，${w.year ?? ""} — ${w.medium?.zh ?? ""}`,
-                        }}
-                      />
-                    }
-                  />
-                  <figcaption className="caption">
-                    <span className="caption-num">{w.id}</span>
-                    <Both
-                      v={{
-                        en: `${w.title}, ${w.year ?? ""}`,
-                        zh: `《${w.titleZh}》，${w.year ?? ""}`,
-                      }}
-                    />
-                  </figcaption>
-                </figure>
-              ) : null}
-
-              <div className="work-text">
-                <ArchiveTag id={w.id} updated={w.updated} />
-                <h3 className="h-work">{w.title}</h3>
-                <p className="title-zh">《{w.titleZh}》</p>
-                <dl className="work-facts">
-                  {w.year ? (
-                    <div>
-                      <dt>
-                        <T v={{ en: "Year", zh: "年份" }} />
-                      </dt>
-                      <dd>{w.year}</dd>
-                    </div>
-                  ) : null}
-                  {w.medium ? (
-                    <div>
-                      <dt>
-                        <T v={{ en: "Medium", zh: "媒介" }} />
-                      </dt>
-                      <dd>
-                        <T v={w.medium} />
-                      </dd>
-                    </div>
-                  ) : null}
-                  {w.support ? (
-                    <div>
-                      <dt>
-                        <T v={{ en: "Support", zh: "载体" }} />
-                      </dt>
-                      <dd>
-                        <T v={w.support} />
-                      </dd>
-                    </div>
-                  ) : null}
-                </dl>
-                <dl className="work-dl">
-                  <div>
-                    <dt>
-                      <T v={{ en: "Concept", zh: "创作理念" }} />
-                    </dt>
-                    <dd>
-                      <T v={w.concept} />
-                    </dd>
-                  </div>
-                  {w.process ? (
-                    <div>
-                      <dt>
-                        <T v={{ en: "Process", zh: "创作过程" }} />
-                      </dt>
-                      <dd>
-                        <T v={w.process} />
-                      </dd>
-                    </div>
-                  ) : null}
-                  {w.reflection ? (
-                    <div>
-                      <dt>
-                        <T v={{ en: "Reflection", zh: "创作后的思考" }} />
-                      </dt>
-                      <dd>
-                        <T v={w.reflection} />
-                      </dd>
-                    </div>
-                  ) : null}
-                </dl>
-              </div>
-            </article>
-          ))}
+      <section className="wrap section drafts" aria-label="Drafts">
+        <div className="section-head">
+          <Kicker num="C" v={{ en: "Drafts & works in progress", zh: "草稿与进行中的作品" }} />
+          <h2 className="h-section">
+            <T v={{ en: "Unfinished, on purpose.", zh: "尚未完成的部分。" }} />
+          </h2>
+          <p className="section-sub-text">
+            <T v={artworkIntro.draftsLede} />
+          </p>
         </div>
+        <Gallery items={drafts.map(toItem)} label="Drafts" />
       </section>
 
       <nav className="wrap next-link" aria-label="Back to start">

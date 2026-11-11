@@ -297,3 +297,36 @@ export const chapters: Chapter[] = [
     },
   },
 ];
+
+/* ------------------------------------------------------------------ */
+/*  Recognition — only results that can be verified                    */
+/* ------------------------------------------------------------------ */
+
+export type Recognition = ArchiveMeta & {
+  year: string;
+  title: Bi;
+  award: Bi;
+  field: Bi;
+  work: Bi;
+  note: Bi;
+};
+
+export const recognition: Recognition[] = [
+  {
+    id: "R-001",
+    updated: "2026-11-11",
+    visibility: "public",
+    year: "2026",
+    title: { en: "John Locke Global Essay Prize", zh: "约翰·洛克全球论文奖" },
+    award: { en: "Commendation", zh: "嘉许（Commendation）" },
+    field: { en: "Theology", zh: "神学" },
+    work: {
+      en: "Is Religious Experience Better Explained by Neuroscience or by Theology?",
+      zh: "宗教体验更适合用神经科学还是神学来解释？",
+    },
+    note: {
+      en: "The essay brought together neuroscience, accounts of religious experience and philosophical perspectives.",
+      zh: "文章结合了神经科学、关于宗教体验的研究，以及哲学视角。",
+    },
+  },
+];

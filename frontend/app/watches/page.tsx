@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import ArtImage from "@/components/ArtImage";
-import { Both, Kicker, T } from "@/components/T";
+import ViewSwitch from "@/components/ViewSwitch";
+import { Kicker, T } from "@/components/T";
+import { blurFor } from "@/content/placeholders";
 import { publicOnly } from "@/content/types";
-import { collection, collectionIntro } from "@/content/watches";
+import { collection, collectionIntro, pieceHref } from "@/content/watches";
 
 export const metadata: Metadata = {
   title: "The Collection",
@@ -31,63 +33,129 @@ export default function CollectionPage() {
       </header>
 
       <section className="wrap section" aria-label="Watches">
-        <div className="collection-grid">
-          {watches.map((w, i) => (
-            <article key={w.id} id={w.id} className="piece">
-              <ArtImage
-                src={w.image.src}
-                width={w.image.width}
-                height={w.image.height}
-                alt={w.image.alt}
-                priority={i < 2}
-                sizes="(max-width: 900px) 100vw, 50vw"
-                caption={
-                  <>
-                    {w.id} · {w.brand} — <Both v={w.model} />
-                    {w.reference ? <> · Ref. {w.reference}</> : null}
-                  </>
-                }
-              />
-              <div className="piece-text">
-                <p className="piece-meta">
-                  <span className="archive-id">{w.id}</span>
-                  <span className="piece-era">
-                    <T v={w.era} />
+        <ViewSwitch>
+          {/* Gallery */}
+          <div className="collection-grid">
+            {watches.map((w, i) => (
+              <article key={w.id} id={w.id} className="piece case">
+                <Link href={pieceHref(w.id)} className="piece-link" aria-label={`${w.id} · ${w.brand} ${w.model.en}`}>
+                  <span className="velvet">
+                    <span className="img-frame ratio-45">
+                      <Image
+                        src={w.image.src}
+                        width={w.image.width}
+                        height={w.image.height}
+                        alt={w.image.alt}
+                        priority={i < 2}
+                        sizes="(max-width: 960px) 100vw, 50vw"
+                        placeholder={blurFor(w.image.src) ? "blur" : "empty"}
+                        blurDataURL={blurFor(w.image.src)}
+                      />
+                      <span className="frame-label" aria-hidden="true">
+                        <T v={{ en: "View the record", zh: "查看档案" }} /> →
+                      </span>
+                    </span>
                   </span>
-                </p>
-                <h2 className="piece-brand">{w.brand}</h2>
-                <p className="piece-model">
-                  <T v={w.model} />
-                </p>
-                <dl className="piece-facts">
-                  <div>
-                    <dt>Ref.</dt>
-                    <dd>{w.reference || <span className="muted">—</span>}</dd>
-                  </div>
-                  <div>
-                    <dt>
-                      <T v={{ en: "Movement", zh: "机芯" }} />
-                    </dt>
-                    <dd>
+                </Link>
+                <div className="piece-text">
+                  <p className="piece-meta">
+                    <span className="archive-id">{w.id}</span>
+                    <span className="piece-era">
+                      <T v={w.era} />
+                    </span>
+                  </p>
+                  <h2 className="piece-brand">
+                    <Link href={pieceHref(w.id)}>{w.brand}</Link>
+                  </h2>
+                  <p className="piece-model">
+                    <T v={w.model} />
+                  </p>
+                  <dl className="piece-facts">
+                    <div>
+                      <dt>Ref.</dt>
+                      <dd>{w.reference || <span className="muted">—</span>}</dd>
+                    </div>
+                    <div>
+                      <dt>
+                        <T v={{ en: "Movement", zh: "机芯" }} />
+                      </dt>
+                      <dd>
+                        <T v={w.movement} />
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>
+                        <T v={{ en: "Case", zh: "表壳" }} />
+                      </dt>
+                      <dd>
+                        <T v={w.case} />
+                      </dd>
+                    </div>
+                  </dl>
+                  <p className="piece-note">
+                    <T v={w.note} />
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          {/* Index */}
+          <div className="collection-index">
+            <div className="ix-head" aria-hidden="true">
+              <span>No.</span>
+              <span />
+              <span>
+                <T v={{ en: "Watch", zh: "腕表" }} />
+              </span>
+              <span>Ref.</span>
+              <span>
+                <T v={{ en: "Era", zh: "年代" }} />
+              </span>
+              <span>
+                <T v={{ en: "Movement", zh: "机芯" }} />
+              </span>
+              <span />
+            </div>
+            <ol>
+              {watches.map((w) => (
+                <li key={w.id}>
+                  <Link href={pieceHref(w.id)} className="ix-row">
+                    <span className="ix-id archive-id">{w.id}</span>
+                    <span className="ix-thumb">
+                      <Image
+                        src={w.image.src}
+                        width={w.image.width}
+                        height={w.image.height}
+                        alt=""
+                        sizes="64px"
+                        placeholder={blurFor(w.image.src) ? "blur" : "empty"}
+                        blurDataURL={blurFor(w.image.src)}
+                      />
+                    </span>
+                    <span className="ix-watch">
+                      <span className="ix-brand">{w.brand}</span>
+                      <span className="ix-model">
+                        <T v={w.model} />
+                      </span>
+                    </span>
+                    <span className="ix-ref">{w.reference || <span className="muted">—</span>}</span>
+                    <span className="ix-era">
+                      <T v={w.era} />
+                    </span>
+                    <span className="ix-movement">
                       <T v={w.movement} />
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>
-                      <T v={{ en: "Case", zh: "表壳" }} />
-                    </dt>
-                    <dd>
-                      <T v={w.case} />
-                    </dd>
-                  </div>
-                </dl>
-                <p className="piece-note">
-                  <T v={w.note} />
-                </p>
-              </div>
-            </article>
-          ))}
-        </div>
+                    </span>
+                    <span className="ix-arrow" aria-hidden="true">
+                      →
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </ViewSwitch>
+
         <p className="fine-print centered">
           <T v={collectionIntro.footnote} />
         </p>

@@ -4,6 +4,9 @@ import { chapters, timeline } from "@/content/experiences";
 import { nav, site } from "@/content/site";
 import { publicOnly } from "@/content/types";
 import { collection } from "@/content/watches";
+import { DecoRule, Sunburst } from "./Deco";
+import { GuillocheDial } from "./Illustrations";
+import LiveDial from "./LiveDial";
 import { T, dateBi } from "./T";
 
 /** Counts come straight from the content files — never typed in by hand. */
@@ -19,15 +22,29 @@ export default function Footer() {
   const c = archiveCounts();
   return (
     <footer className="site-footer">
+      <Sunburst className="footer-sun" rays={56} />
+      <div className="footer-top">
+        <p className="footer-wordmark" aria-label={site.mark}>
+          {site.mark}
+        </p>
+        <DecoRule className="deco-rule footer-rule" />
+        <p className="footer-tag">
+          <T v={{ en: "Horology · Entrepreneurship · Art", zh: "制表 · 创业 · 艺术" }} />
+        </p>
+      </div>
+
       <div className="footer-inner">
         <div className="footer-brand">
-          <p className="mark mark-lg">{site.mark}</p>
-          <p className="footer-tag">Horology · Experiences · Art</p>
+          <div className="footer-dial">
+            <LiveDial>
+              <GuillocheDial className="dial" />
+            </LiveDial>
+          </div>
           <p className="footer-note">
             <T
               v={{
-                en: "A personal archive of interests, experiences and creative work.",
-                zh: "一个记录兴趣、经历与创作的个人档案。",
+                en: "A personal archive of time, objects and experiences. The dial shows your local time.",
+                zh: "一个关于时间、物件与经历的个人档案。表盘显示的是你此刻的本地时间。",
               }}
             />
           </p>
@@ -42,6 +59,11 @@ export default function Footer() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link href="/credits">
+                <span className="nav-num">—</span> <T v={{ en: "Picture credits", zh: "图片来源" }} />
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -50,25 +72,27 @@ export default function Footer() {
             <dt>
               <T v={{ en: "Watches", zh: "腕表收藏" }} />
             </dt>
-            <dd>{c.watches}</dd>
+            <dd data-count={c.watches}>{c.watches}</dd>
           </div>
           <div>
             <dt>
               <T v={{ en: "Experiences", zh: "经历记录" }} />
             </dt>
-            <dd>{c.experiences}</dd>
+            <dd data-count={c.experiences}>{c.experiences}</dd>
           </div>
           <div>
             <dt>
               <T v={{ en: "Artworks", zh: "艺术作品" }} />
             </dt>
-            <dd>{c.artworks}</dd>
+            <dd data-count={c.artworks}>{c.artworks}</dd>
           </div>
         </dl>
       </div>
 
       <div className="footer-base">
-        <span>© 2026 {site.name}</span>
+        <span>
+          © 2026 {site.name} · <T v={{ en: "Barcelona", zh: "巴塞罗那" }} />
+        </span>
         <span>
           <T v={{ en: "Last updated", zh: "最后更新" }} /> <T v={dateBi(site.lastUpdated)} />
         </span>

@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Kicker, T } from "@/components/T";
+import { artworks } from "@/content/artwork";
+import { blurFor } from "@/content/placeholders";
 import { about } from "@/content/site";
+import { publicOnly } from "@/content/types";
 
 export const metadata: Metadata = {
   title: "About",
@@ -9,6 +13,9 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
+  const deskWork = publicOnly(artworks).find((a) => a.slug === "watch-and-strap-design");
+  const desk = deskWork?.images?.[0];
+
   return (
     <>
       <header className="page-head wrap">
@@ -18,7 +25,7 @@ export default function AboutPage() {
         </h1>
       </header>
 
-      <section className="wrap about-intro">
+      <section className="wrap about-intro band-ivory">
         <div className="prose prose-lg">
           {about.intro.map((p, i) => (
             <p key={i}>
@@ -28,7 +35,9 @@ export default function AboutPage() {
         </div>
         <aside className="index-card" aria-label="Profile">
           <p className="index-card-head">
-            <span>Archive card</span>
+            <span>
+              <T v={{ en: "Archive card", zh: "档案卡" }} />
+            </span>
             <span className="archive-id">P-001</span>
           </p>
           <dl>
@@ -64,7 +73,26 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="wrap section">
+      <section className="wrap section quote-plate band-ivory">
+        {desk ? (
+          <Link href={`/artwork#${deskWork?.slug}`} className="quote-plate-image">
+            <span className="img-frame">
+              <Image
+                src={desk.src}
+                width={desk.width}
+                height={desk.height}
+                alt={desk.alt}
+                sizes="(max-width: 900px) 100vw, 40vw"
+                placeholder={blurFor(desk.src) ? "blur" : "empty"}
+                blurDataURL={blurFor(desk.src)}
+              />
+            </span>
+            <span className="caption">
+              <span className="caption-num">{deskWork?.id}</span>
+              <T v={{ en: "At the desk — a watch and strap design study", zh: "书桌上——一张腕表与表带设计稿" }} />
+            </span>
+          </Link>
+        ) : null}
         <figure className="pull-quote">
           <blockquote>“{about.quote.text}”</blockquote>
           <figcaption>
@@ -94,7 +122,7 @@ export default function AboutPage() {
         </ol>
       </section>
 
-      <section className="wrap section split-2">
+      <section className="wrap section split-2 band-ivory">
         <div>
           <Kicker num="C" v={about.styleTitle} />
           <p className="prose-p">
@@ -115,7 +143,7 @@ export default function AboutPage() {
 
       <nav className="wrap next-link" aria-label="Next section">
         <Link href="/watches" className="text-link">
-          <span className="nav-num">02</span> <T v={{ en: "Continue to Watches & Horology", zh: "继续：腕表与制表" }} /> →
+          <span className="nav-num">02</span> <T v={{ en: "Continue to The Collection", zh: "继续：腕表收藏" }} /> →
         </Link>
       </nav>
     </>

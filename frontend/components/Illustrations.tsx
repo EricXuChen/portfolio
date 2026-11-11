@@ -61,7 +61,7 @@ export function GuillocheDial({ className }: { className?: string }) {
       className={className}
       viewBox="0 0 600 600"
       role="img"
-      aria-label="Line drawing of a guilloché watch dial with Breguet-style hands"
+      aria-label="Line drawing of a guilloché watch dial with pomme hands"
     >
       <defs>
         <clipPath id="gd-field">
@@ -138,16 +138,16 @@ export function GuillocheDial({ className }: { className?: string }) {
           return <line key={i} x1={f(x1)} y1={f(y1)} x2={f(x2)} y2={f(y2)} strokeWidth={0.8} />;
         })}
       </g>
-      <g className="ill-hand-seconds" transform={`rotate(208 ${c} ${c + 112})`}>
+      <g className="ill-hand-seconds" data-hand="seconds" style={{ transform: "rotate(208deg)" }}>
         <line x1={c} y1={c + 120} x2={c} y2={c + 112 - 42} />
         <circle cx={c} cy={c + 112} r={2.6} />
       </g>
 
-      {/* hands at 10:09 */}
-      <g className="ill-hand" transform={`rotate(-55 ${c} ${c})`}>
+      {/* hands rest at 10:09; on the home page LiveDial sets them to the visitor's time */}
+      <g className="ill-hand" data-hand="hour" style={{ transform: "rotate(-55deg)" }}>
         {breguetHand(c, c, 150, 9, 4.2)}
       </g>
-      <g className="ill-hand" transform={`rotate(54 ${c} ${c})`}>
+      <g className="ill-hand" data-hand="minute" style={{ transform: "rotate(54deg)" }}>
         {breguetHand(c, c, 228, 8, 3.4)}
       </g>
       <circle cx={c} cy={c} r={7} className="ill-pinion" />
