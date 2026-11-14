@@ -1,10 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Kicker, T } from "@/components/T";
+import Scene from "@/components/Scene";
+import { PAGE_SCENES } from "@/content/scenes";
 
 export default function NotFound() {
   return (
-    <section className="page-head wrap not-found">
+    <section className="page-head wrap not-found has-scene">
+      <Scene use={PAGE_SCENES.notFound.page} eager />
       <Image className="nf-watch" src="/objects/gold-pocket-watch.png" width={619} height={860} alt="" aria-hidden="true" sizes="260px" />
       <Kicker num="404" v={{ en: "Not in the archive", zh: "档案中没有这一页" }} />
       <h1 className="display">

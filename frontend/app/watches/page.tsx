@@ -7,6 +7,10 @@ import { blurFor } from "@/content/placeholders";
 import { publicOnly } from "@/content/types";
 import { collection, collectionIntro, pieceHref } from "@/content/watches";
 import PageMast from "@/components/PageMast";
+import Scene from "@/components/Scene";
+import { PAGE_SCENES } from "@/content/scenes";
+import Interlude from "@/components/Interlude";
+import { ERAS, eraHref } from "@/content/pages";
 
 export const metadata: Metadata = {
   title: "The Collection",
@@ -21,6 +25,7 @@ export default function CollectionPage() {
     <>
       <PageMast
         word="OBJECTS."
+        scene={PAGE_SCENES.watches.mast}
         layout="split"
         metal
         num="II"
@@ -36,7 +41,19 @@ export default function CollectionPage() {
         </p>
       </PageMast>
 
-      <section className="wrap section exhibit" aria-label="Watches">
+      <nav className="wrap era-strip" aria-label="By era">
+        <span className="mono-note">
+          <T v={{ en: "By era", zh: "按年代" }} />
+        </span>
+        {ERAS.map((e) => (
+          <Link key={e.slug} href={eraHref(e.slug)} className="era-strip-link">
+            <T v={e.title} />
+          </Link>
+        ))}
+      </nav>
+
+      <section className="wrap section exhibit has-scene" aria-label="Watches">
+        <Scene use={PAGE_SCENES.watches.exhibit} />
         <ViewSwitch>
           {/* Gallery */}
           <div className="collection-grid">
@@ -164,6 +181,8 @@ export default function CollectionPage() {
           <T v={collectionIntro.footnote} />
         </p>
       </section>
+
+      <Interlude align="left" />
 
       <nav className="wrap next-link" aria-label="Next section">
         <Link href="/experiences" className="text-link">

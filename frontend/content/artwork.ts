@@ -64,6 +64,16 @@ export type Artwork = ArchiveMeta & {
   inspiration?: Bi;
   process?: Bi;
   reflection?: Bi;
+  /** What is on the sheet — described from the work itself. */
+  look?: Bi;
+  /** How it is drawn or painted — what the marks show. */
+  technique?: Bi;
+  /** Small things worth a closer look. */
+  details?: Bi[];
+  /** How the plate page hangs the work (chosen automatically when missing). */
+  hang?: PlateHang;
+  /** Where the magnifying loupe looks on a diptych plate, e.g. "35% 40%". */
+  detailPos?: string;
   symbols?: Bi[];
   featured?: boolean;
 };
@@ -569,6 +579,440 @@ export const artworks: Artwork[] = [
       zh: "《巴黎歌剧院·大阶梯》（A-016）的第一张铅笔草稿。",
     },
   },
+  {
+    id: "A-026",
+    updated: "2026-11-13",
+    visibility: "public",
+    slug: "bird-on-a-branch",
+    title: "Bird on a Branch",
+    titleZh: "枝上的鸟",
+    year: "2024",
+    medium: { en: "Graphite and white on toned paper", zh: "铅笔与白色提亮，色纸" },
+    kind: "pencil",
+    images: [img("/artworks/a-026-bird-on-a-branch.jpg", 1030, 1600, "Bird on a Branch — a small bird hanging upside down from a thin stem, in graphite on tan paper")],
+    note: {
+      en: "A small bird hanging upside down from a thin stem, in graphite on toned paper.",
+      zh: "一只倒挂在细枝上的小鸟，铅笔画在色纸上。",
+    },
+    look: {
+      en: "A small bird hangs head-down from a thin, upright stem, its beak pointing at the floor and its eye turned towards us. Everything else on the tan sheet is left empty, so the bird and the stem carry the whole page.",
+      zh: "一只小鸟头朝下挂在一根细细的竖枝上，喙指向地面，眼睛朝着我们。棕色纸面上其余的地方全部留白，整张纸只靠鸟和枝撑起来。",
+    },
+    technique: {
+      en: "Soft graphite follows the direction of the feathers in short, overlapping strokes. A few touches of white lift the beak, the eye-ring and the edge of the wing off the toned paper, which does the work of the middle tone.",
+      zh: "软铅顺着羽毛的方向，用短而重叠的笔触画出来。几处白色提亮了喙、眼圈和翅膀的边缘；色纸本身就是中间调。",
+    },
+    details: [
+      { en: "The feet locked around the stem — the whole weight hangs from one small grip.", zh: "缠在枝上的脚——全身的重量都挂在这一小处抓握上。" },
+      { en: "The single highlight on the tip of the beak.", zh: "喙尖上唯一的一点高光。" },
+    ],
+  },
+  {
+    id: "A-027",
+    updated: "2026-11-13",
+    visibility: "public",
+    slug: "paper-boat",
+    title: "Paper Boat",
+    titleZh: "纸船",
+    year: "2024",
+    medium: { en: "Graphite", zh: "铅笔" },
+    kind: "pencil",
+    images: [img("/artworks/a-027-paper-boat.jpg", 1600, 1138, "Paper Boat — a folded paper boat drawn in graphite, resting on a single line")],
+    note: {
+      en: "A folded paper boat, drawn in tone rather than outline.",
+      zh: "一只折纸船，用明暗而不是轮廓画出来。",
+    },
+    look: {
+      en: "A folded paper boat seen from the side, resting on one long line that crosses the whole sheet. Nothing else is drawn — no water, no background — so the fold itself becomes the subject.",
+      zh: "一只从侧面看的折纸船，停在一条横贯整张纸的长线上。除此之外什么也没画——没有水，也没有背景——折痕本身成了主题。",
+    },
+    technique: {
+      en: "Every face of the fold gets its own value: light on the outer sails, a darker grey inside the hull, the deepest tone where two planes meet. The shape reads almost entirely from these changes of tone, with very little outline.",
+      zh: "折纸的每一个面都有自己的明度：外侧的帆最亮，船身内部更灰，两个面相交的地方最深。形体几乎完全靠这些明暗变化读出来，轮廓线用得很少。",
+    },
+    details: [
+      { en: "The central sail, where three planes meet in a single point.", zh: "中间那面帆——三个面在一个点上相交。" },
+    ],
+  },
+  {
+    id: "A-028",
+    updated: "2026-11-13",
+    visibility: "public",
+    slug: "penguin",
+    title: "Penguin",
+    titleZh: "小企鹅",
+    year: "2024",
+    medium: { en: "Coloured pencil and watercolour", zh: "彩铅与水彩" },
+    kind: "colour",
+    images: [img("/artworks/a-028-penguin.jpg", 1516, 1600, "Penguin — a round, toy-like penguin in orange and yellow against a deep blue watercolour wash")],
+    note: {
+      en: "A round, toy-like penguin against a deep blue wash.",
+      zh: "一只圆滚滚、像玩具一样的企鹅，背景是深蓝色的水彩。",
+    },
+    look: {
+      en: "A round, toy-like penguin with an orange body, a cream face, a yellow belly and two small red feet, standing in front of a deep blue background that breaks up into white towards the edges of the paper.",
+      zh: "一只圆滚滚、像玩具一样的企鹅：橙色的身体，奶白色的脸，黄色的肚子和两只小红脚，站在深蓝色的背景前；蓝色到了纸边就碎成了白色。",
+    },
+    technique: {
+      en: "Two speeds on one sheet. The blue is loose watercolour, left to bloom and fade; the penguin is built up slowly in coloured pencil, with the strokes still visible on the cheeks and wings.",
+      zh: "一张纸上的两种速度：蓝色是松动的水彩，任它晕开、淡出；企鹅则用彩铅慢慢叠出来，脸颊和翅膀上还看得见笔触。",
+    },
+    details: [
+      { en: "The two black eyes, each with one small spot of white left on purpose.", zh: "两只黑眼睛，各留了一小点白。" },
+      { en: "The pink nose — the warmest colour on the sheet.", zh: "粉红色的鼻子——整张画上最暖的颜色。" },
+    ],
+  },
+  {
+    id: "A-029",
+    updated: "2026-11-13",
+    visibility: "public",
+    slug: "squirrel-on-a-birch",
+    title: "Squirrel on a Birch",
+    titleZh: "白桦上的松鼠",
+    year: "2024",
+    medium: { en: "Soft pastel", zh: "色粉" },
+    kind: "colour",
+    images: [img("/artworks/a-029-squirrel.jpg", 1186, 1600, "Squirrel on a Birch — a squirrel climbing head-first down a pale birch trunk, against a soft green background")],
+    note: {
+      en: "A squirrel coming head-first down a birch trunk, against soft greens.",
+      zh: "一只头朝下从白桦树干上爬下来的松鼠，背景是柔和的绿色。",
+    },
+    look: {
+      en: "A squirrel comes down a pale birch trunk head-first, its bushy black tail curled above it and its reddish body pressed against the bark. Behind it the forest is only blurred patches of green, like a background out of focus.",
+      zh: "一只松鼠头朝下从苍白的白桦树干上下来，蓬松的黑尾巴卷在上方，红褐色的身体贴着树皮。身后的树林只是一团团模糊的绿，像没有对焦的背景。",
+    },
+    technique: {
+      en: "The background is rubbed and blended so it stays soft; the squirrel and the bark are drawn with short, sharp strokes of pastel on top, so they come forward. The grain of the paper shows through the light areas of the trunk.",
+      zh: "背景是擦揉、混合出来的，所以一直保持柔和；松鼠和树皮则用短而利落的色粉笔触画在上面，于是向前跳出来。树干亮部还能透出纸的纹理。",
+    },
+    details: [
+      { en: "The small front paws gripping the bark.", zh: "抓着树皮的两只小前爪。" },
+      { en: "The dark marks on the birch, drawn one by one.", zh: "白桦上的深色斑纹，一笔一笔画出来的。" },
+    ],
+  },
+  {
+    id: "A-030",
+    updated: "2026-11-13",
+    visibility: "public",
+    slug: "galloping-horse",
+    title: "Galloping Horse",
+    titleZh: "奔马",
+    year: "2024",
+    medium: { en: "Graphite", zh: "铅笔" },
+    kind: "pencil",
+    images: [img("/artworks/a-030-galloping-horse.jpg", 1600, 1154, "Galloping Horse — a dark horse at full gallop through long grass, in graphite")],
+    note: {
+      en: "A dark horse at full gallop through long grass.",
+      zh: "一匹在长草里全速奔跑的深色马。",
+    },
+    look: {
+      en: "A dark horse runs at full gallop across a field of long grass, mane and tail streaming back, two hooves off the ground. A soft mass of trees closes the right side; the sky is a pale, misty grey.",
+      zh: "一匹深色的马在长草地上全速奔跑，鬃毛和尾巴向后飘，两只蹄子离地。右边是一团柔和的树丛，天空是淡淡的、雾一样的灰。",
+    },
+    technique: {
+      en: "Three kinds of mark. Smudged graphite for the misty background; blended tone with sharp, lifted highlights for the muscles of the horse; and quick vertical strokes, almost scratches, for the grass.",
+      zh: "三种笔触：雾气般的背景用擦抹的铅笔；马的肌肉用混合的明暗加上擦出来的锐利高光；草则用快速的竖向短线，几乎像是刮出来的。",
+    },
+    details: [
+      { en: "The light running along the neck and the shoulder.", zh: "沿着脖子和肩膀的一道光。" },
+      { en: "The tail, drawn as movement more than as hair.", zh: "尾巴——画的是运动，而不是毛发。" },
+    ],
+  },
+  {
+    id: "A-031",
+    updated: "2026-11-13",
+    visibility: "public",
+    slug: "the-red-cart",
+    title: "The Red Cart",
+    titleZh: "红色小车",
+    year: "2025",
+    medium: { en: "Pencil and watercolour", zh: "铅笔与水彩" },
+    kind: "colour",
+    images: [img("/artworks/a-031-red-cart.jpg", 1511, 1600, "The Red Cart — a cartoon cat lounging on a long red cart on four wheels, in pencil and watercolour")],
+    note: {
+      en: "A cartoon cat lounging on a long red cart — the cart in colour, the cat still in pencil.",
+      zh: "一只卡通猫躺在一辆长长的红色小车上——小车上了色，猫还是铅笔线。",
+    },
+    look: {
+      en: "A cartoon cat stretches out on a long red cart with four black wheels, one paw on the handle, eyes half closed behind a pair of glasses. The cart is painted; the cat is still in pencil line.",
+      zh: "一只卡通猫舒展地躺在一辆长长的红色小车上，四个黑轮子，一只爪子搭在把手上，眼镜后面的眼睛半闭着。小车已经上色，猫还停留在铅笔线稿。",
+    },
+    technique: {
+      en: "The watercolour is kept to a single colour — the red of the cart — with black for the wheels, so the light pencil drawing of the cat stays on top and the eye goes straight to the cart.",
+      zh: "水彩只用了一种颜色——小车的红——再加上轮子的黑，于是猫的铅笔线稿轻轻浮在上面，视线会直接落到小车上。",
+    },
+    details: [
+      { en: "The wheels, each with a small highlight left in white.", zh: "每个轮子上都留了一点白色高光。" },
+    ],
+  },
+  {
+    id: "A-032",
+    updated: "2026-11-13",
+    visibility: "public",
+    slug: "a-cats-day",
+    title: "A Cat’s Day",
+    titleZh: "一只猫的一天",
+    year: "2025",
+    medium: { en: "Watercolour and pencil", zh: "水彩与铅笔" },
+    kind: "colour",
+    images: [img("/artworks/a-032-a-cats-day.jpg", 1600, 1290, "A Cat’s Day — four scenes of the same cartoon cat on a yellow ground: a double bass, a red cart, a pink cape and a frying pan")],
+    note: {
+      en: "One sheet, four scenes of the same cartoon cat, on a bright yellow ground.",
+      zh: "一张纸，同一只卡通猫的四个场景，铺在明亮的黄色上。",
+    },
+    look: {
+      en: "The same grey cartoon cat appears four times on one yellow sheet: playing a double bass, riding the red cart, flying under a pink cape, and — in a chef’s hat — stirring a frying pan over a chequered floor.",
+      zh: "同一只灰色的卡通猫在一张黄色的纸上出现了四次：拉低音提琴，骑着红色小车，披着粉色披风飞，还有戴着厨师帽、在格子地面上搅一口平底锅。",
+    },
+    technique: {
+      en: "A flat yellow wash holds the separate scenes together as one page. Each figure is drawn in pencil, then tinted with greys and a few reds, and dated in small handwriting beside it.",
+      zh: "一层平涂的黄色把分开的场景统一成一页。每个形象先用铅笔画好，再染上灰色和几处红色，旁边用小字写了日期。",
+    },
+    details: [
+      { en: "The red cart from The Red Cart (A-031) appears again here.", zh: "《红色小车》（A-031）里的那辆小车，在这里又出现了。" },
+      { en: "The red-and-white chequered floor — the only pattern on the sheet.", zh: "红白格子的地面——整张纸上唯一的图案。" },
+    ],
+  },
+  {
+    id: "A-033",
+    updated: "2026-11-13",
+    visibility: "public",
+    slug: "balloon-dog",
+    title: "Balloon Dog",
+    titleZh: "气球狗",
+    year: "2025",
+    medium: { en: "Black and grey on toned paper", zh: "色纸上的黑与灰" },
+    kind: "ink",
+    images: [img("/artworks/a-033-balloon-dog.jpg", 1201, 1600, "Balloon Dog — a mirror-polished balloon dog in black, grey and white on a beige sheet")],
+    note: {
+      en: "A mirror-polished balloon dog, drawn as reflections.",
+      zh: "一只镜面抛光的气球狗，用反光画出来。",
+    },
+    look: {
+      en: "A balloon dog made of mirror-polished metal stands in profile in the middle of an otherwise empty sheet — snout, ears, legs and tail all twisted from the same long balloon.",
+      zh: "一只镜面抛光的金属气球狗以侧面站在空白纸面的正中——鼻子、耳朵、腿和尾巴，全都由同一根长气球拧出来。",
+    },
+    technique: {
+      en: "Chrome has no colour of its own, so it is drawn only as reflection: hard black shapes, bright untouched paper for the highlights, and soft greys where each curve turns away from the light.",
+      zh: "镜面金属自己没有颜色，所以只能画它的反射：坚硬的黑色形状，留白的纸面作高光，每一段曲面转离光线的地方用柔和的灰。",
+    },
+    details: [
+      { en: "The narrow white line running along the top of every balloon.", zh: "每一节气球顶部都有一道细细的白线。" },
+    ],
+  },
+  {
+    id: "A-034",
+    updated: "2026-11-13",
+    visibility: "public",
+    slug: "sleeping-cat-and-red-ball",
+    title: "Sleeping Cat and Red Ball",
+    titleZh: "睡猫与红球",
+    year: "2025",
+    medium: { en: "Watercolour", zh: "水彩" },
+    kind: "colour",
+    images: [img("/artworks/a-034-sleeping-cat.jpg", 1252, 1600, "Sleeping Cat and Red Ball — a grey and white cat curled up on an orange-brown ground beside a red ball")],
+    note: {
+      en: "A cat curled up asleep, a red ball beside it.",
+      zh: "一只蜷着睡觉的猫，旁边一只红球。",
+    },
+    look: {
+      en: "A grey-and-white cat lies curled up asleep on a warm orange-brown ground, seen from above. A red ball sits just below it, the only strong colour in the picture.",
+      zh: "一只灰白相间的猫蜷着睡在温暖的橙褐色底子上，从上往下看。它下方有一只红球，是整幅画里唯一浓烈的颜色。",
+    },
+    technique: {
+      en: "Watercolour on rough paper: the grain shows through every wash, and the colours are allowed to run into each other at the edges, so the cat seems to sink into the ground around it.",
+      zh: "粗纹纸上的水彩：每一层颜色下面都透出纸纹，颜色在边缘相互渗开，于是猫好像陷进了周围的底色里。",
+    },
+    details: [
+      { en: "The tucked-in paws at the front of the curl.", zh: "蜷起来时收在前面的爪子。" },
+    ],
+  },
+  {
+    id: "A-035",
+    updated: "2026-11-13",
+    visibility: "public",
+    slug: "staircase-from-below",
+    title: "Staircase, from Below",
+    titleZh: "仰望阶梯",
+    year: "2025",
+    medium: { en: "Ink wash", zh: "水墨淡彩" },
+    kind: "ink",
+    images: [img("/artworks/a-035-staircase-from-below.jpg", 1265, 1600, "Staircase, from Below — a steep view up a grand staircase with arches, in grey ink wash")],
+    note: {
+      en: "A grand staircase seen from below, in layers of grey wash.",
+      zh: "从下往上看的一座大阶梯，用一层层灰色淡墨画成。",
+    },
+    look: {
+      en: "A staircase seen from below at a steep angle: flights and balustrades cross the sheet diagonally, and a row of arches tilts up towards a curved opening at the top.",
+      zh: "从下方以很陡的角度看一座阶梯：梯段和栏杆斜着穿过整张纸，一排拱门向上倾斜，通向顶端一个弧形的开口。",
+    },
+    technique: {
+      en: "Layered grey washes do the work of light and shadow — the darkest tones sit under the flights, the lightest on the arches — over perspective lines that pull everything towards the top of the page.",
+      zh: "一层层灰色的淡墨承担了光和影：最深的调子在梯段下面，最浅的在拱门上；底下是把一切拉向画面顶端的透视线。",
+    },
+    details: [
+      { en: "The balusters, each one a single stroke of the brush.", zh: "栏杆柱，每一根都是一笔。" },
+    ],
+  },
+  {
+    id: "A-036",
+    updated: "2026-11-13",
+    visibility: "public",
+    status: "draft",
+    slug: "baptism-study",
+    title: "The Baptism, a Study",
+    titleZh: "洗礼（习作）",
+    year: "2025",
+    medium: { en: "Pencil", zh: "铅笔" },
+    kind: "pencil",
+    images: [img("/artworks/a-036-baptism-study.jpg", 1248, 1565, "The Baptism, a Study — a pencil study of a haloed figure pouring water over another figure’s head, with a bird in a circle above")],
+    note: {
+      en: "A crowded figure scene in pencil: water poured over a head, a halo, a bird above.",
+      zh: "一幅人物众多的铅笔习作：水从头顶浇下，一圈光环，上方一只鸟。",
+    },
+    look: {
+      en: "A tall figure with a halo holds a bowl above the head of a smaller figure, as if pouring water over him. Other figures crowd in from the left, and at the top a small bird sits inside a circle of light.",
+      zh: "一个头顶光环的高大人物举着一只碗，停在另一个人头顶上方，像是要往下浇水。左边挤进来更多的人，画面上方一只小鸟停在一圈光里。",
+    },
+    technique: {
+      en: "Loose, searching lines — some figures redrawn two or three times — with tone pushed only into the faces, the bowl and the folds of the robes. The rest is left as construction.",
+      zh: "松散、试探性的线条——有些人物重画了两三遍——只在脸、碗和衣褶里加重了明暗，其余部分保留为结构线。",
+    },
+    details: [
+      { en: "The dark bowl — the heaviest tone on the sheet.", zh: "那只深色的碗——整张纸上最重的调子。" },
+    ],
+  },
+  {
+    id: "A-037",
+    updated: "2026-11-13",
+    visibility: "public",
+    status: "draft",
+    slug: "arcade-in-perspective",
+    title: "Arcade in One-Point Perspective",
+    titleZh: "单点透视的拱廊",
+    year: "2025",
+    medium: { en: "Pencil", zh: "铅笔" },
+    kind: "pencil",
+    images: [img("/artworks/a-037-arcade-perspective.jpg", 1088, 1600, "Arcade in One-Point Perspective — a long covered arcade with shopfronts and a glazed roof, all lines running to one point")],
+    note: {
+      en: "A long covered arcade in one-point perspective, construction lines still showing.",
+      zh: "一条用单点透视画的长拱廊，结构线都还在。",
+    },
+    look: {
+      en: "A long covered arcade: shopfronts down both sides, a glazed vault overhead and a tall window at the far end. Every line in the drawing runs to a single point under that window.",
+      zh: "一条长长的有顶拱廊：两边是店面，头顶是玻璃拱顶，尽头是一扇高窗。画里的每一条线都汇向那扇窗下的同一个点。",
+    },
+    technique: {
+      en: "An exercise in construction: the vanishing point is fixed first, the floor is mapped out as a grid, and only then do the windows, signs and arches go in. The guide lines are left visible.",
+      zh: "一次关于结构的练习：先定好消失点，把地面画成网格，然后才加上窗户、招牌和拱。辅助线都保留了下来。",
+    },
+  },
+  {
+    id: "A-038",
+    updated: "2026-11-13",
+    visibility: "public",
+    status: "draft",
+    slug: "in-the-studio",
+    title: "In the Studio",
+    titleZh: "画室里",
+    year: "2025",
+    medium: { en: "Pencil", zh: "铅笔" },
+    kind: "pencil",
+    images: [img("/artworks/a-038-in-the-studio.jpg", 1525, 1295, "In the Studio — two men seated by a tall curtained window, beside an easel with a plaster bust, in pencil")],
+    note: {
+      en: "Two men talking by a tall window, beside an easel and a plaster bust.",
+      zh: "两个人坐在高窗边谈话，旁边是画架和一尊石膏像。",
+    },
+    look: {
+      en: "Two men sit close together, talking, beside a tall window hung with heavy curtains. On the left an easel holds a plaster bust; a lamp hangs from the ceiling and a jug stands on the floor.",
+      zh: "两个男人挨着坐在一起谈话，身旁是挂着厚窗帘的高窗。左边的画架上放着一尊石膏像，天花板上垂下一盏灯，地上立着一只壶。",
+    },
+    technique: {
+      en: "A quick tonal sketch: diagonal hatching blocks in the curtains and the dark corners, and the two figures are found with a few searching lines over them.",
+      zh: "一张快速的明暗速写：斜向排线铺出窗帘和暗角，两个人物则用几条试探的线在上面找出来。",
+    },
+    details: [
+      { en: "The plaster bust on the easel, watching the two of them.", zh: "画架上那尊石膏像，像在看着他们两个。" },
+    ],
+  },
+  {
+    id: "A-039",
+    updated: "2026-11-13",
+    visibility: "public",
+    slug: "the-chess-players",
+    title: "The Chess Players",
+    titleZh: "下棋的人",
+    year: "2025",
+    medium: { en: "Pen and ink", zh: "钢笔" },
+    kind: "ink",
+    images: [img("/artworks/a-039-chess-players.jpg", 685, 900, "The Chess Players — two men thinking over a chessboard, drawn in cross-hatched pen")],
+    note: {
+      en: "Two men over a chessboard, both caught in the middle of thinking.",
+      zh: "两个人隔着一张棋盘，都停在思考的那一刻。",
+    },
+    look: {
+      en: "Two men face each other across a chessboard. One leans his head on his hand and looks down at the pieces; the other rests his chin on his fist and looks back at him. Nobody is moving.",
+      zh: "两个人隔着一张棋盘相对而坐。一个用手撑着头，低头看着棋子；另一个把下巴搁在拳头上，回头看着他。谁都没有动。",
+    },
+    technique: {
+      en: "Everything is built from cross-hatching: tight nets of lines for the shadows on the jackets and the faces, open paper for the light falling on the board between them.",
+      zh: "一切都由交叉排线构成：外套和脸上的阴影是密密的线网，两人之间棋盘上的光则是留白的纸。",
+    },
+    details: [
+      { en: "The two hands — one on a forehead, one under a chin.", zh: "两只手——一只扶着额头，一只托着下巴。" },
+    ],
+  },
+  {
+    id: "A-040",
+    updated: "2026-11-13",
+    visibility: "public",
+    slug: "tall-window-and-clock",
+    title: "Tall Window and Clock",
+    titleZh: "高窗与时钟",
+    year: "2025",
+    medium: { en: "Pencil", zh: "铅笔" },
+    kind: "pencil",
+    images: [img("/artworks/a-040-tall-window.jpg", 400, 1245, "Tall Window and Clock — a narrow vertical drawing of arched windows with a clock face above and a desk below")],
+    note: {
+      en: "A narrow, tall panel: arched windows, a clock face above them, a desk below.",
+      zh: "一块又窄又高的画面：拱形的窗，窗上一只钟面，窗下一张书桌。",
+    },
+    look: {
+      en: "A very tall, narrow panel. A clock face with its numerals sits high above two arched windows; through the glass a spire rises in the distance, and in front of the windows a desk holds an open book and a small cup.",
+      zh: "一块非常高、非常窄的画面。一只带数字的钟面高高地挂在两扇拱窗之上；透过玻璃，远处升起一座尖塔；窗前的书桌上放着一本打开的书和一只小杯子。",
+    },
+    technique: {
+      en: "The narrow format does the composing: the eye climbs from the desk to the windows to the clock. Fine vertical lines carry the window frames, and the floor is darkened to hold the bottom of the panel.",
+      zh: "窄长的画幅本身就在构图：视线从书桌爬到窗户，再爬到钟。细长的竖线撑起窗框，地面压暗，稳住画面的底部。",
+    },
+    details: [
+      { en: "The clock face at the top — numerals set around it one by one.", zh: "顶上的钟面——数字一个一个排在一圈。" },
+    ],
+  },
+  {
+    id: "A-041",
+    updated: "2026-11-13",
+    visibility: "public",
+    slug: "barcelona-watercolour-notes",
+    title: "Barcelona, Watercolour Notes",
+    titleZh: "巴塞罗那水彩速记",
+    year: "2026",
+    medium: { en: "Watercolour and ink", zh: "水彩与墨线" },
+    kind: "colour",
+    images: [img("/artworks/a-041-barcelona-notes.jpg", 1600, 1465, "Barcelona, Watercolour Notes — rooftops, towers and a round red-and-green form under a pale sky, with the word Barcelona written in the corner")],
+    note: {
+      en: "Rooftops and towers in quick ink, washed over with colour, and the city’s name in the corner.",
+      zh: "用快速墨线画下的屋顶和塔楼，上面铺了颜色，角落里写着城市的名字。",
+    },
+    look: {
+      en: "Rooftops, towers and a line of hills under a pale sky; in the foreground, a round red-and-green form like a wheel or a bench. In the top corner the word “Barcelona” is written in a looping hand.",
+      zh: "淡淡的天空下是屋顶、塔楼和一道山线；前景里有一个红绿相间的圆形，像轮子，也像一张长椅。左上角用花体写着 “Barcelona”。",
+    },
+    technique: {
+      en: "Ink first, fast and loose; then washes of colour dropped in over it without staying inside the lines, so the drawing and the colour each keep their own speed.",
+      zh: "先用墨线，又快又松；再把颜色铺上去，不刻意待在线里——线和色各自保留自己的速度。",
+    },
+  },
 ];
 
 /** Every work also has a plate of its own: /artwork/the-night-and-time … */
@@ -577,6 +1021,12 @@ export function artHref(slug: string) {
 }
 
 const ROMAN_TABLE: [number, string][] = [
+  [1000, "M"],
+  [900, "CM"],
+  [500, "D"],
+  [400, "CD"],
+  [100, "C"],
+  [90, "XC"],
   [50, "L"],
   [40, "XL"],
   [10, "X"],
@@ -596,4 +1046,55 @@ export function roman(n: number) {
     }
   }
   return out;
+}
+
+/* ------------------------------------------------------------------ */
+/*  The studio's other rooms: by medium, by year, and the sketchbook.  */
+/* ------------------------------------------------------------------ */
+export const SERIES = {
+  ink: {
+    word: "INK.",
+    title: { en: "Works in ink", zh: "墨" } as Bi,
+    lede: { en: "Everything drawn in ink — pen, brush and wash, from quick notes to finished sheets.", zh: "所有用墨完成的作品——钢笔、毛笔和淡墨，从快速笔记到完成的画。" } as Bi,
+  },
+  pencil: {
+    word: "GRAPHITE.",
+    title: { en: "Works in pencil", zh: "铅笔" } as Bi,
+    lede: { en: "Graphite and pencil: studies of tone, of perspective and of the figure.", zh: "铅笔与石墨：关于明暗、透视和人物的练习。" } as Bi,
+  },
+  colour: {
+    word: "COLOUR.",
+    title: { en: "Works in colour", zh: "色彩" } as Bi,
+    lede: { en: "Watercolour, pastel, coloured pencil and paint — the works where colour carries the picture.", zh: "水彩、色粉、彩铅和颜料——由颜色撑起画面的作品。" } as Bi,
+  },
+} satisfies Record<ArtKind, { word: string; title: Bi; lede: Bi }>;
+
+export const seriesHref = (kind: ArtKind) => `/artwork/series/${kind}`;
+export const yearHref = (year: string) => `/artwork/year/${year}`;
+export const SKETCHBOOK_HREF = "/artwork/sketchbook";
+
+export const sketchbookIntro = {
+  title: { en: "The sketchbook", zh: "速写本" } as Bi,
+  lede: { en: "Sketches, studies and works still in progress — the construction lines left in.", zh: "草图、习作和还在进行中的作品——结构线都留着。" } as Bi,
+};
+
+/** Every year that has at least one dated work, oldest first. */
+export function artYears(list: Artwork[]) {
+  return Array.from(new Set(list.map((a) => a.year).filter((y): y is string => Boolean(y)))).sort();
+}
+
+/* ------------------------------------------------------------------ */
+/*  Six ways to hang a plate, so no two neighbouring plates look alike */
+/* ------------------------------------------------------------------ */
+export type PlateHang = "gallery" | "spotlight" | "ivory" | "pinned" | "museum" | "diptych";
+
+export function plateHang(a: Artwork, index: number): PlateHang {
+  if (a.hang) return a.hang;
+  if (a.status === "draft") return (["pinned", "museum", "pinned", "diptych", "spotlight"] as PlateHang[])[index % 5];
+  const img = a.images?.[0];
+  const r = img ? img.width / img.height : 1;
+  if (r < 0.6) return "museum";
+  if (r > 1.18) return index % 2 ? "diptych" : "spotlight";
+  const cycle: PlateHang[] = ["gallery", "spotlight", "ivory", "museum", "diptych"];
+  return cycle[index % cycle.length];
 }

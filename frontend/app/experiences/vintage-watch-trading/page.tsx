@@ -5,6 +5,8 @@ import { Figure } from "@/components/Figure";
 import { Kicker, T } from "@/components/T";
 import { blurFor } from "@/content/placeholders";
 import { statusLabel, trading } from "@/content/trading";
+import Scene from "@/components/Scene";
+import { PAGE_SCENES } from "@/content/scenes";
 
 export const metadata: Metadata = {
   title: "Vintage Watch Trading — Case Study",
@@ -143,6 +145,7 @@ export default function TradingPage() {
         </ol>
       </section>
 
+      <Scene use={PAGE_SCENES.caseStudy.frieze} />
       <section className="wrap section">
         <div className="section-head">
           <Kicker num="C" v={{ en: "Brands handled", zh: "经手品牌" }} />

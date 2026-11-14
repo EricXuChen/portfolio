@@ -39,10 +39,10 @@ export const navMore: { href: string; num: string; label: Bi }[] = [
 export const home = {
   kicker: { en: "Eric Xu · Personal Archive", zh: "Eric Xu · 个人档案" } as Bi,
   title: { en: "Hello, I’m Eric.", zh: "你好，我是 Eric。" } as Bi,
-  roles: { en: "Horology · Entrepreneurship · Art · History · Debate", zh: "制表 · 创业 · 艺术 · 历史 · 辩论" } as Bi,
+  roles: { en: "Horology · Entrepreneurship · Art · Flute · History · Debate", zh: "制表 · 创业 · 艺术 · 长笛 · 历史 · 辩论" } as Bi,
   lede: {
-    en: "I’m a student at an international school in Barcelona, on the IB pathway. I collect and study mechanical watches, draw and paint, read history and enjoy a good debate — and I learned business by trying it. This is where I keep the record.",
-    zh: "我在巴塞罗那的一所国际学校读书，走 IB 路线。我收藏、研究机械腕表，画画，读历史，也喜欢一场好的辩论——商业则是我边做边学的。这里是我留存这一切的地方。",
+    en: "I’m a student at an international school in Barcelona, on the IB pathway. I collect and study mechanical watches, draw and paint, play the flute, read history and enjoy a good debate — and I learned business by trying it. This is where I keep the record.",
+    zh: "我在巴塞罗那的一所国际学校读书，走 IB 路线。我收藏、研究机械腕表，画画，吹长笛，读历史，也喜欢一场好的辩论——商业则是我边做边学的。这里是我留存这一切的地方。",
   } as Bi,
   cta: { en: "More about me", zh: "更多关于我" } as Bi,
   interestsKicker: { en: "Selected Interests", zh: "四个板块" } as Bi,
@@ -240,6 +240,11 @@ export const about = {
       },
     },
   ] as { num: string; title: Bi; text: Bi }[],
+  music: {
+    title: { en: "Music", zh: "音乐" } as Bi,
+    line: { en: "I play the flute.", zh: "我会吹长笛。" } as Bi,
+    sub: { en: "Another way of keeping time.", zh: "另一种计时的方式。" } as Bi,
+  },
   quote: {
     text: "Old money, not old man.",
     note: {

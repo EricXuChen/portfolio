@@ -8,6 +8,10 @@ import { blurFor } from "@/content/placeholders";
 import { about } from "@/content/site";
 import { publicOnly } from "@/content/types";
 import PageMast from "@/components/PageMast";
+import { PAGE_SCENES } from "@/content/scenes";
+import { Flute, Stave } from "@/components/Flute";
+import Interlude from "@/components/Interlude";
+import { INTERESTS, VALUE_SLUGS, interestHref, valueHref } from "@/content/pages";
 
 export const metadata: Metadata = {
   title: "About",
@@ -22,6 +26,7 @@ export default function AboutPage() {
     <>
       <PageMast
         word="EXU."
+        scene={PAGE_SCENES.about.mast}
         layout="overlap"
         num="I"
         kicker={{ en: "About Me", zh: "个人简介" }}
@@ -68,10 +73,12 @@ export default function AboutPage() {
           <Kicker num="A" v={about.interestsTitle} />
         </div>
         <div className="grid-3">
-          {about.interests.map((item) => (
+          {about.interests.map((item, i) => (
             <article key={item.title.en} className="plain-card">
               <h3 className="h-card">
-                <T v={item.title} />
+                <Link href={interestHref(INTERESTS.find((x) => x.index === i)?.slug ?? "")} className="plain-link">
+                  <T v={item.title} /> →
+                </Link>
               </h3>
               <p>
                 <T v={item.text} />
@@ -79,6 +86,30 @@ export default function AboutPage() {
             </article>
           ))}
         </div>
+      </section>
+
+      <section className="about-music" id="music" aria-label="Music">
+        <p className="music-word" aria-hidden="true">
+          Flute
+        </p>
+        <Stave className="music-stave" />
+        <div className="wrap music-grid">
+          <div className="music-text">
+            <p className="mono-note music-kicker">
+              <span className="music-num">A·II</span> — <T v={about.music.title} />
+            </p>
+            <h2 className="music-line">
+              <T v={about.music.line} />
+            </h2>
+            <p className="music-sub">
+              <T v={about.music.sub} />
+            </p>
+          </div>
+          <Flute className="music-flute" />
+        </div>
+        <p className="music-zh" aria-hidden="true">
+          长笛
+        </p>
       </section>
 
       <section className="wrap section quote-plate band-ivory">
@@ -114,12 +145,14 @@ export default function AboutPage() {
           <Kicker num="B" v={about.valuesTitle} />
         </div>
         <ol className="values">
-          {about.values.map((v) => (
+          {about.values.map((v, i) => (
             <li key={v.num}>
               <span className="value-num">{v.num}</span>
               <div>
                 <h3 className="h-card">
-                  <T v={v.title} />
+                  <Link href={valueHref(VALUE_SLUGS[i])} className="plain-link">
+                    <T v={v.title} /> →
+                  </Link>
                 </h3>
                 <p>
                   <T v={v.text} />
@@ -129,6 +162,8 @@ export default function AboutPage() {
           ))}
         </ol>
       </section>
+
+      <Interlude align="center" tone="ink" />
 
       <section className="wrap section split-2">
         <div>

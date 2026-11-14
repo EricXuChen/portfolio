@@ -5,12 +5,11 @@ import { Fleuron } from "@/components/Deco";
 import { Note } from "@/components/Editorial";
 import PageMast from "@/components/PageMast";
 import { T } from "@/components/T";
-import { artHref, artworks } from "@/content/artwork";
-import { chapterHref, chapters, recognition, timeline } from "@/content/experiences";
-import { trading } from "@/content/trading";
 import type { Bi } from "@/content/types";
-import { publicOnly } from "@/content/types";
-import { collection, pieceHref } from "@/content/watches";
+import { PAGE_SCENES } from "@/content/scenes";
+import Scene from "@/components/Scene";
+import { catalogueRows } from "@/content/catalogue";
+import { letterHref } from "@/content/pages";
 
 export const metadata: Metadata = {
   title: "The Catalogue",
@@ -21,6 +20,7 @@ type Row = { id: string; title: Bi; note?: Bi; href: string };
 type Fig = { src: string; width: number; height: number; alt: string; tilt: number };
 
 function Part({ letter, name, rows, fig }: { letter: string; name: Bi; rows: Row[]; fig?: Fig }) {
+  const open = letterHref(letter.toLowerCase());
   return (
     <section className={`cat-part${fig ? " has-fig" : ""}`}>
       {fig ? (
@@ -33,7 +33,9 @@ function Part({ letter, name, rows, fig }: { letter: string; name: Bi; rows: Row
           {letter}
         </span>
         <h2 className="cat-name">
-          <T v={name} />
+          <Link href={open} className="plain-link">
+            <T v={name} />
+          </Link>
         </h2>
         <Note>
           {rows.length} <T v={{ en: rows.length === 1 ? "entry" : "entries", zh: "个条目" }} />
@@ -62,41 +64,14 @@ function Part({ letter, name, rows, fig }: { letter: string; name: Bi; rows: Row
 }
 
 export default function CataloguePage() {
-  const watches: Row[] = publicOnly(collection).map((w) => ({
-    id: w.id,
-    title: { en: `${w.brand} — ${w.model.en}`, zh: `${w.brand} —— ${w.model.zh}` },
-    note: w.reference ? { en: `Ref. ${w.reference}`, zh: `Ref. ${w.reference}` } : undefined,
-    href: pieceHref(w.id),
-  }));
-  const works: Row[] = publicOnly(artworks).map((a) => ({
-    id: a.id,
-    title: { en: a.title, zh: `《${a.titleZh}》` },
-    note: {
-      en: [a.medium?.en, a.year, a.status === "draft" ? "draft" : ""].filter(Boolean).join(" · "),
-      zh: [a.medium?.zh, a.year, a.status === "draft" ? "草稿" : ""].filter(Boolean).join(" · "),
-    },
-    href: artHref(a.slug),
-  }));
-  const lives: Row[] = [
-    ...publicOnly(timeline).map((e) => ({ id: e.id, title: e.title, note: e.period, href: `/experiences#${e.id}` })),
-    ...publicOnly(chapters).map((c) => ({ id: c.id, title: c.title, href: chapterHref(c.id) })),
-  ];
-  const honours: Row[] = publicOnly(recognition).map((r) => ({
-    id: r.id,
-    title: r.title,
-    note: { en: `${r.year} · ${r.award.en}`, zh: `${r.year} · ${r.award.zh}` },
-    href: `/experiences#${r.id}`,
-  }));
-  const projects: Row[] = [
-    { id: "P-00", title: trading.title, note: { en: "case study", zh: "案例" }, href: `/experiences/${trading.slug}` },
-    ...trading.next.map((n, i) => ({ id: `P-0${i + 1}`, title: n.title, href: "/projects" })),
-  ];
+  const { w: watches, a: works, e: lives, r: honours, p: projects } = catalogueRows();
   const total = watches.length + works.length + lives.length + honours.length + projects.length;
 
   return (
     <>
       <PageMast
         word="INDEX."
+        scene={PAGE_SCENES.catalogue.mast}
         layout="frame"
         metal
         num="VI"
@@ -128,6 +103,7 @@ export default function CataloguePage() {
           .
         </p>
       </div>
+      <Scene use={PAGE_SCENES.catalogue.frieze} />
     </>
   );
 }

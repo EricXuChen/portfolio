@@ -8,6 +8,9 @@ import Image from "next/image";
 import { posters } from "@/content/antiques";
 import { publicOnly } from "@/content/types";
 import PageMast from "@/components/PageMast";
+import Scene from "@/components/Scene";
+import { PAGE_SCENES } from "@/content/scenes";
+import Interlude from "@/components/Interlude";
 
 export const metadata: Metadata = {
   title: "Life Experiences",
@@ -20,6 +23,7 @@ export default function ExperiencesPage() {
     <>
       <PageMast
         word="EXPERIENCE."
+        scene={PAGE_SCENES.experiences.mast}
         layout="vertical"
         num="III"
         kicker={{ en: "Experiences", zh: "经历" }}
@@ -58,6 +62,7 @@ export default function ExperiencesPage() {
         </Link>
       </section>
 
+      <Scene use={PAGE_SCENES.experiences.frieze} />
       <section className="wrap section" aria-labelledby="tl-title">
         <div className="section-head">
           <Kicker num="A" v={{ en: "Timeline", zh: "时间线" }} />
@@ -84,7 +89,9 @@ export default function ExperiencesPage() {
                   <T v={r.award} /> · <T v={r.field} />
                 </p>
                 <h3 className="h-card h-card-lg">
-                  <T v={r.title} />
+                  <Link href="/recognition" className="plain-link">
+                    <T v={r.title} /> →
+                  </Link>
                 </h3>
                 <p className="recog-work">
                   <T v={{ en: `“${r.work.en}”`, zh: `《${r.work.zh}》` }} />
@@ -155,6 +162,8 @@ export default function ExperiencesPage() {
           ))}
         </div>
       </section>
+
+      <Interlude align="right" />
 
       <nav className="wrap next-link" aria-label="Next section">
         <Link href="/artwork" className="text-link">

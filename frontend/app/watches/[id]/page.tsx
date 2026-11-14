@@ -11,6 +11,8 @@ import { blurFor } from "@/content/placeholders";
 import { site } from "@/content/site";
 import { publicOnly } from "@/content/types";
 import { collection, pieceHref, pieceSlug } from "@/content/watches";
+import Scene from "@/components/Scene";
+import { PAGE_SCENES, WATCH_SCENES } from "@/content/scenes";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -79,7 +81,8 @@ export default async function PiecePage({ params }: Props) {
 
   return (
     <>
-      <article className="wrap piece-page">
+      <article className="wrap piece-page has-scene">
+        <Scene use={WATCH_SCENES[w.id] ?? PAGE_SCENES.watch.page} eager className="scene-hero" />
         <div className="piece-figure velvet corners">
           <ArtImage
             src={w.image.src}

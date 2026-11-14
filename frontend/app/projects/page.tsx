@@ -9,6 +9,9 @@ import { T } from "@/components/T";
 import { chapterHref, chapters } from "@/content/experiences";
 import { statusLabel, trading } from "@/content/trading";
 import type { Bi } from "@/content/types";
+import { PAGE_SCENES } from "@/content/scenes";
+import Scene from "@/components/Scene";
+import { PROJECT_PAGES, projectHref } from "@/content/pages";
 
 export const metadata: Metadata = {
   title: "Ongoing Projects",
@@ -64,6 +67,7 @@ export default function ProjectsPage() {
     <>
       <PageMast
         word="IDEAS."
+        scene={PAGE_SCENES.projects.mast}
         num="V"
         kicker={{ en: "Ongoing Projects", zh: "进行中的项目" }}
         title={{ en: "Things still on the workbench.", zh: "仍在工作台上的东西。" }}
@@ -84,7 +88,9 @@ export default function ProjectsPage() {
               P-0{i + 1}
             </p>
             <h2 className="proj-name">
-              <T v={p.title} />
+              <Link href={projectHref(PROJECT_PAGES[i]?.slug ?? "")} className="plain-link">
+                <T v={p.title} />
+              </Link>
             </h2>
             <p className={`proj-status status-${p.status}`}>
               <span className="proj-dot" aria-hidden="true" />
@@ -139,7 +145,10 @@ export default function ProjectsPage() {
       </section>
 
       {future ? (
-        <section className="horizon" aria-label="Further ahead">
+        <>
+        <Scene use={PAGE_SCENES.projects.frieze} />
+        <section className="horizon has-scene" aria-label="Further ahead">
+          <Scene use={PAGE_SCENES.projects.oval} className="horizon-oval" />
           <GiantWord word="Horizon" script className="horizon-word" drift={0.15} />
           <Edge className="horizon-edge">
             {future.id} · <T v={future.title} />
@@ -162,6 +171,7 @@ export default function ProjectsPage() {
             </Link>
           </div>
         </section>
+        </>
       ) : null}
 
       <Fleuron className="fleuron fleuron-gap" />

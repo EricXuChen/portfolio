@@ -4,6 +4,8 @@ import { useState } from "react";
 import { categoryLabel, timeline, type Category } from "@/content/experiences";
 import { publicOnly } from "@/content/types";
 import { ArchiveTag, T } from "./T";
+import Link from "next/link";
+import { momentHref } from "@/content/pages";
 
 const FILTERS: Category[] = ["entrepreneurship", "projects", "education", "debate", "growth", "future"];
 
@@ -40,7 +42,9 @@ export default function Timeline() {
             <div className="tl-body">
               <ArchiveTag id={e.id} updated={e.updated} />
               <h3 className="h-card">
-                <T v={e.title} />
+                <Link href={momentHref(e.id)} className="plain-link">
+                  <T v={e.title} />
+                </Link>
               </h3>
               <ul className="dash-list">
                 {e.points.map((p) => (

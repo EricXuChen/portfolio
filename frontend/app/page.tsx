@@ -5,6 +5,7 @@ import DecorWatch from "@/components/DecorWatch";
 import { Edge, GiantWord, Hand, Note } from "@/components/Editorial";
 import { Figure } from "@/components/Figure";
 import FloatingWatch from "@/components/FloatingWatch";
+import Scene from "@/components/Scene";
 import { T } from "@/components/T";
 import { posters } from "@/content/antiques";
 import { artworks } from "@/content/artwork";
@@ -13,7 +14,9 @@ import { trading } from "@/content/trading";
 import { home } from "@/content/site";
 import { blurFor } from "@/content/placeholders";
 import { publicOnly } from "@/content/types";
+import { PAGE_SCENES } from "@/content/scenes";
 import { collection, pieceHref } from "@/content/watches";
+import Interlude from "@/components/Interlude";
 
 /* Three pieces from the collection, each shown at a different scale. */
 const TEASER = [
@@ -37,7 +40,8 @@ export default function HomePage() {
   return (
     <>
       {/* ---------------------------------------------------------- cover */}
-      <section className="ed-cover" aria-label="Eric Xu">
+      <section className="ed-cover has-scene" aria-label="Eric Xu">
+        <Scene use={PAGE_SCENES.home.cover} eager />
         <div className="ed-cover-top wrap">
           <Note>Nº 001 — <T v={{ en: "Personal archive", zh: "个人档案" }} /></Note>
           <Note className="ed-cover-coord">41.39° N · 2.17° E — Barcelona</Note>
@@ -101,7 +105,8 @@ export default function HomePage() {
       </section>
 
       {/* ---------------------------------------------------------- contents */}
-      <section className="ed-contents" aria-label="Contents">
+      <section className="ed-contents has-scene" aria-label="Contents">
+        <Scene use={PAGE_SCENES.home.contents} />
         <DecorWatch which="silver" className="decor-contents" />
         <div className="wrap">
           <div className="ed-contents-head">
@@ -264,7 +269,10 @@ export default function HomePage() {
       </section>
 
       {/* ---------------------------------------------------------- a sentence alone */}
-      <section className="ed-lone" aria-label="Learning by doing">
+      <Interlude align="left" />
+
+      <section className="ed-lone has-scene" aria-label="Learning by doing">
+        <Scene use={PAGE_SCENES.home.lone} />
         <Edge className="ed-lone-numeral">VI.</Edge>
         <p className="lone-line">
           <T v={{ en: "Learning by doing —", zh: "边做边学——" }} />
@@ -341,6 +349,7 @@ export default function HomePage() {
       ) : null}
 
       {/* ---------------------------------------------------------- closing */}
+      <Scene use={PAGE_SCENES.home.closing} />
       <section className="ed-closing" aria-label="Closing">
         <div className="wrap ed-closing-grid">
           <figure className="poster-print ed-closing-poster">

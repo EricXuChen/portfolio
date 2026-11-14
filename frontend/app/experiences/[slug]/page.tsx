@@ -9,6 +9,8 @@ import { T } from "@/components/T";
 import { categoryLabel, chapterHref, chapterSlug, chapters, timeline } from "@/content/experiences";
 import { trading } from "@/content/trading";
 import { publicOnly } from "@/content/types";
+import Scene from "@/components/Scene";
+import { CHAPTER_SCENES } from "@/content/scenes";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -59,10 +61,12 @@ export default async function ChapterPage({ params }: Props) {
   if (!found) notFound();
   const { ch, index, total, prev, next } = found;
   const related = publicOnly(timeline).filter((e) => e.categories.includes(ch.category));
+  const scenes = CHAPTER_SCENES[slug];
 
   return (
     <>
-      <article className="chap-page">
+      <article className={`chap-page${scenes ? " has-scene" : ""}`}>
+        {scenes ? <Scene use={scenes.hero} eager className="scene-hero" /> : null}
         <DecorWatch which={ORNAMENT[index % ORNAMENT.length]} className="decor-chap" />
         <p className="chap-numeral" aria-hidden="true">
           {ROMAN[index]}
@@ -96,6 +100,8 @@ export default async function ChapterPage({ params }: Props) {
         </div>
 
         <GiantWord word={WORDS[ch.category] ?? "EXPERIENCE."} outline className="chap-word" drift={0.14} />
+
+        {scenes?.frieze ? <Scene use={scenes.frieze} className="chap-frieze" /> : null}
 
         <div className="wrap chap-body">
           <section className="chap-process">

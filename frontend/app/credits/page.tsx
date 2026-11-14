@@ -4,6 +4,8 @@ import Link from "next/link";
 import { T } from "@/components/T";
 import { decor, floatingWatch, posters } from "@/content/antiques";
 import PageMast from "@/components/PageMast";
+import { PAGE_SCENES } from "@/content/scenes";
+import Scene from "@/components/Scene";
 
 export const metadata: Metadata = {
   title: "Picture Credits",
@@ -24,6 +26,7 @@ export default function CreditsPage() {
     <>
       <PageMast
         word="THANKS."
+        scene={PAGE_SCENES.credits.mast}
         num="—"
         kicker={{ en: "Picture credits", zh: "图片来源" }}
         title={{ en: "With thanks.", zh: "致谢。" }}
@@ -35,6 +38,7 @@ export default function CreditsPage() {
         stamp={{ top: "EXU · PICTURE CREDITS", bottom: "WITH THANKS", mid: "©" }}
       />
 
+      <Scene use={PAGE_SCENES.credits.frieze} />
       <section className="wrap section">
         <ol className="credits">
           {credits.map((c, i) => (

@@ -7714,3 +7714,1465 @@ body::after {
     height: 110px;
   }
 }
+
+/* =====================================================================
+   SCENES — trip photographs recoloured into the archive's inks and faded
+   into the walls. Atmosphere only: no captions, never behind body text.
+   ===================================================================== */
+body {
+  overflow-x: clip;
+}
+
+.has-scene {
+  position: relative;
+  isolation: isolate;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.scene img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: var(--o, 0.4);
+}
+
+/* a centred .wrap host: let the wall run to the edges of the window */
+.scene-bleed {
+  left: calc(50% - 50vw);
+  right: calc(50% - 50vw);
+}
+
+/* ghost (L3, immersive) — the whole photograph fills the opening; a burgundy
+   veil darkens only the side where the words sit, so they stay legible */
+.scene-ghost img {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 82%, transparent 100%);
+}
+
+.scene-ghost::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.scene-ghost.scene-right::after {
+  background:
+    linear-gradient(180deg, rgba(42, 16, 20, 0.72) 0, rgba(42, 16, 20, 0) 170px),
+    linear-gradient(90deg, rgba(42, 16, 20, 0.92) 0%, rgba(42, 16, 20, 0.76) 40%, rgba(42, 16, 20, 0.34) 74%, rgba(42, 16, 20, 0.16) 100%);
+}
+
+.scene-ghost.scene-left::after {
+  background:
+    linear-gradient(180deg, rgba(42, 16, 20, 0.72) 0, rgba(42, 16, 20, 0) 170px),
+    linear-gradient(270deg, rgba(42, 16, 20, 0.92) 0%, rgba(42, 16, 20, 0.76) 40%, rgba(42, 16, 20, 0.34) 74%, rgba(42, 16, 20, 0.16) 100%);
+}
+
+/* on a photograph the small labels step up one shade so they stay readable */
+.has-scene:has(> .scene-ghost),
+.has-scene:has(> .scene-wallpaper) {
+  --gold-faint: rgba(220, 194, 154, 0.96);
+  --gold-soft: rgba(243, 239, 230, 0.74);
+}
+
+/* words that sit on a photograph carry a soft burgundy halo, like ink on a dark print */
+.has-scene:has(> .scene-ghost) :is(p, h1, h2, h3, li, dt, dd, a, blockquote, figcaption):not(.giant),
+.has-scene:has(> .scene-wallpaper) :is(p, h1, h2, h3, li, dt, dd, a, blockquote, figcaption):not(.giant) {
+  text-shadow: 0 0 18px rgba(30, 10, 14, 0.92), 0 0 7px rgba(30, 10, 14, 0.85), 0 0 2px rgba(30, 10, 14, 0.7);
+}
+
+.scene-ghost.scene-top {
+  bottom: auto;
+  height: min(100%, 110vh);
+}
+
+.scene-ghost.scene-top img {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+}
+
+.scene-ghost.scene-top::after {
+  background: linear-gradient(180deg, rgba(42, 16, 20, 0.62) 0%, rgba(42, 16, 20, 0.72) 45%, rgba(42, 16, 20, 0.4) 100%);
+}
+
+/* on long pages the opening photograph stays with the opening */
+.scene-hero {
+  bottom: auto;
+  height: min(100%, 110vh);
+}
+
+/* wallpaper — woven pattern, pressed lightly into the burgundy */
+.scene-wallpaper img {
+  mix-blend-mode: soft-light;
+  -webkit-mask-image: radial-gradient(80% 75% at 50% 45%, #000 35%, transparent 100%);
+  mask-image: radial-gradient(80% 75% at 50% 45%, #000 35%, transparent 100%);
+}
+
+/* paper — on the ivory band, like the grain of an old sheet */
+.scene-paper img {
+  mix-blend-mode: multiply;
+  filter: sepia(0.4);
+  -webkit-mask-image: radial-gradient(80% 75% at 50% 50%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(80% 75% at 50% 50%, #000 30%, transparent 100%);
+}
+
+/* frieze — a band between two sections */
+.scene-frieze {
+  position: relative;
+  inset: auto;
+  z-index: auto;
+  height: clamp(110px, 13vw, 200px);
+  border-block: 1px solid rgba(197, 164, 119, 0.32);
+  background: var(--burgundy-deep);
+}
+
+.scene-frieze img {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent);
+}
+
+.chap-frieze {
+  margin-block: clamp(10px, 2vw, 30px) clamp(40px, 6vw, 90px);
+  z-index: 0;
+}
+
+/* oval — an object in a gilt oval, only in empty space */
+.scene-oval {
+  inset: auto;
+  z-index: 0;
+  width: var(--w, clamp(150px, 18vw, 270px));
+  aspect-ratio: 3 / 4;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 1px rgba(220, 194, 154, 0.55),
+    0 0 0 9px rgba(42, 16, 20, 0.62),
+    0 0 0 10px rgba(197, 164, 119, 0.45),
+    0 30px 80px rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 700px) {
+  /* on a phone the photograph fills the top of the opening and fades out
+     before the paragraphs; the veil covers the whole width */
+  .scene-ghost.scene-right,
+  .scene-ghost.scene-left,
+  .scene-ghost.scene-top {
+    bottom: auto;
+    height: min(100%, 74vh);
+  }
+
+  .scene-ghost img {
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%) !important;
+    mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%) !important;
+  }
+
+  .scene-ghost.scene-right::after,
+  .scene-ghost.scene-left::after,
+  .scene-ghost.scene-top::after {
+    background: linear-gradient(180deg, rgba(42, 16, 20, 0.58) 0%, rgba(42, 16, 20, 0.72) 55%, rgba(42, 16, 20, 0.5) 100%);
+  }
+
+  .scene-wallpaper img,
+  .scene-paper img {
+    opacity: calc(var(--o, 0.15) * 0.7);
+  }
+
+  .scene-frieze {
+    height: 96px;
+  }
+}
+
+/* =====================================================================
+   FRAMES — every real artwork hangs in its own gilt frame on a mat, so
+   it never melts into the photographs on the walls behind it.
+   ===================================================================== */
+.ed-studio-main > img,
+.ed-studio-study > img,
+.plate-detail .art-frame img,
+.featured-figure .art-frame,
+.quote-plate-image .img-frame,
+.proj-pic {
+  padding: clamp(8px, 1vw, 14px);
+  background: #fbf8f1;
+  border: clamp(6px, 0.75vw, 11px) solid transparent;
+  border-image: linear-gradient(135deg, #f3dfae, #a57d3f 30%, #e8cf94 52%, #7d5a2b 78%, #d8bb82) 1;
+  outline: 1px solid rgba(42, 16, 20, 0.55);
+  outline-offset: 0;
+  box-shadow: 0 50px 80px -40px rgba(10, 2, 4, 0.8);
+}
+
+/* the small study gets a green velvet liner */
+.ed-studio-study > img,
+.plate-detail-2 .art-frame img {
+  background: radial-gradient(120% 120% at 30% 20%, #2f5544 0%, var(--forest) 70%, #142a1f 100%);
+}
+
+.featured-figure .art-frame img {
+  height: 100%;
+}
+
+/* =====================================================================
+   MUSIC — the flute, on the About page
+   ===================================================================== */
+.about-music {
+  position: relative;
+  overflow: hidden;
+  overflow: clip;
+  isolation: isolate;
+  padding-block: clamp(100px, 12vw, 190px);
+  background: radial-gradient(80% 90% at 70% 40%, #4a1d25 0%, var(--burgundy-deep) 60%, var(--burgundy-ink) 100%);
+  border-block: 1px solid rgba(197, 164, 119, 0.28);
+}
+
+.music-word {
+  position: absolute;
+  left: clamp(-30px, -1vw, 0px);
+  top: clamp(10px, 3vw, 50px);
+  z-index: -1;
+  margin: 0;
+  font-family: var(--script);
+  font-size: clamp(160px, 24vw, 380px);
+  line-height: 1;
+  color: var(--champagne);
+  opacity: 0.12;
+  transform: rotate(-6deg);
+  pointer-events: none;
+}
+
+.music-stave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 52%;
+  z-index: -1;
+  width: 100%;
+  height: clamp(90px, 11vw, 150px);
+  color: var(--forest-bright);
+  opacity: 0.55;
+  transform: rotate(-4deg);
+}
+
+.music-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: center;
+  gap: clamp(30px, 5vw, 80px);
+}
+
+.music-kicker {
+  color: var(--champagne);
+}
+
+.music-num {
+  color: var(--forest-bright);
+}
+
+.music-line {
+  margin: 18px 0 10px;
+  font-family: var(--editorial);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(48px, 6.6vw, 104px);
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  color: var(--ivory);
+}
+
+[data-lang="zh"] .music-line {
+  font-family: var(--zh-serif);
+  font-style: normal;
+  font-size: clamp(40px, 5.4vw, 84px);
+}
+
+.music-sub {
+  margin: 0;
+  font-family: var(--script);
+  font-size: clamp(30px, 3.2vw, 50px);
+  line-height: 1.1;
+  color: var(--champagne-bright);
+}
+
+[data-lang="zh"] .music-sub {
+  font-family: var(--zh-serif);
+  font-size: clamp(18px, 1.8vw, 24px);
+  letter-spacing: 0.2em;
+}
+
+.music-flute {
+  display: block;
+  width: 118%;
+  max-width: none;
+  height: auto;
+  margin-left: -4%;
+  transform: rotate(-9deg);
+  filter: drop-shadow(0 30px 26px rgba(10, 2, 4, 0.55));
+}
+
+.music-zh {
+  position: absolute;
+  right: clamp(14px, 3vw, 48px);
+  top: 50%;
+  margin: 0;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  font-family: var(--zh-serif);
+  font-size: clamp(20px, 2vw, 28px);
+  letter-spacing: 0.6em;
+  color: var(--champagne);
+  opacity: 0.7;
+}
+
+@media (max-width: 800px) {
+  .music-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .music-flute {
+    width: 112%;
+    margin: 20px 0 0 -6%;
+  }
+
+  .music-zh {
+    top: 40px;
+    transform: none;
+  }
+}
+
+/* =====================================================================
+   INTERLUDE — a whole screen of empty wall and one small pocket watch
+   ===================================================================== */
+.interlude {
+  position: relative;
+  min-height: 92vh;
+  overflow: hidden;
+  overflow: clip;
+  background: var(--burgundy);
+}
+
+.interlude-deep {
+  background: radial-gradient(90% 80% at 50% 40%, #5c2a33 0%, var(--burgundy) 55%, var(--burgundy-deep) 100%);
+}
+
+.interlude-ink {
+  background: var(--burgundy-ink);
+}
+
+.interlude-chain {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 46vh;
+  background: linear-gradient(to bottom, rgba(197, 164, 119, 0), rgba(197, 164, 119, 0.7) 30%, rgba(220, 194, 154, 0.9));
+}
+
+.interlude-watch {
+  position: absolute;
+  top: calc(46vh - 6px);
+  width: clamp(54px, 5.6vw, 92px);
+  height: auto;
+  filter: drop-shadow(0 26px 22px rgba(10, 2, 4, 0.55));
+  transform-origin: 50% 0;
+  animation: interlude-sway 7s ease-in-out infinite alternate;
+}
+
+.interlude-left .interlude-chain {
+  left: 22%;
+}
+
+.interlude-left .interlude-watch {
+  left: calc(22% - clamp(27px, 2.8vw, 46px));
+}
+
+.interlude-center .interlude-chain {
+  left: 50%;
+}
+
+.interlude-center .interlude-watch {
+  left: calc(50% - clamp(27px, 2.8vw, 46px));
+}
+
+.interlude-right .interlude-chain {
+  left: 74%;
+}
+
+.interlude-right .interlude-watch {
+  left: calc(74% - clamp(27px, 2.8vw, 46px));
+}
+
+@keyframes interlude-sway {
+  from {
+    rotate: -2.5deg;
+  }
+  to {
+    rotate: 2.5deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interlude-watch {
+    animation: none;
+  }
+}
+
+/* =====================================================================
+   STUDIO ROOMS — walls of framed works, and the doors between them
+   ===================================================================== */
+.ww {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ww-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.ww-frame {
+  position: relative;
+  display: block;
+  padding: clamp(8px, 1vw, 14px);
+  background: #fbf8f1;
+  border: clamp(6px, 0.75vw, 11px) solid transparent;
+  border-image: linear-gradient(135deg, #f3dfae, #a57d3f 30%, #e8cf94 52%, #7d5a2b 78%, #d8bb82) 1;
+  outline: 1px solid rgba(42, 16, 20, 0.55);
+  box-shadow: 0 40px 70px -36px rgba(10, 2, 4, 0.8);
+  transition: transform 0.6s ease;
+}
+
+.ww-velvet {
+  background: radial-gradient(120% 120% at 30% 20%, #2f5544 0%, var(--forest) 70%, #142a1f 100%);
+}
+
+.ww-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ww-link:hover .ww-frame {
+  transform: translateY(-4px);
+}
+
+.ww-cap {
+  display: grid;
+  gap: 2px;
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--gold-soft);
+}
+
+.ww-title {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-size: clamp(18px, 1.6vw, 22px);
+  color: var(--ivory);
+}
+
+.ww-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--gold-soft);
+}
+
+/* salon: staggered columns, mixed sizes */
+.ww-salon {
+  columns: 3 260px;
+  column-gap: clamp(28px, 4vw, 60px);
+}
+
+.ww-salon .ww-item {
+  break-inside: avoid;
+  margin-bottom: clamp(44px, 6vw, 90px);
+}
+
+.ww-salon .ww-item-2 {
+  padding-inline: 8%;
+}
+
+.ww-salon .ww-item-4 {
+  padding-inline: 14% 0;
+}
+
+/* ledger: two staggered columns, the right one hung lower */
+.ww-ledger {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(40px, 6vw, 100px);
+  row-gap: clamp(40px, 5vw, 80px);
+}
+
+.ww-ledger .ww-item:nth-child(even) {
+  translate: 0 clamp(60px, 8vw, 140px);
+}
+
+.ww-ledger .ww-item:nth-child(3n + 1) .ww-frame {
+  width: 88%;
+}
+
+/* strip: one line of frames running sideways */
+.ww-strip {
+  display: flex;
+  gap: clamp(30px, 4vw, 60px);
+  align-items: flex-end;
+  overflow-x: auto;
+  padding-bottom: 30px;
+  scroll-snap-type: x proximity;
+}
+
+.ww-strip .ww-item {
+  flex: 0 0 auto;
+  width: clamp(200px, 22vw, 320px);
+  scroll-snap-align: start;
+}
+
+.ww-strip .ww-item-2,
+.ww-strip .ww-item-4 {
+  width: clamp(160px, 16vw, 240px);
+}
+
+.room-wall {
+  position: relative;
+}
+
+/* a room without a photograph on the wall */
+.room-bare {
+  padding-bottom: clamp(120px, 12vw, 200px);
+}
+
+.rooms {
+  padding-block: clamp(60px, 8vw, 120px);
+  border-top: 1px solid var(--rule);
+}
+
+.rooms-head {
+  margin-bottom: 24px;
+}
+
+.rooms-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  column-gap: clamp(30px, 5vw, 80px);
+}
+
+.rooms-link {
+  display: grid;
+  grid-template-columns: 44px auto 1fr auto;
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ivory);
+  text-decoration: none;
+}
+
+.rooms-num {
+  font-family: var(--display);
+  color: var(--champagne);
+}
+
+.rooms-label {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-size: 20px;
+}
+
+.rooms-dots {
+  border-bottom: 1px dotted rgba(197, 164, 119, 0.4);
+  transform: translateY(-5px);
+}
+
+.rooms-count {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--forest-bright);
+}
+
+.rooms-link:hover .rooms-label {
+  color: var(--champagne-bright);
+}
+
+.horizon-oval {
+  right: clamp(70px, 10vw, 170px);
+  top: clamp(36px, 4vw, 64px);
+  --w: clamp(110px, 10.5vw, 160px);
+}
+
+@media (max-width: 800px) {
+  .horizon-oval {
+    top: 40px;
+    translate: none;
+    --w: 110px;
+  }
+}
+
+/* =====================================================================
+   PLATE HANGS — six ways to hang a work, so the plates are not alike
+   ===================================================================== */
+
+/* spotlight — a dark room, one lamp, the work in the middle */
+.plate-hang-spotlight {
+  background: radial-gradient(44% 50% at 50% 36%, #4b2029 0%, #2a1014 52%, #14060a 100%);
+}
+
+.plate-hang-spotlight .plate-word {
+  right: auto;
+  left: 50%;
+  translate: -50% 0;
+  top: auto;
+  bottom: 30%;
+  -webkit-text-stroke-color: rgba(220, 194, 154, 0.16);
+}
+
+.plate-hang-spotlight .plate-grid {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+}
+
+.plate-hang-spotlight .plate-figure {
+  justify-items: center;
+  width: min(640px, 100%);
+}
+
+.plate-hang-spotlight .plate-mount {
+  border: clamp(12px, 1.4vw, 20px) solid #0d0507;
+  border-image: none;
+  background: #0d0507;
+  padding: clamp(10px, 1.2vw, 16px);
+  outline: 1px solid rgba(220, 194, 154, 0.75);
+  outline-offset: calc(-1 * clamp(8px, 1vw, 12px));
+  box-shadow: 0 0 0 1px rgba(220, 194, 154, 0.25), 0 0 160px rgba(236, 214, 170, 0.14), 0 70px 90px -40px rgba(0, 0, 0, 0.9);
+}
+
+.plate-hang-spotlight .plate-text {
+  width: min(760px, 100%);
+  text-align: center;
+}
+
+.plate-hang-spotlight .plate-facts {
+  justify-content: center;
+  text-align: left;
+}
+
+.plate-hang-spotlight .plate-section {
+  text-align: left;
+}
+
+/* reverse — the work on the right in a wide cream mat with a thin gold line;
+   the wall stays burgundy (pale paper only inside the frame) */
+.plate-hang-ivory {
+  background: radial-gradient(70% 70% at 70% 40%, #5c2a33 0%, var(--burgundy-deep) 60%, var(--burgundy-ink) 100%);
+}
+
+.plate-hang-ivory .plate-word {
+  left: -2vw;
+  right: auto;
+}
+
+.plate-hang-ivory .plate-grid {
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+}
+
+.plate-hang-ivory .plate-figure {
+  order: 2;
+}
+
+.plate-hang-ivory .plate-mount {
+  background: #fdfbf6;
+  border: 4px solid transparent;
+  border-image: linear-gradient(135deg, #e8cf94, #9a7a4c 50%, #e8cf94) 1;
+  padding: clamp(28px, 4vw, 60px);
+  outline: 1px solid rgba(84, 37, 45, 0.16);
+  outline-offset: -14px;
+  box-shadow: 0 50px 80px -40px rgba(10, 2, 4, 0.85);
+}
+
+.plate-hang-ivory .plate-title {
+  font-family: var(--display);
+  font-style: normal;
+}
+
+/* pinned — a draft taped to a green velvet board, a little crooked */
+.plate-hang-pinned .plate-grid {
+  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+}
+
+.plate-hang-pinned .plate-mount {
+  position: relative;
+  border: 0;
+  border-image: none;
+  outline: 0;
+  padding: clamp(34px, 5vw, 80px);
+  background:
+    radial-gradient(120% 120% at 30% 20%, rgba(255, 255, 255, 0.05), transparent 60%),
+    radial-gradient(120% 120% at 30% 20%, #2f5544 0%, var(--forest) 66%, #142a1f 100%);
+  box-shadow: inset 0 0 70px rgba(0, 0, 0, 0.55), 0 50px 80px -40px rgba(10, 2, 4, 0.85);
+}
+
+.plate-hang-pinned .plate-mount .art-frame {
+  transform: rotate(-1.8deg);
+  background: #fbf8f1;
+  padding: 6px;
+  box-shadow: 0 22px 34px -14px rgba(0, 0, 0, 0.7);
+}
+
+.tape {
+  position: absolute;
+  z-index: 2;
+  width: clamp(70px, 8vw, 120px);
+  height: clamp(20px, 2vw, 30px);
+  background: rgba(240, 228, 198, 0.78);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  mix-blend-mode: normal;
+}
+
+.tape-1 {
+  top: clamp(20px, 3vw, 50px);
+  left: 14%;
+  rotate: -9deg;
+}
+
+.tape-2 {
+  bottom: clamp(20px, 3vw, 50px);
+  right: 12%;
+  rotate: 7deg;
+}
+
+.plate-hang-pinned .plate-title {
+  font-family: var(--script);
+  font-style: normal;
+  font-size: clamp(46px, 5vw, 76px);
+  line-height: 1.05;
+}
+
+/* museum — a small work on a big empty wall, a brass plaque beside it */
+.plate-hang-museum {
+  background: radial-gradient(55% 45% at 50% 34%, #5f2b34 0%, var(--burgundy) 58%, var(--burgundy-deep) 100%);
+}
+
+.plate-hang-museum .plate-word {
+  opacity: 0.45;
+}
+
+.plate-hang-museum .plate-grid {
+  grid-template-columns: minmax(0, 1fr);
+  padding-top: clamp(60px, 7vw, 110px);
+}
+
+.plate-hang-museum .plate-figure {
+  justify-items: center;
+  grid-template-columns: auto auto;
+  align-items: end;
+  justify-content: center;
+  gap: clamp(20px, 3vw, 44px);
+}
+
+.plate-hang-museum .plate-mount {
+  width: clamp(300px, 38vw, 560px);
+}
+
+.plate-plaque {
+  display: grid;
+  gap: 3px;
+  max-width: 220px;
+  margin: 0 0 8px;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, #e8d3a8, #b8955c 45%, #e3c890 70%, #9a7a4c);
+  color: #2a1014;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.7);
+}
+
+.plate-plaque b {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 0;
+}
+
+.plate-hang-museum .plate-text {
+  width: min(820px, 100%);
+  margin: clamp(50px, 6vw, 90px) auto 0;
+}
+
+/* diptych — the work, and beside it a loupe on one of its details */
+.plate-hang-diptych .plate-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.plate-hang-diptych .plate-figure {
+  grid-template-columns: minmax(0, 8fr) minmax(0, 3fr);
+  align-items: center;
+  width: 100%;
+  gap: clamp(30px, 5vw, 80px);
+}
+
+.plate-hang-diptych .plate-figure .plate-label {
+  grid-column: 1;
+}
+
+.plate-loupe-wrap {
+  grid-column: 2;
+  grid-row: 1;
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+}
+
+.plate-loupe {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-size: 350%;
+  background-repeat: no-repeat;
+  box-shadow:
+    0 0 0 2px #dcc29a,
+    0 0 0 12px #3a161c,
+    0 0 0 13px #c5a477,
+    0 40px 70px -30px rgba(0, 0, 0, 0.85);
+}
+
+.plate-hang-diptych .plate-text {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(30px, 5vw, 80px);
+  padding-top: clamp(40px, 5vw, 70px);
+}
+
+.plate-hang-diptych .plate-text > :is(.plate-draft, .plate-title, .plate-title-zh, .plate-facts) {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 960px) {
+  .plate-hang-ivory .plate-grid,
+  .plate-hang-pinned .plate-grid,
+  .plate-hang-diptych .plate-figure,
+  .plate-hang-diptych .plate-text,
+  .plate-hang-museum .plate-figure {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .plate-hang-ivory .plate-figure {
+    order: 0;
+  }
+
+  .plate-loupe-wrap {
+    grid-column: 1;
+    grid-row: auto;
+    width: min(240px, 70%);
+    justify-self: center;
+  }
+
+  .plate-hang-museum .plate-mount {
+    width: min(280px, 80%);
+  }
+
+  .plate-hang-museum .plate-text {
+    margin-top: 90px;
+  }
+}
+
+@media (max-width: 700px) {
+  .ww-ledger {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ww-ledger .ww-item:nth-child(even) {
+    translate: none;
+  }
+}
+
+/* =====================================================================
+   SMALLER ROOMS — interests, values, moments, projects, letters, eras
+   ===================================================================== */
+.room-links {
+  padding-block: clamp(50px, 7vw, 100px);
+}
+
+.room-links ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.room-links-head {
+  margin-bottom: 20px;
+}
+
+.room-link {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  color: var(--ivory);
+  text-decoration: none;
+}
+
+.room-links-list .room-link {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.room-link-img {
+  width: 64px;
+  height: 80px;
+  overflow: hidden;
+  border: 3px solid transparent;
+  border-image: linear-gradient(135deg, #f3dfae, #a57d3f 40%, #e8cf94 70%, #7d5a2b) 1;
+}
+
+.room-link-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.room-link-kicker {
+  min-width: 52px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--forest-bright);
+}
+
+.room-link-label {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-size: clamp(20px, 2vw, 28px);
+}
+
+.room-link-arrow {
+  color: var(--champagne);
+  transition: translate 0.3s ease;
+}
+
+.room-link:hover .room-link-arrow {
+  translate: 6px 0;
+}
+
+.room-links-cards ol {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(16px, 2vw, 28px);
+}
+
+.room-links-cards .room-link {
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "img img" "kicker kicker" "label arrow";
+  align-items: end;
+  gap: 10px;
+  height: 100%;
+  padding: 22px;
+  border: 1px solid var(--rule-strong);
+  background: linear-gradient(160deg, rgba(42, 16, 20, 0.5), rgba(42, 16, 20, 0.15));
+}
+
+.room-links-cards .room-link-img {
+  grid-area: img;
+  width: 100%;
+  height: 160px;
+}
+
+.room-links-cards .room-link-kicker {
+  grid-area: kicker;
+}
+
+.room-links-cards .room-link-label {
+  grid-area: label;
+}
+
+.room-links-cards .room-link-arrow {
+  grid-area: arrow;
+}
+
+.entry-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 20px;
+  padding-block: 30px 70px;
+  border-top: 1px solid var(--rule);
+  font-family: var(--serif);
+}
+
+.entry-nav a {
+  color: var(--champagne-bright);
+  text-decoration: none;
+}
+
+.entry-nav-next {
+  text-align: right;
+}
+
+.entry-nav-all {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* interests: one sentence, very large, over a drifting script word */
+.interest-statement {
+  position: relative;
+  overflow: hidden;
+  overflow: clip;
+  padding-block: clamp(90px, 11vw, 170px);
+  background: radial-gradient(80% 90% at 30% 40%, #5c2a33 0%, var(--burgundy) 60%, var(--burgundy-deep) 100%);
+}
+
+.interest-script {
+  position: absolute;
+  left: -2vw;
+  top: 10%;
+  margin: 0;
+  font-size: clamp(140px, 22vw, 340px);
+  opacity: 0.14;
+  color: var(--champagne);
+}
+
+.interest-text {
+  position: relative;
+  max-width: 22ch;
+  margin: 0;
+  font-family: var(--editorial);
+  font-style: italic;
+  font-size: clamp(36px, 5vw, 76px);
+  line-height: 1.04;
+  color: var(--ivory);
+}
+
+[data-lang="zh"] .interest-text {
+  font-family: var(--zh-serif);
+  font-style: normal;
+  max-width: 16em;
+  font-size: clamp(28px, 3.6vw, 52px);
+  line-height: 1.35;
+}
+
+.interest-1 .interest-text {
+  margin-left: auto;
+  text-align: right;
+}
+
+.interest-2 .interest-text {
+  margin-inline: auto;
+  text-align: center;
+  font-family: var(--display);
+  font-style: normal;
+}
+
+/* values: a page of empty wall, one numeral, one sentence */
+.value-page {
+  position: relative;
+  min-height: 86vh;
+  display: grid;
+  align-content: center;
+  gap: 18px;
+  padding: clamp(80px, 10vw, 140px) clamp(24px, 8vw, 140px);
+  background: radial-gradient(70% 70% at 50% 40%, #4c1f27 0%, var(--burgundy-deep) 70%, var(--burgundy-ink) 100%);
+}
+
+.value-left {
+  justify-items: start;
+}
+
+.value-right {
+  justify-items: end;
+  text-align: right;
+}
+
+.value-center {
+  justify-items: center;
+  text-align: center;
+}
+
+.value-numeral {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(120px, 18vw, 280px);
+  line-height: 0.85;
+  background: linear-gradient(170deg, #f6e7c4 0%, #c5a477 40%, #7d5a2b 70%, #e8d3a8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.value-title {
+  margin: 0;
+  font-family: var(--script);
+  font-weight: 400;
+  font-size: clamp(44px, 6vw, 92px);
+  line-height: 1.05;
+  color: var(--champagne-bright);
+}
+
+[data-lang="zh"] .value-title {
+  font-family: var(--zh-serif);
+  font-size: clamp(32px, 4vw, 56px);
+}
+
+.value-text {
+  max-width: 34ch;
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(20px, 1.8vw, 26px);
+  line-height: 1.5;
+  color: var(--gold);
+}
+
+/* moments: a diary page */
+.moment-body {
+  position: relative;
+  padding-block: clamp(60px, 8vw, 120px);
+}
+
+.moment-points {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(30px, 4vw, 56px);
+  max-width: 900px;
+}
+
+.moment-points li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(18px, 3vw, 40px);
+  align-items: baseline;
+}
+
+.moment-num {
+  font-family: var(--display);
+  font-size: clamp(40px, 5vw, 72px);
+  line-height: 1;
+  color: var(--champagne);
+}
+
+.moment-points p {
+  margin: 0;
+  font-family: var(--editorial);
+  font-style: italic;
+  font-size: clamp(22px, 2.4vw, 34px);
+  line-height: 1.3;
+  color: var(--ivory);
+}
+
+.moment-1 .moment-points {
+  margin-left: auto;
+}
+
+.moment-2 .moment-points p {
+  font-family: var(--serif);
+  font-style: normal;
+}
+
+.moment-tags {
+  margin-top: 40px;
+}
+
+.moment-edge {
+  right: 0;
+}
+
+.moment-hand {
+  margin-top: 20px;
+}
+
+/* projects: a sheet on the workbench */
+.project-sheet {
+  position: relative;
+  overflow: hidden;
+  overflow: clip;
+  padding-block: clamp(80px, 10vw, 150px);
+  background: linear-gradient(180deg, var(--burgundy-deep), var(--burgundy));
+}
+
+.project-id-word {
+  position: absolute;
+  right: -2vw;
+  bottom: -4vw;
+  margin: 0;
+  font-size: clamp(160px, 26vw, 420px);
+  -webkit-text-stroke-color: rgba(220, 194, 154, 0.22);
+}
+
+.project-sheet-grid {
+  position: relative;
+  display: grid;
+  gap: 24px;
+}
+
+.project-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.project-note {
+  max-width: 24ch;
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(34px, 4.6vw, 70px);
+  line-height: 1.08;
+  color: var(--ivory);
+}
+
+[data-lang="zh"] .project-note {
+  font-family: var(--zh-serif);
+  max-width: 16em;
+  font-size: clamp(26px, 3.2vw, 46px);
+  line-height: 1.4;
+}
+
+/* recognition: a certificate on pale paper */
+.cert-room {
+  padding: clamp(80px, 10vw, 150px) clamp(20px, 6vw, 100px);
+  background: radial-gradient(60% 60% at 50% 40%, #5c2a33 0%, var(--burgundy-deep) 65%, var(--burgundy-ink) 100%);
+  color: var(--burgundy);
+}
+
+.cert {
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: clamp(50px, 7vw, 100px) clamp(30px, 6vw, 90px);
+  text-align: center;
+  background: #fdfbf6;
+  border: 12px solid transparent;
+  border-image: linear-gradient(135deg, #f3dfae, #a57d3f 30%, #e8cf94 52%, #7d5a2b 78%, #d8bb82) 1;
+  outline: 1px solid rgba(84, 37, 45, 0.25);
+  outline-offset: -26px;
+  box-shadow: 0 50px 80px -40px rgba(84, 37, 45, 0.45);
+}
+
+.cert-kicker {
+  color: var(--forest-mid);
+}
+
+.cert-title {
+  margin: 16px 0 8px;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(34px, 4.4vw, 62px);
+  line-height: 1.05;
+  color: var(--burgundy-ink);
+}
+
+.cert-fleuron {
+  width: 120px;
+  margin: 10px auto 20px;
+  color: var(--champagne-deep);
+}
+
+.cert-award {
+  font-family: var(--script);
+  font-size: clamp(30px, 3.4vw, 48px);
+  color: var(--burgundy);
+}
+
+.cert-work {
+  margin: 18px auto;
+  max-width: 30ch;
+  font-family: var(--editorial);
+  font-style: italic;
+  font-size: clamp(22px, 2.2vw, 30px);
+  line-height: 1.3;
+  color: var(--burgundy-ink);
+}
+
+.cert-note {
+  max-width: 50ch;
+  margin: 0 auto;
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.6;
+  color: rgba(58, 22, 28, 0.85);
+}
+
+.cert-stamp {
+  position: absolute;
+  right: -40px;
+  bottom: -40px;
+  width: clamp(110px, 12vw, 160px);
+  rotate: -12deg;
+  color: var(--burgundy);
+}
+
+.cert-back {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.cert-back a {
+  color: var(--champagne-bright);
+}
+
+/* catalogue letters: a ledger with dotted leaders */
+.letter-ledger {
+  padding-block: clamp(50px, 7vw, 100px);
+}
+
+.letter-ledger ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  columns: 2 420px;
+  column-gap: clamp(30px, 5vw, 80px);
+}
+
+.letter-row {
+  display: grid;
+  grid-template-columns: 64px auto 1fr auto;
+  align-items: baseline;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule);
+  break-inside: avoid;
+  color: var(--ivory);
+  text-decoration: none;
+}
+
+.letter-id {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--forest-bright);
+}
+
+.letter-title {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-size: 19px;
+}
+
+.letter-dots {
+  border-bottom: 1px dotted rgba(197, 164, 119, 0.4);
+  transform: translateY(-5px);
+}
+
+.letter-note {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--gold-soft);
+}
+
+.letter-row:hover .letter-title {
+  color: var(--champagne-bright);
+}
+
+/* eras: watches in velvet boxes */
+.era-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px 26px;
+  padding-block: 24px 0;
+}
+
+.era-strip-link {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-size: 20px;
+  color: var(--champagne-bright);
+}
+
+.era-case {
+  padding-block: clamp(50px, 7vw, 110px);
+}
+
+.era-case ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(30px, 4vw, 60px);
+}
+
+.era-few ol {
+  grid-template-columns: minmax(0, 520px);
+  justify-content: center;
+}
+
+.era-item-2 {
+  translate: 0 clamp(30px, 4vw, 70px);
+}
+
+.era-link {
+  display: grid;
+  gap: 14px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.era-velvet {
+  display: block;
+  padding: clamp(14px, 1.6vw, 22px);
+  background: radial-gradient(120% 120% at 30% 20%, #2f5544 0%, var(--forest) 66%, #142a1f 100%);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5), 0 40px 60px -36px rgba(0, 0, 0, 0.8);
+}
+
+.era-velvet img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.era-cap {
+  display: grid;
+  gap: 3px;
+}
+
+.era-model {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-size: 22px;
+  color: var(--ivory);
+}
+
+.era-era {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--gold-soft);
+}
+
+@media (max-width: 700px) {
+  .entry-nav {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .entry-nav-next {
+    text-align: center;
+  }
+
+  .era-item-2 {
+    translate: none;
+  }
+
+  .cert-stamp {
+    right: -10px;
+    bottom: -30px;
+  }
+}
+
+.plate-page.has-scene .plate-title-zh {
+  color: #ecd9b0;
+}

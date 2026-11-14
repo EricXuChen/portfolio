@@ -1,9 +1,11 @@
 import type { MetadataRoute } from "next";
-import { artHref, artworks } from "@/content/artwork";
+import { SERIES, SKETCHBOOK_HREF, artHref, artYears, artworks, seriesHref, yearHref, type ArtKind } from "@/content/artwork";
 import { chapterHref, chapters } from "@/content/experiences";
 import { site } from "@/content/site";
 import { publicOnly } from "@/content/types";
 import { collection, pieceHref } from "@/content/watches";
+import { ERAS, INTERESTS, LETTERS, PROJECT_PAGES, VALUE_SLUGS, eraHref, interestHref, letterHref, momentHref, projectHref, valueHref } from "@/content/pages";
+import { timeline } from "@/content/experiences";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date(site.lastUpdated);
@@ -31,5 +33,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "yearly" as const,
     priority: 0.5,
   }));
-  return [...sections, ...pieces, ...plates, ...chaps];
+  const rooms = [
+    ...(Object.keys(SERIES) as ArtKind[]).map(seriesHref),
+    ...artYears(publicOnly(artworks)).map(yearHref),
+    SKETCHBOOK_HREF,
+  ].map((path) => ({ url: `${site.url}${path}`, lastModified, changeFrequency: "monthly" as const, priority: 0.6 }));
+  const more = [
+    ...INTERESTS.map((i) => interestHref(i.slug)),
+    ...VALUE_SLUGS.map(valueHref),
+    ...publicOnly(timeline).map((e) => momentHref(e.id)),
+    ...PROJECT_PAGES.map((p) => projectHref(p.slug)),
+    "/recognition",
+    ...Object.keys(LETTERS).map(letterHref),
+    ...ERAS.map((e) => eraHref(e.slug)),
+  ].map((path) => ({ url: `${site.url}${path}`, lastModified, changeFrequency: "monthly" as const, priority: 0.5 }));
+  return [...sections, ...pieces, ...plates, ...chaps, ...rooms, ...more];
 }

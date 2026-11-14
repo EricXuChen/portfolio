@@ -9,6 +9,9 @@ import { type Artwork, artworkIntro, artworks } from "@/content/artwork";
 import { blurFor } from "@/content/placeholders";
 import { publicOnly } from "@/content/types";
 import PageMast from "@/components/PageMast";
+import Scene from "@/components/Scene";
+import { PAGE_SCENES } from "@/content/scenes";
+import StudioRooms from "@/components/StudioRooms";
 
 export const metadata: Metadata = {
   title: "Artwork & Creativity",
@@ -50,6 +53,7 @@ export default function ArtworkPage() {
     <>
       <PageMast
         word="Studio"
+        scene={PAGE_SCENES.artwork.mast}
         layout="centered"
         metal
         num="IV"
@@ -167,7 +171,8 @@ export default function ArtworkPage() {
         </section>
       ) : null}
 
-      <section className="wrap section salon" aria-label="Gallery">
+      <section className="wrap section salon has-scene" aria-label="Gallery">
+        <Scene use={PAGE_SCENES.artwork.salon} />
         <div className="section-head">
           <Kicker num="B" v={{ en: "Gallery", zh: "画廊" }} />
           <h2 className="h-section">
@@ -189,6 +194,8 @@ export default function ArtworkPage() {
         </div>
         <Gallery items={drafts.map(toItem)} label="Drafts" />
       </section>
+
+      <StudioRooms here="/artwork" />
 
       <nav className="wrap next-link" aria-label="Back to start">
         <Link href="/" className="text-link">

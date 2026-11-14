@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import type { Bi } from "@/content/types";
+import type { SceneUse } from "@/content/scenes";
+import Scene from "./Scene";
 import { Stamp } from "./Deco";
 import { GiantWord, Note } from "./Editorial";
 import { T } from "./T";
@@ -19,6 +21,7 @@ export default function PageMast({
   stamp,
   metal = false,
   layout = "classic",
+  scene,
   children,
 }: {
   word: string;
@@ -33,10 +36,13 @@ export default function PageMast({
   metal?: boolean;
   /** Each page opens differently: classic, overlap, split, vertical, centered or frame. */
   layout?: "classic" | "overlap" | "split" | "vertical" | "centered" | "frame";
+  /** A trip photograph faded into the wall behind the opening. */
+  scene?: SceneUse;
   children?: ReactNode;
 }) {
   return (
-    <header className={`mast mast-${tone} mast-voice-${voice} mast-layout-${layout}`}>
+    <header className={`mast mast-${tone} mast-voice-${voice} mast-layout-${layout}${scene ? " has-scene" : ""}`}>
+      {scene ? <Scene use={scene} eager /> : null}
       <div className="wrap mast-top">
         <Note>
           {num} — <T v={kicker} />

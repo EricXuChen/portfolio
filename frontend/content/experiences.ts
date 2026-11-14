@@ -64,8 +64,8 @@ export const timeline: TimelineEntry[] = [
     categories: ["education", "future"],
     points: [
       {
-        en: "Learned to decide by comparison — PanoReserve against PanoMatic, Wallapop against Vinted — and to ask why one option is better, not only which.",
-        zh: "学会通过比较做决定——PanoReserve 对比 PanoMatic，Wallapop 对比 Vinted——不只问哪个更好，也追问为什么更好。",
+        en: "Learned to decide by comparison — two versions of the same watch, two marketplaces for selling it — and to ask why one option is better, not only which.",
+        zh: "学会通过比较做决定——同一款表的两个版本、两个出售它的平台——不只问哪个更好，也追问为什么更好。",
       },
       {
         en: "Began researching universities and business programmes in Europe.",

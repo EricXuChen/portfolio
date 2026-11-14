@@ -5,10 +5,12 @@ import ArtImage from "@/components/ArtImage";
 import { Fleuron, Stamp } from "@/components/Deco";
 import { GiantWord, Note } from "@/components/Editorial";
 import { T } from "@/components/T";
-import { artHref, artworks, roman } from "@/content/artwork";
+import { artHref, artworks, plateHang, roman } from "@/content/artwork";
 import { blurFor } from "@/content/placeholders";
 import type { Bi } from "@/content/types";
 import { publicOnly } from "@/content/types";
+import Scene from "@/components/Scene";
+import { PAGE_SCENES, PLATE_TEXTURES, type SceneUse } from "@/content/scenes";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -51,16 +53,25 @@ export default async function PlatePage({ params }: Props) {
   const isDraft = a.status === "draft";
 
   const texts: { label: Bi; v?: Bi }[] = [
+    { label: { en: "On the sheet", zh: "画面" }, v: a.look },
     { label: { en: "Concept", zh: "创作理念" }, v: a.concept },
     { label: { en: "Inspiration", zh: "灵感" }, v: a.inspiration },
     { label: { en: "Process", zh: "过程" }, v: a.process },
     { label: { en: "Reflection", zh: "体会" }, v: a.reflection },
+    { label: { en: "Technique", zh: "手法" }, v: a.technique },
   ];
   const written = texts.filter((t) => t.v);
+  const hang = plateHang(a, index);
+  /* the wall behind the work: a pattern, the grain of old paper, or nothing at all */
+  const wall: SceneUse | null =
+    hang === "spotlight" || hang === "museum"
+        ? null
+        : (PLATE_TEXTURES[index % PLATE_TEXTURES.length] ?? PAGE_SCENES.plate.page);
 
   return (
     <>
-      <article className={`plate-page${isDraft ? " is-draft" : ""}`}>
+      <article className={`plate-page plate-hang-${hang}${wall ? " has-scene" : ""}${isDraft ? " is-draft" : ""}`}>
+        {wall ? <Scene use={wall} eager /> : null}
         <GiantWord word={`PL. ${plate}`} outline className="plate-word" drift={-0.1} />
 
         <div className="wrap plate-top">
@@ -82,6 +93,12 @@ export default async function PlatePage({ params }: Props) {
           {cover ? (
             <div className="plate-figure">
               <div className="plate-mount">
+                {hang === "pinned" ? (
+                  <>
+                    <span className="tape tape-1" aria-hidden="true" />
+                    <span className="tape tape-2" aria-hidden="true" />
+                  </>
+                ) : null}
                 <ArtImage
                   src={cover.src}
                   width={cover.width}
@@ -98,9 +115,24 @@ export default async function PlatePage({ params }: Props) {
                   }
                 />
               </div>
-              <p className="plate-label">
-                <b>Pl. {plate}</b> {a.id}
-              </p>
+              {hang === "diptych" ? (
+                <div className="plate-loupe-wrap" aria-hidden="true">
+                  <div className="plate-loupe" style={{ backgroundImage: `url(${cover.src})`, backgroundPosition: a.detailPos ?? "42% 45%" }} />
+                  <p className="mono-note plate-loupe-note">× 3.5 — detail</p>
+                </div>
+              ) : null}
+              {hang === "museum" ? (
+                <p className="plate-plaque">
+                  <span>{a.id}</span>
+                  <b>{a.title}</b>
+                  {a.medium ? <T v={a.medium} /> : null}
+                  {a.year ? <span>{a.year}</span> : null}
+                </p>
+              ) : (
+                <p className="plate-label">
+                  <b>Pl. {plate}</b> {a.id}
+                </p>
+              )}
             </div>
           ) : null}
 
@@ -167,6 +199,21 @@ export default async function PlatePage({ params }: Props) {
                 </p>
               </section>
             ))}
+
+            {a.details?.length ? (
+              <section className="plate-section plate-details-list">
+                <h2 className="mono-note">
+                  <T v={{ en: "Look closer", zh: "细看" }} />
+                </h2>
+                <ul className="plate-symbols">
+                  {a.details.map((d) => (
+                    <li key={d.en}>
+                      <T v={d} />
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
 
             {a.symbols?.length ? (
               <section className="plate-section">
