@@ -11,6 +11,7 @@ import PageMast from "@/components/PageMast";
 import Scene from "@/components/Scene";
 import { PAGE_SCENES } from "@/content/scenes";
 import Interlude from "@/components/Interlude";
+import DreamRoom from "@/components/DreamRoom";
 
 export const metadata: Metadata = {
   title: "Life Experiences",
@@ -162,6 +163,8 @@ export default function ExperiencesPage() {
           ))}
         </div>
       </section>
+
+      <DreamRoom variant="pool" stamp="03:17:00" caption={{ en: "the water remembers every hour", zh: "水记得每一个小时" }} />
 
       <Interlude align="right" />
 

@@ -12,6 +12,7 @@ import { PAGE_SCENES } from "@/content/scenes";
 import { Flute, Stave } from "@/components/Flute";
 import Interlude from "@/components/Interlude";
 import { INTERESTS, VALUE_SLUGS, interestHref, valueHref } from "@/content/pages";
+import DreamRoom from "@/components/DreamRoom";
 
 export const metadata: Metadata = {
   title: "About",
@@ -111,6 +112,8 @@ export default function AboutPage() {
           长笛
         </p>
       </section>
+
+      <DreamRoom variant="sky" stamp="00:00:00" caption={{ en: "you have been here before", zh: "你以前来过这里" }} />
 
       <section className="wrap section quote-plate band-ivory">
         {desk ? (

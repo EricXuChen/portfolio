@@ -11,7 +11,7 @@ export const site = {
   edition: { en: "Barcelona · 2026", zh: "巴塞罗那 · 2026" } as Bi,
   description:
     "The personal archive of Eric Xu, Barcelona — a watch collection, a vintage watch business, life experiences and artwork.",
-  lastUpdated: "2026-11-11",
+  lastUpdated: "2026-11-22",
   /* Filled in automatically by Vercel at build time; localhost when running on this Mac. */
   url: process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`

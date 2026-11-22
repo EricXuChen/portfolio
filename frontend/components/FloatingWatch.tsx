@@ -169,7 +169,7 @@ export default function FloatingWatch() {
         <div className="float-sticky">
           <div ref={obj} className="float-obj">
             <Chain />
-            <Image src={img.src} width={img.width} height={img.height} alt={img.alt} sizes="(max-width: 960px) 56vw, 380px" />
+            <Image src={img.src} width={img.width} height={img.height} alt={img.alt} sizes="(max-width: 960px) 56vw, 380px" data-swing="" />
             <span className="float-sheen" aria-hidden="true" />
           </div>
         </div>

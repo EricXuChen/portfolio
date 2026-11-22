@@ -7,6 +7,7 @@ import { Note } from "@/components/Editorial";
 import PageMast from "@/components/PageMast";
 import { T } from "@/components/T";
 import type { Bi } from "@/content/types";
+import DreamEye from "@/components/DreamEye";
 
 export const metadata: Metadata = {
   title: "Colophon",
@@ -33,6 +34,7 @@ const INKS: { name: string; hex: string; role: Bi }[] = [
 export default function ColophonPage() {
   return (
     <>
+      <DreamEye className="colo-eye" />
       <PageMast
         word="Colophon."
         metal

@@ -8,6 +8,7 @@ import { DecoRule, Sunburst } from "./Deco";
 import { GuillocheDial } from "./Illustrations";
 import LiveDial from "./LiveDial";
 import { T, dateBi } from "./T";
+import StayClock from "./StayClock";
 
 /** Counts come straight from the content files — never typed in by hand. */
 export function archiveCounts() {
@@ -31,6 +32,7 @@ export default function Footer() {
         <p className="footer-tag">
           <T v={{ en: "Horology · Entrepreneurship · Art", zh: "制表 · 创业 · 艺术" }} />
         </p>
+        <StayClock />
       </div>
 
       <div className="footer-inner">

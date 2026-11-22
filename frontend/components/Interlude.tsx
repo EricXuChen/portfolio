@@ -6,9 +6,18 @@ import Image from "next/image";
  */
 export default function Interlude({ align = "right", tone = "deep" }: { align?: "left" | "center" | "right"; tone?: "deep" | "ink" }) {
   return (
-    <section className={`interlude interlude-${align} interlude-${tone}`} aria-hidden="true">
-      <span className="interlude-chain" />
-      <Image className="interlude-watch" src="/objects/gold-pocket-watch.png" width={619} height={860} alt="" sizes="110px" />
+    <section className={`interlude interlude-${align} interlude-${tone}`} aria-label="A pause">
+      <span className="interlude-chain" aria-hidden="true" />
+      <Image
+        className="interlude-watch"
+        src="/objects/gold-pocket-watch.png"
+        width={619}
+        height={860}
+        alt="A small pocket watch — click to set it swinging"
+        sizes="110px"
+        data-swing=""
+        tabIndex={0}
+      />
     </section>
   );
 }

@@ -92,7 +92,7 @@ export default async function PlatePage({ params }: Props) {
         <div className="wrap plate-grid">
           {cover ? (
             <div className="plate-figure">
-              <div className="plate-mount">
+              <div className="plate-mount" data-tilt="">
                 {hang === "pinned" ? (
                   <>
                     <span className="tape tape-1" aria-hidden="true" />

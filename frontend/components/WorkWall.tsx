@@ -20,7 +20,7 @@ export default function WorkWall({ works, hang = "salon" }: { works: Artwork[]; 
         return (
           <li key={a.slug} className={`ww-item ww-item-${(i % 5) + 1}`}>
             <Link href={artHref(a.slug)} className="ww-link">
-              <span className={`ww-frame${i % 3 === 1 ? " ww-velvet" : ""}`}>
+              <span className={`ww-frame${i % 3 === 1 ? " ww-velvet" : ""}`} data-tilt="">
                 <Image
                   src={img.src}
                   width={img.width}

@@ -4,6 +4,7 @@ import Nav from "@/components/Nav";
 import Reveal from "@/components/Reveal";
 import { site } from "@/content/site";
 import "./globals.css";
+import Interactions from "@/components/Interactions";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
         <Footer />
         <Reveal />
+        <Interactions />
       </body>
     </html>
   );

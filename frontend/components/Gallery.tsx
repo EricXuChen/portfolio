@@ -106,7 +106,7 @@ export default function Gallery({ items, filters = false, label }: { items: Gall
               hidden={i < 0}
               style={{ "--ar": (cover.width / cover.height).toFixed(3) } as React.CSSProperties}
             >
-              <button type="button" className="g-frame" onClick={() => show(i)} aria-label={`${it.id} · ${it.title} — open`}>
+              <button type="button" className="g-frame" data-tilt="" onClick={() => show(i)} aria-label={`${it.id} · ${it.title} — open`}>
                 <Image
                   src={cover.src}
                   width={cover.width}

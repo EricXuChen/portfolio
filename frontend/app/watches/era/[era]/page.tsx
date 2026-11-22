@@ -53,7 +53,7 @@ export default async function EraPage({ params }: Props) {
           {watches.map((w, i) => (
             <li key={w.id} className={`era-item era-item-${(i % 3) + 1}`}>
               <Link href={pieceHref(w.id)} className="era-link">
-                <span className="era-velvet">
+                <span className="era-velvet" data-tilt="">
                   <Image
                     src={w.image.src}
                     width={w.image.width}

@@ -17,6 +17,8 @@ import { publicOnly } from "@/content/types";
 import { PAGE_SCENES } from "@/content/scenes";
 import { collection, pieceHref } from "@/content/watches";
 import Interlude from "@/components/Interlude";
+import DreamRoom from "@/components/DreamRoom";
+import RetroWindow from "@/components/RetroWindow";
 
 /* Three pieces from the collection, each shown at a different scale. */
 const TEASER = [
@@ -231,6 +233,8 @@ export default function HomePage() {
       </figure>
 
       {/* ---------------------------------------------------------- selected project */}
+      <DreamRoom variant="hallway" stamp="04:44:00" caption={{ en: "this hallway is longer than it looks", zh: "这条走廊比看起来更长" }} />
+
       <section className="ed-project" aria-label="Selected project">
         <div className="ed-project-media">
           <Image
@@ -375,6 +379,17 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <RetroWindow
+        title="Notice"
+        idleSeconds={45}
+        storageKey="exu-still-there"
+        buttons={[
+          { label: <T v={{ en: "yes", zh: "在" }} /> },
+          { label: <T v={{ en: "yes", zh: "在" }} /> },
+        ]}
+      >
+        <T v={{ en: "are you still there?", zh: "你还在吗？" }} />
+      </RetroWindow>
     </>
   );
 }
