@@ -113,7 +113,7 @@ export default function AboutPage() {
         </p>
       </section>
 
-      <DreamRoom variant="sky" stamp="00:00:00" caption={{ en: "you have been here before", zh: "你以前来过这里" }} />
+      <DreamRoom id="sky" />
 
       <section className="wrap section quote-plate band-ivory">
         {desk ? (

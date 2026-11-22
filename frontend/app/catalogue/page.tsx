@@ -10,6 +10,7 @@ import { PAGE_SCENES } from "@/content/scenes";
 import Scene from "@/components/Scene";
 import { catalogueRows } from "@/content/catalogue";
 import { letterHref } from "@/content/pages";
+import DreamRoom from "@/components/DreamRoom";
 
 export const metadata: Metadata = {
   title: "The Catalogue",
@@ -104,6 +105,7 @@ export default function CataloguePage() {
         </p>
       </div>
       <Scene use={PAGE_SCENES.catalogue.frieze} />
+      <DreamRoom id="tv" />
     </>
   );
 }

@@ -6,6 +6,7 @@ import { publicOnly } from "@/content/types";
 import { collection, pieceHref } from "@/content/watches";
 import { ERAS, INTERESTS, LETTERS, PROJECT_PAGES, VALUE_SLUGS, eraHref, interestHref, letterHref, momentHref, projectHref, valueHref } from "@/content/pages";
 import { timeline } from "@/content/experiences";
+import { DREAM_HREF, DREAM_ROOMS, dreamHref } from "@/content/dream";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date(site.lastUpdated);
@@ -46,6 +47,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/recognition",
     ...Object.keys(LETTERS).map(letterHref),
     ...ERAS.map((e) => eraHref(e.slug)),
+    DREAM_HREF,
+    ...DREAM_ROOMS.map((r) => dreamHref(r.id)),
   ].map((path) => ({ url: `${site.url}${path}`, lastModified, changeFrequency: "monthly" as const, priority: 0.5 }));
   return [...sections, ...pieces, ...plates, ...chaps, ...rooms, ...more];
 }

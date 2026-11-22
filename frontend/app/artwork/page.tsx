@@ -12,6 +12,7 @@ import PageMast from "@/components/PageMast";
 import Scene from "@/components/Scene";
 import { PAGE_SCENES } from "@/content/scenes";
 import StudioRooms from "@/components/StudioRooms";
+import DreamRoom from "@/components/DreamRoom";
 
 export const metadata: Metadata = {
   title: "Artwork & Creativity",
@@ -194,6 +195,8 @@ export default function ArtworkPage() {
         </div>
         <Gallery items={drafts.map(toItem)} label="Drafts" />
       </section>
+
+      <DreamRoom id="frames" />
 
       <StudioRooms here="/artwork" />
 

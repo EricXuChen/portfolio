@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Rocaille, Stamp } from "@/components/Deco";
 import DecorWatch from "@/components/DecorWatch";
-import { Edge, GiantWord, Hand, Note } from "@/components/Editorial";
+import { Edge, GiantWord, Hand, Letters, Note } from "@/components/Editorial";
 import { Figure } from "@/components/Figure";
 import FloatingWatch from "@/components/FloatingWatch";
 import Scene from "@/components/Scene";
@@ -42,17 +42,22 @@ export default function HomePage() {
   return (
     <>
       {/* ---------------------------------------------------------- cover */}
-      <section className="ed-cover has-scene" aria-label="Eric Xu">
+      <section className="ed-cover has-scene has-ribbon" aria-label="Eric Xu">
         <Scene use={PAGE_SCENES.home.cover} eager />
+        <span className="ribbon ribbon-cover" aria-hidden="true" />
         <div className="ed-cover-top wrap">
           <Note>Nº 001 — <T v={{ en: "Personal archive", zh: "个人档案" }} /></Note>
           <Note className="ed-cover-coord">41.39° N · 2.17° E — Barcelona</Note>
           <Note className="ed-cover-year">MMXXVI</Note>
         </div>
 
-        <h1 className="ed-masthead" aria-label="Eric Xu">
-          <span className="ed-masthead-first">Eric</span>
-          <span className="ed-masthead-last">Xu</span>
+        <h1 className="ed-masthead" aria-label="Eric Xu" data-letters="">
+          <span className="ed-masthead-first" aria-hidden="true">
+            <Letters text="Eric" />
+          </span>
+          <span className="ed-masthead-last" aria-hidden="true">
+            <span className="fl">Xu</span>
+          </span>
         </h1>
 
         <div className="ed-cover-body wrap">
@@ -233,7 +238,7 @@ export default function HomePage() {
       </figure>
 
       {/* ---------------------------------------------------------- selected project */}
-      <DreamRoom variant="hallway" stamp="04:44:00" caption={{ en: "this hallway is longer than it looks", zh: "这条走廊比看起来更长" }} />
+      <DreamRoom id="hallway" />
 
       <section className="ed-project" aria-label="Selected project">
         <div className="ed-project-media">
@@ -383,6 +388,7 @@ export default function HomePage() {
         title="Notice"
         idleSeconds={45}
         storageKey="exu-still-there"
+        again={[<T key="a" v={{ en: "you closed me. are you still there?", zh: "你把我关掉了。你还在吗？" }} />, <T key="b" v={{ en: "ok. i will be here.", zh: "好的。我会一直在这里。" }} />]}
         buttons={[
           { label: <T v={{ en: "yes", zh: "在" }} /> },
           { label: <T v={{ en: "yes", zh: "在" }} /> },

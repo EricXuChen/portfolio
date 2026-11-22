@@ -11,6 +11,7 @@ import Scene from "@/components/Scene";
 import { PAGE_SCENES } from "@/content/scenes";
 import Interlude from "@/components/Interlude";
 import { ERAS, eraHref } from "@/content/pages";
+import DreamRoom from "@/components/DreamRoom";
 
 export const metadata: Metadata = {
   title: "The Collection",
@@ -181,6 +182,8 @@ export default function CollectionPage() {
           <T v={collectionIntro.footnote} />
         </p>
       </section>
+
+      <DreamRoom id="stairs" />
 
       <Interlude align="left" />
 

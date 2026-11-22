@@ -41,8 +41,9 @@ export default function PageMast({
   children?: ReactNode;
 }) {
   return (
-    <header className={`mast mast-${tone} mast-voice-${voice} mast-layout-${layout}${scene ? " has-scene" : ""}`}>
+    <header className={`mast mast-${tone} mast-voice-${voice} mast-layout-${layout} has-ribbon${scene ? " has-scene" : ""}`}>
       {scene ? <Scene use={scene} eager /> : null}
+      <span className="ribbon" aria-hidden="true" />
       <div className="wrap mast-top">
         <Note>
           {num} — <T v={kicker} />

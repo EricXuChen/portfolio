@@ -164,7 +164,7 @@ export default function ExperiencesPage() {
         </div>
       </section>
 
-      <DreamRoom variant="pool" stamp="03:17:00" caption={{ en: "the water remembers every hour", zh: "水记得每一个小时" }} />
+      <DreamRoom id="pool" />
 
       <Interlude align="right" />
 

@@ -12,6 +12,7 @@ import type { Bi } from "@/content/types";
 import { PAGE_SCENES } from "@/content/scenes";
 import Scene from "@/components/Scene";
 import { PROJECT_PAGES, projectHref } from "@/content/pages";
+import DreamRoom from "@/components/DreamRoom";
 
 export const metadata: Metadata = {
   title: "Ongoing Projects",
@@ -173,6 +174,8 @@ export default function ProjectsPage() {
         </section>
         </>
       ) : null}
+
+      <DreamRoom id="doors" />
 
       <Fleuron className="fleuron fleuron-gap" />
     </>

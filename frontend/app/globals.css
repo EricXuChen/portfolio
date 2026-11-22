@@ -9178,11 +9178,23 @@ body {
 }
 
 /* =====================================================================
-   INTERACTION — pocket watches swing when clicked; framed works lean
+   PLAY — pendulums, leaning frames, lifting letters, stamps, ribbons
    ===================================================================== */
 [data-swing] {
-  cursor: pointer;
+  cursor: grab;
+  touch-action: pan-y;
+  transform-origin: 50% 0;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+img[data-swing] {
   transform-origin: 50% 2%;
+}
+
+[data-swing]:active {
+  cursor: grabbing;
 }
 
 [data-swing]:focus-visible {
@@ -9190,32 +9202,197 @@ body {
   outline-offset: 6px;
 }
 
-.is-swinging {
-  animation: pendulum 3.4s cubic-bezier(0.37, 0, 0.63, 1) both !important;
+/* the watch on its chain */
+.pend {
+  --ph: clamp(300px, 46vh, 520px);
+  --pw: calc(var(--ph) * 0.72);
+  --chain: 15vh;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  z-index: 4;
+  width: 0;
+  height: 0;
 }
 
-.is-swinging-soft {
-  animation: pendulum-soft 1.2s ease-in-out both !important;
+.pend-mid {
+  --ph: 150px;
+  --chain: 80px;
 }
 
-@keyframes pendulum {
-  0% { rotate: 0deg; }
-  10% { rotate: 22deg; }
-  24% { rotate: -18deg; }
-  38% { rotate: 13deg; }
-  52% { rotate: -9deg; }
-  66% { rotate: 6deg; }
-  80% { rotate: -3deg; }
-  91% { rotate: 1.4deg; }
-  100% { rotate: 0deg; }
+.pend-small {
+  --ph: 104px;
+  --chain: 64px;
 }
 
-@keyframes pendulum-soft {
+.pend-arm {
+  will-change: rotate;
+  position: absolute;
+  top: 0;
+  left: calc(var(--pw) / -2);
+  width: var(--pw);
+  height: calc(var(--chain) + var(--ph));
+}
+
+.pend-arm:not(.is-moving) {
+  animation: pend-idle 7s ease-in-out infinite;
+}
+
+@keyframes pend-idle {
   0%, 100% { rotate: 0deg; }
-  35% { rotate: 6deg; }
-  70% { rotate: -4deg; }
+  25% { rotate: 1.4deg; }
+  75% { rotate: -1.4deg; }
 }
 
+.pend-chain {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 7px;
+  height: calc(var(--chain) + var(--ph) * 0.03);
+  translate: -50% 0;
+  background:
+    radial-gradient(ellipse 2.6px 4.4px at 50% 50%, transparent 58%, #e9d2a2 64%, #9a7a4c 86%, transparent 92%) 0 0 / 7px 9px repeat-y;
+  filter: drop-shadow(0 0 3px rgba(246, 231, 196, 0.25));
+}
+
+.pend-watch {
+  position: absolute;
+  top: var(--chain);
+  left: 0;
+  width: 100%;
+  height: var(--ph);
+}
+
+/* a soft light around the watch (a gradient, not a filter, so swinging stays cheap) */
+.pend-watch::before {
+  content: "";
+  position: absolute;
+  inset: 18% -14% -8%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(246, 222, 190, 0.26), rgba(246, 222, 190, 0) 72%);
+  pointer-events: none;
+}
+
+.pend-watch img {
+  display: block;
+  width: 100%;
+  height: auto;
+  -webkit-user-drag: none;
+}
+
+.pend-hand {
+  will-change: transform;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.pend-sec {
+  transform-box: view-box;
+  transform-origin: 302.5px 560px;
+  animation: sec-tick 60s steps(60) infinite;
+  animation-delay: var(--sec-delay, 0s);
+}
+
+@keyframes sec-tick {
+  to { transform: rotate(360deg); }
+}
+
+/* a bright edge sliding over the crystal while it swings */
+.pend-glint {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 32%;
+  bottom: 6%;
+  border-radius: 50%;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 250, 235, 0.35) 46%, transparent 60%);
+  background-size: 260% 100%;
+  background-position: calc(50% + var(--swing, 0) * 220%) 0;
+  pointer-events: none;
+}
+
+/* its shadow on the wall moves the other way, softly */
+.pend-shadow {
+  position: absolute;
+  top: calc(var(--chain) + var(--ph) * 0.42);
+  left: calc(var(--pw) * -0.36);
+  width: calc(var(--pw) * 0.72);
+  height: calc(var(--ph) * 0.5);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(10, 2, 4, 0.55), transparent);
+  filter: blur(14px);
+  translate: calc(var(--swing, 0) * -1 * (var(--chain) + var(--ph) * 0.6) + var(--pw) * 0.22) calc(var(--ph) * 0.12);
+  pointer-events: none;
+}
+
+/* the small watches on empty walls keep their size, and now swing on their chains */
+.interlude-host {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  width: 0;
+  height: 100%;
+  --iw: clamp(54px, 5.6vw, 92px);
+}
+
+.interlude-left .interlude-host { left: 22%; }
+.interlude-center .interlude-host { left: 50%; }
+.interlude-right .interlude-host { left: 74%; }
+
+.interlude .interlude-arm {
+  will-change: rotate;
+  position: absolute;
+  top: 0;
+  left: calc(var(--iw) / -2);
+  width: var(--iw);
+  height: calc(46vh + var(--iw) * 1.39);
+}
+
+.interlude .interlude-arm:not(.is-moving) {
+  animation: interlude-arm-sway 7s ease-in-out infinite alternate;
+}
+
+@keyframes interlude-arm-sway {
+  from { rotate: -2.5deg; }
+  to { rotate: 2.5deg; }
+}
+
+.interlude .interlude-arm .interlude-chain {
+  left: 50%;
+  top: 0;
+}
+
+.interlude .interlude-arm .interlude-watch {
+  left: 0;
+  top: calc(46vh - 6px);
+  width: 100%;
+  animation: none;
+  rotate: none;
+  -webkit-user-drag: none;
+}
+
+.interlude-shadow {
+  position: absolute;
+  top: calc(46vh + var(--iw) * 0.5);
+  left: calc(var(--iw) * -0.4);
+  width: calc(var(--iw) * 0.8);
+  height: calc(var(--iw) * 0.7);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(10, 2, 4, 0.5), transparent);
+  filter: blur(10px);
+  translate: calc(var(--swing, 0) * -46vh + 16px) 18px;
+  pointer-events: none;
+}
+
+.nf-watch {
+  touch-action: pan-y;
+}
+
+/* framed works: lean, and a ring of light when clicked */
 [data-tilt] {
   transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
   transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
@@ -9225,36 +9402,415 @@ body {
   transition-duration: 0.12s;
 }
 
+[data-tilt].is-glow {
+  animation: frame-glow 1.2s ease-out;
+}
+
+@keyframes frame-glow {
+  0% { box-shadow: 0 0 0 0 rgba(246, 231, 196, 0.85), 0 0 0 0 rgba(246, 231, 196, 0.4); }
+  100% { box-shadow: 0 0 0 26px rgba(246, 231, 196, 0), 0 0 60px 20px rgba(246, 231, 196, 0); }
+}
+
+/* letters that lift near the pointer */
+.fl {
+  display: inline-block;
+  transition: translate 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), rotate 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* split words paint their gold letter by letter (the word itself paints nothing,
+   or a ghost would stay behind where a letter lifted from) */
+.giant-metal[data-letters] {
+  background: none;
+}
+
+.giant-metal .fl {
+  background: linear-gradient(176deg, #f6e7c4 0%, #c5a477 40%, #8f6e3f 64%, #e6cc98 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* archive stamps can be pressed */
+.stamp {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.stamp.is-pressed {
+  animation: stamp-press 0.45s cubic-bezier(0.3, 0.7, 0.3, 1);
+}
+
+@keyframes stamp-press {
+  0% { scale: 1; }
+  35% { scale: 0.86; }
+  100% { scale: 1; }
+}
+
+.stamp-mark {
+  position: absolute;
+  z-index: 2;
+  height: auto;
+  pointer-events: none;
+  animation: stamp-mark 0.5s ease-out both;
+}
+
+@keyframes stamp-mark {
+  from { opacity: 0; scale: 1.15; }
+}
+
+/* the silk ribbons flutter when touched */
+.has-ribbon::after {
+  content: none !important;
+}
+
+.ribbon {
+  position: absolute;
+  top: 0;
+  left: clamp(18px, 4vw, 64px);
+  z-index: 3;
+  width: 16px;
+  height: clamp(110px, 12vw, 170px);
+  background: linear-gradient(90deg, #17301f 0%, var(--forest-mid) 45%, #3d6a52 55%, #17301f 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
+  transform-origin: 50% 0;
+  cursor: pointer;
+}
+
+.ribbon-cover {
+  left: auto;
+  right: clamp(60px, 9vw, 150px);
+  height: clamp(150px, 16vw, 240px);
+}
+
+.ribbon::before {
+  content: "";
+  position: absolute;
+  inset: -10px -18px;
+}
+
+.ribbon:hover,
+.ribbon:active {
+  animation: ribbon-flutter 2.2s ease-in-out;
+}
+
+@keyframes ribbon-flutter {
+  0% { rotate: 0deg; scale: 1 1; }
+  15% { rotate: 9deg; scale: 1.05 0.97; }
+  35% { rotate: -7deg; scale: 0.96 1.02; }
+  55% { rotate: 4deg; }
+  75% { rotate: -2deg; }
+  100% { rotate: 0deg; scale: 1 1; }
+}
+
+/* rococo ornaments turn slowly when the pointer is near */
+.rocaille {
+  transition: rotate 1.6s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.6s;
+}
+
+.rocaille:hover {
+  animation: rocaille-turn 9s linear infinite;
+  filter: drop-shadow(0 0 8px rgba(246, 231, 196, 0.5));
+}
+
+@keyframes rocaille-turn {
+  to { rotate: 360deg; }
+}
+
+.footer-rocaille {
+  width: 130px;
+  margin: 0 auto 18px;
+  color: var(--champagne);
+  opacity: 0.75;
+  cursor: pointer;
+}
+
+/* the footer: a small watch hangs over it, an eye keeps count */
+.footer-pend {
+  left: auto;
+  right: clamp(60px, 11vw, 200px);
+}
+
+.footer-watching {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.footer-watching .stay-clock {
+  margin: 0;
+}
+
+.footer-eye {
+  width: 50px;
+}
+
+.live-dial {
+  cursor: grab;
+  touch-action: none;
+}
+
+.live-dial.is-turning {
+  cursor: grabbing;
+}
+
 /* =====================================================================
-   DREAMCORE × WEIRDCORE — rooms from a dream, in the archive's inks
+   THE DREAM — rooms between the real pages, in the archive's inks
    ===================================================================== */
 .dream {
   position: relative;
   isolation: isolate;
   min-height: 100vh;
+  min-height: 100svh;
   overflow: hidden;
   overflow: clip;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(180deg, #1c0a0d 0%, #3a161c 38%, #6b2f39 70%, #9d5a5f 100%);
+  background: linear-gradient(180deg, #1c0a0d 0%, #3a161c 38%, #6b2f39 72%, #9d5a5f 100%);
+  color: #f6ead2;
 }
 
-/* VHS scanlines and a soft halation over everything in the room */
+.dream-scene {
+  position: absolute;
+  inset: 0;
+}
+
+.dream {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.dream img,
+.dream svg {
+  -webkit-user-drag: none;
+}
+
+.dream-photo,
+.dream-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.dream-photo img {
+  object-fit: cover;
+  filter: saturate(1.05) contrast(0.92) brightness(1.04);
+}
+
+@keyframes dream-breathe-photo {
+  from { scale: 1; }
+  to { scale: 1.045; }
+}
+
+/* the dream's light: too bright in the middle, as if overexposed */
+.dream-bloom {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 38% at 50% 44%, rgba(255, 228, 214, 0.34), transparent 70%),
+    radial-gradient(70% 60% at 50% 50%, rgba(232, 170, 168, 0.16), transparent 75%);
+}
+
+@keyframes dream-bloom {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
+}
+
+/* fog drifting along the floor and through the room */
+.dream-fog {
+  position: absolute;
+  left: -12%;
+  right: -12%;
+  bottom: 0;
+  height: 46%;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(30% 40% at 20% 60%, rgba(240, 206, 200, 0.28), transparent 70%),
+    radial-gradient(34% 42% at 70% 78%, rgba(240, 206, 200, 0.24), transparent 70%),
+    radial-gradient(26% 34% at 46% 30%, rgba(240, 206, 200, 0.16), transparent 70%),
+    linear-gradient(to top, rgba(214, 160, 160, 0.24), transparent 92%);
+  animation: dream-fog 26s ease-in-out infinite alternate;
+}
+
+@keyframes dream-fog {
+  from { translate: -7% 0; }
+  to { translate: 7% -3%; }
+}
+
+/* a still haze over the upper room, so the light looks too bright */
+.dream-bloom::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(240, 206, 200, 0.1), transparent 40%);
+}
+
+/* VHS: scanlines, darker corners */
 .dream-scan {
   position: absolute;
   inset: 0;
-  z-index: 5;
+  z-index: 6;
   pointer-events: none;
   background:
-    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 3px),
-    radial-gradient(80% 70% at 50% 45%, transparent 55%, rgba(14, 4, 6, 0.75) 100%);
-  mix-blend-mode: multiply;
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 3px),
+    radial-gradient(85% 75% at 50% 46%, transparent 55%, rgba(14, 4, 6, 0.78) 100%);
 }
 
-/* the corridor: checkered floor and doorways going on too long */
-.dream-hall {
+.dream-scan::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 14%;
+  top: 0;
+  background: linear-gradient(to bottom, transparent, rgba(255, 236, 220, 0.07) 45%, rgba(255, 236, 220, 0.12) 50%, transparent);
+  animation: vhs-roll 7s linear infinite;
+}
+
+@keyframes vhs-roll {
+  from { translate: 0 -150%; }
+  to { translate: 0 780%; }
+}
+
+/* film grain (also used site-wide, much fainter) */
+.dream-grain,
+.dl-grain {
   position: absolute;
   inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 0.95  0 0 0 0 0.9  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: 0.16;
+}
+
+@keyframes grain {
+  0% { translate: 0 0; }
+  20% { translate: -6% 4%; }
+  40% { translate: 5% -7%; }
+  60% { translate: -3% 8%; }
+  80% { translate: 7% 2%; }
+  100% { translate: 0 0; }
+}
+
+.dream-pend {
+  z-index: 4;
+}
+
+.dream-eye-pos {
+  position: absolute;
+  right: clamp(20px, 7vw, 120px);
+  top: clamp(70px, 11vh, 120px);
+  z-index: 5;
+  width: clamp(96px, 10vw, 150px);
+}
+
+.dream-caption {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(56px, 10vh, 96px);
+  z-index: 7;
+  translate: -50% 0;
+  margin: 0;
+  white-space: nowrap;
+  font-family: var(--mono);
+  font-size: clamp(14px, 1.35vw, 18px);
+  letter-spacing: 0.08em;
+  color: #fbf1df;
+  padding: 5px 14px 6px;
+  background: rgba(28, 10, 13, 0.8);
+  text-shadow: 0 0 4px rgba(30, 10, 14, 0.95);
+}
+
+.dream-vhs {
+  position: absolute;
+  left: clamp(16px, 3vw, 40px);
+  bottom: clamp(16px, 3vh, 30px);
+  z-index: 7;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: #faeed8;
+  padding: 3px 8px;
+  background: rgba(28, 10, 13, 0.78);
+}
+
+.dream-num {
+  margin-left: 18px;
+  opacity: 0.8;
+}
+
+.dream-rec {
+  color: #ff8a7e;
+  animation: dream-rec 1.2s steps(2) infinite;
+}
+
+@keyframes dream-rec {
+  50% { opacity: 0; }
+}
+
+.dream-enter {
+  position: absolute;
+  right: clamp(16px, 3vw, 40px);
+  bottom: clamp(14px, 3vh, 28px);
+  z-index: 7;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+  color: #fbf1df;
+  background: rgba(28, 10, 13, 0.78);
+  border-bottom: 1px solid rgba(246, 231, 196, 0.5);
+  padding: 3px 8px;
+}
+
+.dream-enter:hover {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
+/* a pixel pointer from an old computer, bobbing */
+.dream-arrow {
+  position: absolute;
+  z-index: 7;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  pointer-events: none;
+  animation: arrow-bob 1.6s ease-in-out infinite;
+}
+
+.dream-arrow svg {
+  width: 26px;
+  height: auto;
+  image-rendering: pixelated;
+  filter: drop-shadow(2px 2px 0 rgba(20, 6, 8, 0.6));
+}
+
+.dream-arrow-text {
+  margin-top: 26px;
+  padding: 2px 6px;
+  background: #1c0a0d;
+  color: #fbf1df;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+@keyframes arrow-bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: -5px -5px; }
+}
+
+.dream-arrow-hallway { left: calc(50% + 4vmin); top: 58%; }
+.dream-arrow-doors { left: calc(6vw + clamp(80px, 10vw, 140px) + 8px); top: calc(100% - 12vh - clamp(160px, 20vw, 280px) * 0.55); }
+.dream-arrow-gallery { left: calc(50% + var(--ph, 300px) * 0.3); top: 54%; }
+
+/* ---------------- the hallway ---------------- */
+.dream-hall {
   perspective: 700px;
 }
 
@@ -9264,91 +9820,177 @@ body {
   right: -50%;
   bottom: -10%;
   height: 80%;
+  overflow: hidden;
   transform-origin: 50% 100%;
   transform: rotateX(68deg);
-  background: repeating-conic-gradient(#2a1014 0 25%, #8a6a3c 0 50%) 0 0 / 120px 120px;
   -webkit-mask-image: linear-gradient(to top, #000 30%, transparent 92%);
   mask-image: linear-gradient(to top, #000 30%, transparent 92%);
+}
+
+.dream-floor::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -240px;
+  bottom: 0;
+  background: repeating-conic-gradient(#2a1014 0 25%, #8a6a3c 0 50%) 0 0 / 120px 120px;
   animation: dream-walk 9s linear infinite;
 }
 
 @keyframes dream-walk {
-  to {
-    background-position: 0 240px;
-  }
+  to { translate: 0 240px; }
+}
+
+.dream-hall-walk {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 64%;
+  scale: calc(1 + var(--walk, 0) * 0.55);
+  transition: scale 0.25s linear;
 }
 
 .dream-arch {
   position: absolute;
   left: 50%;
-  bottom: 34%;
   translate: -50% 0;
-  border: 1.5px solid rgba(220, 194, 154, 0.75);
+  border: 1.5px solid rgba(232, 208, 168, 0.8);
   border-bottom: 0;
   border-radius: 999px 999px 0 0;
-  box-shadow: 0 0 24px rgba(236, 214, 170, 0.18), inset 0 0 24px rgba(236, 214, 170, 0.12);
+  box-shadow: 0 0 14px rgba(236, 214, 170, 0.22), inset 0 0 14px rgba(236, 214, 170, 0.14);
 }
 
-.dream-arch-0 { width: 58vmin; height: 66vmin; bottom: 22%; }
-.dream-arch-1 { width: 40vmin; height: 46vmin; bottom: 28%; opacity: 0.8; }
-.dream-arch-2 { width: 27vmin; height: 31vmin; bottom: 31.5%; opacity: 0.65; }
-.dream-arch-3 { width: 18vmin; height: 21vmin; bottom: 33.4%; opacity: 0.5; }
-.dream-arch-4 { width: 12vmin; height: 14vmin; bottom: 34.4%; opacity: 0.4; }
+.dream-arch-0 { width: 70vmin; height: 80vmin; bottom: 18%; }
+.dream-arch-1 { width: 50vmin; height: 58vmin; bottom: 25%; opacity: 0.85; }
+.dream-arch-2 { width: 34vmin; height: 40vmin; bottom: 29.5%; opacity: 0.7; }
+.dream-arch-3 { width: 23vmin; height: 27vmin; bottom: 32.2%; opacity: 0.55; }
+.dream-arch-4 { width: 15vmin; height: 18vmin; bottom: 33.8%; opacity: 0.45; }
+.dream-arch-5 { width: 10vmin; height: 12vmin; bottom: 34.8%; opacity: 0.35; }
 
 .dream-light {
   position: absolute;
   left: 50%;
-  bottom: 34.4%;
+  bottom: 34.8%;
+  width: 10vmin;
+  height: 12vmin;
+  translate: -50% 0;
+  border-radius: 999px 999px 0 0;
+  background: radial-gradient(60% 70% at 50% 70%, #fff6e6 0%, #f0d2b0 40%, rgba(232, 201, 160, 0) 100%);
+  animation: dream-breathe 6s ease-in-out infinite alternate;
+}
+
+.dream-light::after {
+  content: "";
+  position: absolute;
+  inset: -120%;
+  background: radial-gradient(closest-side, rgba(255, 230, 205, 0.4), rgba(255, 230, 205, 0));
+}
+
+@keyframes dream-breathe {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
+}
+
+.dream-room-hallway .dream-pend {
+  left: 24%;
+}
+
+.dream-end-door {
+  position: absolute;
+  left: 50%;
+  bottom: 34%;
+  z-index: 5;
   width: 12vmin;
   height: 14vmin;
   translate: -50% 0;
   border-radius: 999px 999px 0 0;
-  background: radial-gradient(60% 70% at 50% 70%, #fff3dc 0%, #e8c9a0 40%, rgba(232, 201, 160, 0) 100%);
-  filter: blur(2px);
-  animation: dream-breathe 6s ease-in-out infinite alternate;
+  cursor: pointer;
 }
 
-@keyframes dream-breathe {
-  from { opacity: 0.65; }
-  to { opacity: 1; }
+.dream-end-door:focus-visible {
+  outline: 1px dashed #fbf1df;
 }
 
-/* the sky: clouds drifting over burgundy, a few stars */
-.dream-sky-layer {
+/* ---------------- the sky ---------------- */
+.dream-room-sky {
+  background: linear-gradient(180deg, #1c0a0d 0%, #3a161c 30%, #6b2f39 64%, #b06a6c 92%, #c98f8c 100%);
+}
+
+.dream-sun {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(120% 80% at 50% 110%, rgba(232, 180, 170, 0.45), transparent 60%);
+  left: 50%;
+  bottom: -18vh;
+  width: 90vmin;
+  height: 50vmin;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 232, 214, 0.75), rgba(240, 190, 180, 0.32) 55%, transparent);
+  filter: blur(8px);
 }
 
 .dream-cloud {
   position: absolute;
-  width: 34vmin;
-  height: 10vmin;
-  border-radius: 50%;
-  background: rgba(246, 226, 214, 0.42);
-  filter: blur(14px);
-  box-shadow: 10vmin -4vmin 0 2vmin rgba(246, 226, 214, 0.36), 20vmin 1vmin 0 0 rgba(246, 226, 214, 0.3);
-  animation: dream-drift 70s linear infinite;
+  z-index: 3;
+  width: 32vmin;
+  height: 12vmin;
+  animation: dream-drift 90s linear infinite;
 }
 
-.dream-cloud-0 { top: 12%; left: -20%; animation-duration: 90s; }
-.dream-cloud-1 { top: 32%; left: 10%; animation-duration: 120s; animation-delay: -40s; opacity: 0.8; }
-.dream-cloud-2 { top: 58%; left: -30%; animation-duration: 80s; animation-delay: -10s; }
-.dream-cloud-3 { top: 72%; left: 40%; animation-duration: 140s; animation-delay: -70s; opacity: 0.7; }
-.dream-cloud-4 { top: 20%; left: 60%; animation-duration: 110s; animation-delay: -20s; opacity: 0.6; }
+.cloud-push {
+  position: absolute;
+  inset: -60% -40%;
+  display: block;
+  border-radius: 50%;
+  background:
+    radial-gradient(28% 36% at 34% 58%, rgba(248, 228, 218, 0.62), rgba(248, 228, 218, 0) 70%),
+    radial-gradient(30% 42% at 56% 42%, rgba(248, 228, 218, 0.56), rgba(248, 228, 218, 0) 70%),
+    radial-gradient(26% 34% at 74% 60%, rgba(248, 228, 218, 0.5), rgba(248, 228, 218, 0) 70%),
+    radial-gradient(22% 28% at 18% 64%, rgba(248, 228, 218, 0.42), rgba(248, 228, 218, 0) 70%);
+}
+
+.cloud-push[data-cloud],
+.dream-room-sky .cloud-push {
+  cursor: grab;
+  touch-action: none;
+}
+
+.cloud-push.is-held {
+  cursor: grabbing;
+  opacity: 0.85;
+}
+
+.dream-cloud-0 { top: 14%; left: -10%; animation-duration: 110s; }
+.dream-cloud-1 { top: 34%; left: 14%; animation-duration: 140s; animation-delay: -40s; }
+.dream-cloud-2 { top: 60%; left: -24%; animation-duration: 95s; animation-delay: -10s; }
+.dream-cloud-3 { top: 74%; left: 46%; animation-duration: 160s; animation-delay: -70s; }
+.dream-cloud-4 { top: 22%; left: 60%; animation-duration: 120s; animation-delay: -20s; }
+.dream-cloud-5 { top: 48%; left: 74%; animation-duration: 130s; animation-delay: -55s; }
 
 @keyframes dream-drift {
-  from { translate: 0 0; }
-  to { translate: 150vw 0; }
+  from { translate: -10vw 0; }
+  to { translate: 40vw 0; }
 }
 
 .dream-star {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  z-index: 2;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
   background: #f6e7c4;
   clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
   animation: dream-twinkle 3.6s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.dream-star.is-new {
+  animation: star-born 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.4) both, dream-twinkle 3.6s 0.7s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 6px rgba(255, 240, 214, 0.9));
+}
+
+@keyframes star-born {
+  from { scale: 0; rotate: -90deg; }
+  to { scale: 1.6; rotate: 0deg; }
 }
 
 .dream-star-1 { animation-delay: -0.6s; scale: 0.7; }
@@ -9359,16 +10001,15 @@ body {
 .dream-star-6 { animation-delay: -0.3s; scale: 1.1; }
 
 @keyframes dream-twinkle {
-  from { opacity: 0.15; }
-  to { opacity: 0.95; }
+  from { opacity: 0.25; }
+  to { opacity: 1; }
 }
 
-/* the pool: tiles, water light, a ladder going nowhere */
-.dream-pool-layer {
-  position: absolute;
-  inset: 0;
+.dream-sky-layer {
+  cursor: crosshair;
 }
 
+/* ---------------- the pool ---------------- */
 .dream-tiles {
   position: absolute;
   inset: 0 0 34% 0;
@@ -9378,7 +10019,6 @@ body {
     linear-gradient(180deg, #2a1014 0%, #54252d 70%, #6b2f39 100%);
 }
 
-/* light thrown up from the water, wandering over the tiles */
 .dream-caustic {
   position: absolute;
   inset: 30% 0 34% 0;
@@ -9386,13 +10026,12 @@ body {
     radial-gradient(30% 40% at 30% 100%, rgba(150, 220, 180, 0.22), transparent 70%),
     radial-gradient(26% 50% at 70% 100%, rgba(150, 220, 180, 0.18), transparent 70%),
     radial-gradient(14% 18% at 50% 100%, rgba(200, 240, 210, 0.16), transparent 70%);
-  mix-blend-mode: screen;
   animation: dream-caustic 9s ease-in-out infinite alternate;
 }
 
 @keyframes dream-caustic {
-  from { background-position: 0 0, 0 0, 0 0; opacity: 0.7; }
-  to { background-position: 60px 0, -60px 0, 40px 0; opacity: 1; }
+  from { translate: -40px 0; opacity: 0.7; }
+  to { translate: 40px 0; opacity: 1; }
 }
 
 .dream-water {
@@ -9401,6 +10040,7 @@ body {
   overflow: hidden;
   perspective: 500px;
   background: linear-gradient(180deg, #2c5140 0%, #1f3a2c 55%, #10221a 100%);
+  cursor: pointer;
 }
 
 .dream-water::before {
@@ -9420,20 +10060,19 @@ body {
 .dream-water::after {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: 0 -100% 0 -100%;
   background:
     radial-gradient(60px 6px at 20% 20%, rgba(230, 246, 230, 0.5), transparent 70%),
     radial-gradient(90px 7px at 64% 46%, rgba(230, 246, 230, 0.4), transparent 70%),
     radial-gradient(70px 6px at 40% 76%, rgba(230, 246, 230, 0.4), transparent 70%),
     radial-gradient(80px 6px at 84% 30%, rgba(230, 246, 230, 0.35), transparent 70%);
   background-size: 420px 100%, 520px 100%, 380px 100%, 460px 100%;
-  animation: dream-ripple 12s linear infinite;
+  animation: dream-ripple-bg 16s linear infinite alternate;
 }
 
-@keyframes dream-ripple {
-  to {
-    background-position: 420px 0, -520px 0, 380px 0, -460px 0;
-  }
+@keyframes dream-ripple-bg {
+  from { translate: -18% 0; }
+  to { translate: 18% 0; }
 }
 
 .dream-rim {
@@ -9449,7 +10088,7 @@ body {
 
 .dream-ladder {
   position: absolute;
-  left: 18%;
+  left: 16%;
   top: 40%;
   width: 46px;
   height: 40%;
@@ -9460,82 +10099,1120 @@ body {
   mask-image: linear-gradient(to bottom, #000 62%, rgba(0, 0, 0, 0.35) 66%, transparent 100%);
 }
 
-/* the watch hanging in the middle of each room */
-.dream-thread {
+/* a swim ring drifting on the water */
+.dream-ring {
+  position: absolute;
+  left: 72%;
+  top: 74%;
+  width: clamp(80px, 9vw, 130px);
+  aspect-ratio: 2.6;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side, transparent 46%, transparent 47%, #0000 0),
+    conic-gradient(#f1d9cf 0 12.5%, #a33a48 0 25%, #f1d9cf 0 37.5%, #a33a48 0 50%, #f1d9cf 0 62.5%, #a33a48 0 75%, #f1d9cf 0 87.5%, #a33a48 0);
+  -webkit-mask: radial-gradient(closest-side, transparent 44%, #000 46%);
+  mask: radial-gradient(closest-side, transparent 44%, #000 46%);
+  box-shadow: 0 10px 18px rgba(4, 12, 8, 0.5);
+  animation: ring-bob 5s ease-in-out infinite alternate;
+}
+
+@keyframes ring-bob {
+  from { translate: 0 0; rotate: -4deg; }
+  to { translate: -30px 6px; rotate: 5deg; }
+}
+
+.dream-ripple {
+  position: absolute;
+  z-index: 3;
+  width: 20px;
+  height: 7px;
+  margin: -3.5px 0 0 -10px;
+  border: 1.5px solid rgba(236, 246, 230, 0.85);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: ripple-out 1.8s cubic-bezier(0.1, 0.6, 0.3, 1) both;
+}
+
+@keyframes ripple-out {
+  from { scale: 0.2; opacity: 1; }
+  to { scale: 14; opacity: 0; }
+}
+
+/* ---------------- the stairs ---------------- */
+.dream-room-stairs {
+  background: linear-gradient(180deg, #2a1014 0%, #54252d 40%, #7d3c46 80%, #9d5a5f 100%);
+}
+
+.dream-sun-top {
+  top: -14vh;
+  bottom: auto;
+  width: 60vmin;
+  height: 40vmin;
+}
+
+.dream-stairs-walk {
+  position: absolute;
+  inset: 0;
+  translate: 0 calc(var(--walk, 0) * 14vh - 7vh);
+  transition: translate 0.25s linear;
+}
+
+.dream-step {
+  --w: calc(84vw - var(--i) * 5.2vw);
   position: absolute;
   left: 50%;
-  top: 0;
-  z-index: 3;
-  width: 1px;
-  height: calc(44vh - 4px);
-  background: linear-gradient(to bottom, transparent, rgba(220, 194, 154, 0.85));
-}
-
-.dream-watch {
-  position: absolute;
-  left: calc(50% - clamp(30px, 3.4vw, 50px));
-  top: 44vh;
-  z-index: 3;
-  width: clamp(60px, 6.8vw, 100px);
-  height: auto;
-  filter: drop-shadow(0 30px 26px rgba(10, 2, 4, 0.6)) drop-shadow(0 0 30px rgba(246, 231, 196, 0.25));
-  animation: dream-float 5s ease-in-out infinite alternate;
-}
-
-@keyframes dream-float {
-  from { translate: 0 -6px; }
-  to { translate: 0 6px; }
-}
-
-.dream-eye-pos {
-  position: absolute;
-  right: clamp(20px, 7vw, 120px);
-  top: clamp(60px, 10vh, 110px);
-  z-index: 4;
-  width: clamp(90px, 10vw, 150px);
-}
-
-.dream-hallway .dream-eye-pos {
-  right: auto;
-  left: clamp(20px, 7vw, 120px);
-}
-
-.dream-caption {
-  position: absolute;
-  left: 50%;
-  bottom: clamp(50px, 9vh, 90px);
-  z-index: 6;
+  bottom: calc(var(--i) * 5.4vh - var(--i) * var(--i) * 0.07vh);
+  width: var(--w);
+  height: calc(5.6vh - var(--i) * 0.28vh);
   translate: -50% 0;
-  margin: 0;
+  background: linear-gradient(180deg, #e8cfae 0%, #c9a97f 18%, #6b2f39 19%, #54252d 100%);
+  box-shadow: 0 -1px 0 rgba(255, 238, 214, 0.4);
+  opacity: calc(1 - var(--i) * 0.055);
+  transition: filter 0.3s;
+  cursor: pointer;
+}
+
+.dream-step.is-lit {
+  animation: step-lit 1.4s ease-out;
+}
+
+@keyframes step-lit {
+  0% { filter: brightness(2.2) drop-shadow(0 0 24px #ffe6c8); }
+  100% { filter: none; }
+}
+
+.dream-top-door {
+  position: absolute;
+  left: 50%;
+  bottom: calc(15 * 5.4vh - 225 * 0.07vh);
+  width: 6vw;
+  height: 11vh;
+  translate: -50% 0;
+  border-radius: 999px 999px 0 0;
+  background: radial-gradient(60% 70% at 50% 70%, #fff6e6 0%, #f0d2b0 45%, rgba(232, 201, 160, 0.2) 100%);
+  box-shadow: 0 0 50px 20px rgba(255, 230, 205, 0.3);
+}
+
+.dream-cloud-low { width: 40vmin; height: 12vmin; }
+.dream-cloud-low.dream-cloud-0 { top: 64%; left: -20%; }
+.dream-cloud-low.dream-cloud-1 { top: 40%; left: 70%; }
+.dream-cloud-low.dream-cloud-2 { top: 78%; left: 50%; }
+.dream-cloud-low.dream-cloud-3 { top: 22%; left: 8%; }
+
+.dream-room-stairs .dream-pend {
+  left: 74%;
+}
+
+/* ---------------- the frames ---------------- */
+.dream-checker {
+  position: absolute;
+  left: -50%;
+  right: -50%;
+  bottom: -10%;
+  height: 46%;
+  transform-origin: 50% 100%;
+  transform: perspective(700px) rotateX(66deg);
+  background: repeating-conic-gradient(#2a1014 0 25%, #6b2f39 0 50%) 0 0 / 110px 110px;
+  -webkit-mask-image: linear-gradient(to top, #000 30%, transparent 95%);
+  mask-image: linear-gradient(to top, #000 30%, transparent 95%);
+}
+
+.dream-frames {
+  position: absolute;
+  left: 38%;
+  top: 48%;
+  width: min(58vw, 76vh);
+  aspect-ratio: 4 / 3;
+  translate: -50% -50%;
+}
+
+.dream-frame {
+  position: absolute;
+  inset: calc(var(--i) * 6.6%);
+  border: calc(14px - var(--i) * 1.6px) solid transparent;
+  border-image: linear-gradient(135deg, #f3dcab, #9a7a4c 30%, #e6cc98 55%, #6f5330 80%, #d8bb86) 1;
+  background: radial-gradient(120% 120% at 30% 20%, #3a161c, #1c0a0d);
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6), 0 12px 30px rgba(0, 0, 0, 0.45);
+  translate: calc(var(--mx, 0) * var(--i) * 5px) calc(var(--my, 0) * var(--i) * 4px);
+  rotate: calc(var(--mx, 0) * var(--i) * 0.7deg);
+  transition: translate 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), rotate 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.dream-frame:nth-child(even) {
+  background: radial-gradient(120% 120% at 30% 20%, #2f5544 0%, var(--forest) 70%, #142a1f 100%);
+}
+
+.dream-frame-eye {
+  position: absolute;
+  inset: 44% 36%;
+  display: grid;
+  place-items: center;
+  translate: calc(var(--mx, 0) * 40px) calc(var(--my, 0) * 30px);
+  transition: translate 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.dream-frame-eye .dream-eye {
+  width: 100%;
+}
+
+.dream-frames-layer {
+  animation: frames-breathe 12s ease-in-out infinite alternate;
+}
+
+@keyframes frames-breathe {
+  from { scale: 1; }
+  to { scale: 1.04; }
+}
+
+.dream-room-frames > .dream-eye-pos {
+  display: none;
+}
+
+.dream-room-frames .dream-pend {
+  left: 78%;
+}
+
+/* ---------------- the doors (a real room, dreamt twice) ---------------- */
+.dream-doors {
+  display: flex;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.dream-doors-room {
+  position: absolute;
+  inset: auto 0 12vh 0;
+  z-index: 3;
+  justify-content: space-between;
+  padding: 0 6vw;
+}
+
+.dream-door {
+  position: relative;
+  display: block;
+  width: clamp(80px, 10vw, 140px);
+  aspect-ratio: 0.5;
+  border: 3px solid #d8bb86;
+  border-bottom: 0;
+  border-radius: 999px 999px 0 0;
+  background: #1c0a0d;
+  box-shadow: 0 0 40px rgba(255, 224, 200, 0.25), 0 20px 40px rgba(0, 0, 0, 0.5);
+  pointer-events: auto;
+  perspective: 600px;
+}
+
+.dream-door-1 { width: clamp(60px, 7vw, 100px); margin-bottom: 4vh; }
+.dream-door-2 { width: clamp(70px, 8.4vw, 120px); margin-bottom: 1vh; }
+.dream-doors-room .dream-door-1 { margin-right: auto; margin-left: 4vw; }
+
+.door-light {
+  position: absolute;
+  inset: 4px 4px 0;
+  border-radius: 999px 999px 0 0;
+  background: radial-gradient(70% 60% at 50% 70%, #fff6e6, #f0c8b4 50%, #b06a6c);
+}
+
+.door-leaf {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px 999px 0 0;
+  background:
+    linear-gradient(90deg, transparent 47%, rgba(0, 0, 0, 0.25) 48% 52%, transparent 53%),
+    radial-gradient(circle at 84% 58%, #e6cc98 0 3px, transparent 4px),
+    linear-gradient(180deg, #6b2f39, #3a161c);
+  transform-origin: 0 50%;
+  transition: transform 0.65s cubic-bezier(0.3, 0.6, 0.2, 1);
+  box-shadow: inset 0 0 0 6px rgba(216, 187, 134, 0.25);
+}
+
+.dream-door:hover .door-leaf {
+  transform: rotateY(-24deg);
+}
+
+.dream-door.is-open .door-leaf {
+  transform: rotateY(-100deg);
+}
+
+.dream-door.is-open {
+  box-shadow: 0 0 80px 30px rgba(255, 232, 210, 0.55);
+}
+
+.door-label {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 8px);
+  translate: -50% 0;
   white-space: nowrap;
   font-family: var(--mono);
-  font-size: clamp(13px, 1.3vw, 17px);
+  font-size: 11px;
   letter-spacing: 0.08em;
-  color: #f6ead2;
-  text-shadow: 0 0 12px rgba(30, 10, 14, 0.9), 0 0 3px rgba(30, 10, 14, 0.9);
+  color: #fbf1df;
+  padding: 2px 6px;
+  background: rgba(28, 10, 13, 0.8);
 }
 
-.dream-vhs {
+/* ---------------- the television room ---------------- */
+.dream-tv-layer {
+  z-index: 3;
+  pointer-events: none;
+}
+
+.dream-tv {
   position: absolute;
-  left: clamp(16px, 3vw, 40px);
-  bottom: clamp(16px, 3vh, 30px);
-  z-index: 6;
-  margin: 0;
+  left: 7%;
+  bottom: 13vh;
+  display: block;
+  width: clamp(170px, 22vw, 300px);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.tv-body {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 18%;
+  gap: 6%;
+  padding: 7%;
+  aspect-ratio: 1.3;
+  border-radius: 14px;
+  background: linear-gradient(160deg, #6b4a2c, #3d2716 70%);
+  box-shadow: inset 0 0 0 3px rgba(216, 187, 134, 0.35), 0 26px 40px rgba(0, 0, 0, 0.55);
+}
+
+.tv-screen {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18% / 22%;
+  background: #1c0a0d;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9), 0 0 30px rgba(220, 230, 255, 0.15);
+}
+
+.tv-static,
+.tv-ch {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.tv-static {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='1'/><feColorMatrix values='0 0 0 0.8 0  0 0 0 0.8 0  0 0 0 0.8 0  0 0 0 0 1'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 120px 120px;
+  animation: grain 0.4s steps(4) infinite;
+  opacity: 0;
+}
+
+.tv-ch {
+  opacity: 0;
   font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  color: rgba(246, 234, 210, 0.86);
-  text-shadow: 0 0 6px rgba(30, 10, 14, 0.9);
+  font-size: clamp(10px, 1vw, 13px);
+  color: #fbf1df;
+  text-align: center;
 }
 
-.dream-rec {
-  color: #e0574f;
-  animation: dream-rec 1.2s steps(2) infinite;
+.tv-screen[data-channel="0"] .tv-static,
+.tv-screen.is-switching .tv-static {
+  opacity: 1;
 }
 
-@keyframes dream-rec {
-  50% { opacity: 0; }
+.tv-screen[data-channel="1"] .tv-ch-1,
+.tv-screen[data-channel="2"] .tv-ch-2,
+.tv-screen[data-channel="3"] .tv-ch-3,
+.tv-screen[data-channel="4"] .tv-ch-4,
+.tv-screen[data-channel="5"] .tv-ch-5 {
+  opacity: 1;
 }
+
+.tv-ch-1 {
+  background: #3a161c;
+}
+
+.tv-ch-1 .dream-eye {
+  width: 70%;
+}
+
+.tv-ch-2 {
+  background: linear-gradient(90deg, #f3e9d6 0 14.3%, #dcc29a 0 28.6%, #4f7d63 0 42.9%, #2c5140 0 57.1%, #b0505c 0 71.4%, #6b2f39 0 85.7%, #2a1014 0);
+}
+
+.tv-ch-3 {
+  background: #2a3a6a;
+  letter-spacing: 0.2em;
+}
+
+.tv-ch-4 {
+  background: linear-gradient(180deg, #6b2f39, #c98f8c);
+}
+
+.tv-cloud {
+  position: absolute;
+  left: 15%;
+  top: 30%;
+  width: 40%;
+  height: 18%;
+  border-radius: 50%;
+  background: rgba(255, 236, 228, 0.7);
+  filter: blur(4px);
+  animation: dream-drift 14s linear infinite;
+}
+
+.tv-cloud-b {
+  left: 50%;
+  top: 56%;
+  animation-duration: 20s;
+}
+
+.tv-ch-5 {
+  background: #1c0a0d;
+  letter-spacing: 0.12em;
+}
+
+.tv-num {
+  position: absolute;
+  right: 8%;
+  top: 6%;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: #9cf0a8;
+  text-shadow: 0 0 4px #4f7d63;
+}
+
+.tv-knobs {
+  border-radius: 6px;
+  background:
+    radial-gradient(circle at 50% 22%, #e6cc98 0 18%, #6f5330 19% 26%, transparent 27%),
+    radial-gradient(circle at 50% 52%, #e6cc98 0 14%, #6f5330 15% 21%, transparent 22%),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.35) 0 2px, transparent 2px 5px) 0 70% / 100% 26% no-repeat;
+}
+
+.tv-ears {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 46%;
+  height: 34%;
+  translate: -50% 0;
+  background:
+    linear-gradient(60deg, transparent 49%, #c9a97f 49% 51%, transparent 51%) left / 50% 100% no-repeat,
+    linear-gradient(-60deg, transparent 49%, #c9a97f 49% 51%, transparent 51%) right / 50% 100% no-repeat;
+}
+
+.tv-legs {
+  display: block;
+  height: 26px;
+  margin: 0 14%;
+  background:
+    linear-gradient(100deg, transparent 44%, #3d2716 44% 56%, transparent 56%) left / 20% 100% no-repeat,
+    linear-gradient(80deg, transparent 44%, #3d2716 44% 56%, transparent 56%) right / 20% 100% no-repeat;
+}
+
+.dream-tv:focus-visible {
+  outline: 1px dashed #fbf1df;
+  outline-offset: 6px;
+}
+
+.dream .dream-window {
+  position: absolute;
+  right: clamp(16px, 6vw, 110px);
+  bottom: clamp(110px, 22vh, 220px);
+  z-index: 8;
+}
+
+/* ---------------- the bedroom ---------------- */
+.dream-bed-layer {
+  z-index: 3;
+  pointer-events: none;
+}
+
+.dream-nightlight {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 70vmin;
+  height: 50vmin;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 226, 206, 0.32), transparent);
+}
+
+.dream-cloud-ceiling { width: 30vmin; height: 9vmin; }
+.dream-cloud-ceiling.dream-cloud-0 { top: 4%; left: 4%; }
+.dream-cloud-ceiling.dream-cloud-1 { top: 10%; left: 52%; }
+.dream-cloud-ceiling.dream-cloud-2 { top: 2%; left: 30%; }
+.dream-cloud-ceiling.dream-cloud-3 { top: 14%; left: 78%; }
+
+.dream-balloons {
+  position: absolute;
+  inset: 0;
+}
+
+.dream-balloon {
+  position: absolute;
+  top: 12%;
+  width: clamp(54px, 5vw, 80px);
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  transition: translate 2.6s cubic-bezier(0.2, 0.7, 0.3, 1);
+  animation: balloon-bob 6s ease-in-out infinite alternate;
+}
+
+.dream-balloon.is-held {
+  cursor: grabbing;
+  animation-play-state: paused;
+}
+
+.dream-balloon-0 { left: 14%; }
+.dream-balloon-1 { left: 22%; top: 20%; animation-delay: -2s; width: clamp(46px, 4.2vw, 68px); }
+.dream-balloon-2 { left: 84%; top: 16%; animation-delay: -4s; }
+
+.balloon-body {
+  display: block;
+  aspect-ratio: 0.82;
+  border-radius: 50% 50% 48% 48% / 55% 55% 45% 45%;
+  background: radial-gradient(circle at 34% 30%, #f6d6cf 0 8%, #c45a68 30%, #7d2a38 100%);
+  box-shadow: inset -6px -8px 14px rgba(40, 8, 14, 0.45);
+}
+
+.dream-balloon-1 .balloon-body {
+  background: radial-gradient(circle at 34% 30%, #f3e9d6 0 8%, #dcc29a 35%, #9a7a4c 100%);
+}
+
+.balloon-string {
+  display: block;
+  width: 1px;
+  height: 22vh;
+  margin: 0 auto;
+  background: linear-gradient(to bottom, rgba(246, 231, 196, 0.8), rgba(246, 231, 196, 0));
+}
+
+@keyframes balloon-bob {
+  from { rotate: -4deg; margin-top: 0; }
+  to { rotate: 5deg; margin-top: -14px; }
+}
+
+.dream-musicbox {
+  position: absolute;
+  left: 9%;
+  bottom: 14vh;
+  width: clamp(110px, 11vw, 160px);
+  aspect-ratio: 1.1;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.mb-box {
+  position: absolute;
+  inset: 46% 0 0;
+  border-radius: 6px;
+  background:
+    linear-gradient(90deg, transparent 8%, rgba(216, 187, 134, 0.6) 8% 10%, transparent 10% 90%, rgba(216, 187, 134, 0.6) 90% 92%, transparent 92%),
+    linear-gradient(180deg, #8a3a46, #54252d);
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.5), inset 0 2px 0 rgba(255, 220, 200, 0.3);
+}
+
+.mb-lid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 38%;
+  height: 10%;
+  border-radius: 6px 6px 2px 2px;
+  background: linear-gradient(180deg, #a3485a, #6b2f39);
+  transform-origin: 50% 100%;
+  transition: transform 0.6s cubic-bezier(0.3, 0.7, 0.2, 1);
+  z-index: 2;
+}
+
+.dream-musicbox.is-playing .mb-lid,
+.dream-musicbox:hover .mb-lid {
+  transform: perspective(300px) rotateX(-70deg) translateY(-30%);
+}
+
+.mb-dancer {
+  position: absolute;
+  left: 50%;
+  top: 6%;
+  width: 18%;
+  height: 42%;
+  translate: -50% 0;
+  background:
+    radial-gradient(circle at 50% 12%, #f3e9d6 0 12%, transparent 13%),
+    linear-gradient(180deg, transparent 22%, #f3e9d6 22% 50%, transparent 50%) 50% 0 / 20% 100% no-repeat,
+    radial-gradient(60% 30% at 50% 62%, #e7c9c0 0 60%, transparent 62%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.dream-musicbox.is-playing .mb-dancer {
+  opacity: 1;
+  animation: dancer-spin 1.4s linear infinite;
+}
+
+@keyframes dancer-spin {
+  0% { scale: 1 1; }
+  25% { scale: 0.2 1; }
+  50% { scale: -1 1; }
+  75% { scale: -0.2 1; }
+  100% { scale: 1 1; }
+}
+
+.mb-crank {
+  position: absolute;
+  right: -8%;
+  top: 66%;
+  width: 14%;
+  height: 4%;
+  background: #c9a97f;
+  transform-origin: 0 50%;
+}
+
+.dream-musicbox.is-playing .mb-crank {
+  animation: crank 1s linear infinite;
+}
+
+@keyframes crank {
+  to { rotate: 360deg; }
+}
+
+.mb-notes {
+  position: absolute;
+  left: 30%;
+  top: -14%;
+  color: #fbf1df;
+  font-size: 20px;
+  opacity: 0;
+  text-shadow: 0 0 3px #1c0a0d, 0 0 8px #1c0a0d, 0 0 14px #1c0a0d;
+}
+
+.dream-musicbox.is-playing .mb-notes {
+  animation: notes-up 2.4s ease-out infinite;
+}
+
+@keyframes notes-up {
+  0% { opacity: 0; translate: 0 10px; }
+  30% { opacity: 1; }
+  100% { opacity: 0; translate: 18px -40px; }
+}
+
+.dream-pinwheel {
+  position: absolute;
+  right: 9%;
+  bottom: 14vh;
+  width: clamp(80px, 8vw, 120px);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.dream-pinwheel svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pw-blades {
+  transform-box: view-box;
+  transform-origin: 50px 50px;
+  animation: pw-spin 6s linear infinite;
+}
+
+.dream-pinwheel:hover .pw-blades {
+  animation-duration: 1.2s;
+}
+
+.dream-pinwheel.is-spun .pw-blades {
+  animation: pw-spin 0.25s linear 10, pw-spin 6s 2.5s linear infinite;
+}
+
+@keyframes pw-spin {
+  to { transform: rotate(360deg); }
+}
+
+.pw-stick {
+  display: block;
+  width: 4px;
+  height: 18vh;
+  margin: -6px auto 0;
+  background: linear-gradient(90deg, #9a7a4c, #e6cc98, #9a7a4c);
+}
+
+.dream-pinwheel:focus-visible,
+.dream-musicbox:focus-visible {
+  outline: 1px dashed #fbf1df;
+  outline-offset: 6px;
+}
+
+/* ---------------- the mirror gallery ---------------- */
+.dream-room-gallery .dream-photo {
+  bottom: 30%;
+  height: 70%;
+}
+
+.dream-mirror-floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 30%;
+  background: var(--dream-gallery-floor, url("/dream/gallery-1600.webp")) center top / cover;
+  transform: scaleY(-1);
+  filter: blur(3px) brightness(0.8);
+  opacity: 0.85;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), #000 60%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), #000 60%);
+  animation: mirror-shimmer 7s ease-in-out infinite alternate;
+}
+
+@keyframes mirror-shimmer {
+  from { filter: blur(3px) brightness(0.75); }
+  to { filter: blur(5px) brightness(0.9); }
+}
+
+.dream-chandelier-glow {
+  position: absolute;
+  left: 50%;
+  top: 6%;
+  width: 40vmin;
+  height: 30vmin;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 238, 214, 0.4), transparent);
+  animation: dream-breathe 5s ease-in-out infinite alternate;
+}
+
+/* photo rooms: keep the burgundy the strongest colour */
+.dream-has-photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(90% 80% at 50% 42%, rgba(84, 37, 45, 0) 30%, rgba(58, 22, 28, 0.55) 100%);
+  pointer-events: none;
+}
+
+/* ---------------- the entrance: a hall of nine doors ---------------- */
+.dream-entrance {
+  min-height: 112vh;
+}
+
+.dream-sun-low {
+  bottom: 10vh;
+  width: 120vmin;
+  height: 40vmin;
+}
+
+.dream-entrance-head {
+  position: relative;
+  z-index: 7;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: clamp(120px, 18vh, 200px) var(--gutter) 0;
+  text-align: center;
+}
+
+.dream-entrance-head::before {
+  content: "";
+  position: absolute;
+  inset: 60px -10% -40px;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgba(28, 10, 13, 0.62), rgba(28, 10, 13, 0));
+}
+
+.dream-entrance-head .mono-note {
+  color: #f3dcb4;
+}
+
+.dream-title {
+  margin: 16px 0 18px;
+  font-family: var(--display);
+  font-size: clamp(44px, 7vw, 104px);
+  font-weight: 400;
+  line-height: 1;
+  color: #fbf1df;
+  text-shadow: 0 0 30px rgba(255, 220, 200, 0.35), 0 0 2px #1c0a0d;
+}
+
+.dream-lede {
+  margin: 0 auto;
+  max-width: 560px;
+  font-family: var(--serif);
+  font-size: clamp(18px, 1.6vw, 21px);
+  line-height: 1.6;
+  color: #f6ead2;
+  text-shadow: 0 0 10px rgba(28, 10, 13, 0.95), 0 0 2px #1c0a0d;
+}
+
+.dream-doors-all {
+  position: relative;
+  inset: auto;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: clamp(22px, 3vw, 44px) clamp(12px, 1.9vw, 28px);
+  max-width: 1240px;
+  margin: clamp(60px, 9vh, 110px) auto 0;
+  padding: 0 var(--gutter) clamp(120px, 16vh, 170px);
+}
+
+.dream-door-all {
+  width: clamp(64px, 6.4vw, 96px);
+}
+
+.dream-door-all:nth-child(odd) {
+  margin-bottom: 3vh;
+}
+
+.dream-pend-entrance {
+  left: 10%;
+}
+
+/* ---------------- after a room, on its own page ---------------- */
+.dream-hero .dream-caption {
+  font-size: clamp(15px, 1.6vw, 21px);
+}
+
+.dream-after {
+  position: relative;
+  padding: clamp(70px, 9vw, 120px) 0 clamp(60px, 8vw, 100px);
+  background: radial-gradient(90% 70% at 50% 0%, #4a1d25 0%, var(--burgundy-deep) 55%, var(--burgundy-ink) 100%);
+  color: #f3e7d2;
+}
+
+.dream-after-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(30px, 6vw, 90px);
+  align-items: start;
+}
+
+.dream-room-title {
+  margin: 14px 0 22px;
+  font-family: var(--display);
+  font-size: clamp(42px, 6vw, 86px);
+  font-weight: 400;
+  line-height: 1;
+  color: #fbf1df;
+}
+
+.dream-line {
+  margin: 0 0 12px;
+  font-family: var(--serif);
+  font-size: clamp(18px, 1.5vw, 20px);
+  line-height: 1.6;
+}
+
+.dream-line-first {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-size: clamp(24px, 2.4vw, 32px);
+  line-height: 1.3;
+  color: #f6e2bd;
+}
+
+.dream-elements {
+  margin: 0;
+  padding: 18px 0 0;
+  list-style: none;
+  border-top: 1px solid rgba(220, 194, 154, 0.35);
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: #ecdcbc;
+}
+
+.dream-elements li {
+  padding: 7px 0;
+  border-bottom: 1px dotted rgba(220, 194, 154, 0.3);
+}
+
+.dream-elements li::before {
+  content: "◦ ";
+  color: var(--champagne);
+}
+
+.dream-doors-onward {
+  position: relative;
+  inset: auto;
+  justify-content: center;
+  gap: clamp(40px, 8vw, 120px);
+  margin: clamp(60px, 8vw, 100px) auto 70px;
+  padding: 0;
+}
+
+.dream-back {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* =====================================================================
+   THE DREAM LAYER — faint grain and dust over the whole archive
+   ===================================================================== */
+.dream-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.dl-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(130% 115% at 50% 45%, transparent 76%, rgba(14, 4, 6, 0.3) 100%);
+}
+
+.dream-layer .dl-grain {
+  z-index: 0;
+  inset: 0;
+  opacity: 0.028;
+  animation: none;
+}
+
+.dl-dust {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.dl-jump {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 236, 220, 0.09) 0 2px, transparent 2px 6px),
+    linear-gradient(to bottom, transparent 40%, rgba(255, 236, 220, 0.25) 46%, rgba(160, 60, 70, 0.25) 50%, transparent 56%);
+}
+
+.dl-jump.is-on {
+  animation: vhs-jump 0.36s steps(4) both;
+}
+
+@keyframes vhs-jump {
+  0% { opacity: 1; background-position: 0 0, 0 -40vh; }
+  50% { opacity: 0.8; background-position: 0 6px, 0 10vh; }
+  100% { opacity: 0; background-position: 0 0, 0 60vh; }
+}
+
+.nf-dream {
+  margin-top: 22px;
+}
+
+/* =====================================================================
+   DREAM — small screens and reduced motion
+   ===================================================================== */
+@media (max-width: 700px) {
+  .dream {
+    min-height: 92svh;
+  }
+
+  .pend-big {
+    --ph: max(300px, 36vh);
+    --chain: 11vh;
+  }
+
+  .dream-caption {
+    white-space: normal;
+    width: 86%;
+    text-align: center;
+    bottom: 64px;
+  }
+
+  .dream-eye-pos {
+    width: 84px;
+    top: 74px;
+  }
+
+  .dream-enter {
+    bottom: 18px;
+    right: 16px;
+  }
+
+  .dream-vhs {
+    bottom: 40px;
+    font-size: 10px;
+  }
+
+  .dream-num {
+    display: none;
+  }
+
+  .dream-arrow {
+    display: none;
+  }
+
+  .dream-frames {
+    left: 50%;
+    width: 86vw;
+    top: 68%;
+  }
+
+  .dream-room-frames .dream-pend,
+  .dream-room-stairs .dream-pend {
+    left: 72%;
+  }
+
+  .dream-doors-room {
+    padding: 0 4vw;
+    bottom: 18vh;
+  }
+
+  .dream-room-hallway .dream-pend {
+    left: 50%;
+  }
+
+  .dream-tv {
+    left: 4%;
+    bottom: 20vh;
+    width: 44vw;
+  }
+
+  .dream-musicbox {
+    left: 4%;
+    bottom: 20vh;
+    width: 28vw;
+  }
+
+  .dream-pinwheel {
+    right: 4%;
+    bottom: 20vh;
+    width: 22vw;
+  }
+
+  .dream .dream-window {
+    right: 4%;
+    left: auto;
+    bottom: auto;
+    top: 64px;
+    transform: scale(0.85);
+    transform-origin: 100% 0;
+  }
+
+  .dream-after-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dream-pend-entrance {
+    left: 80%;
+  }
+
+  .dream-pend-entrance.pend-big {
+    --ph: 170px;
+    --chain: 24px;
+  }
+
+  .dream-entrance-head {
+    padding-top: 250px;
+  }
+
+  .dream-entrance .dream-eye-pos {
+    left: 18px;
+    right: auto;
+  }
+
+  .dream-doors-all {
+    gap: 56px 26px;
+    padding-bottom: 150px;
+  }
+
+  .dream-door-all {
+    width: 21vw;
+  }
+
+  .dream-door-all:nth-child(odd) {
+    margin-bottom: 0;
+  }
+
+  .dream-door-all .door-label {
+    font-size: 10px;
+    letter-spacing: 0.04em;
+  }
+
+  .dream-doors-onward {
+    gap: 28px;
+  }
+
+  .footer-pend {
+    right: 14px;
+  }
+
+  .footer-pend.pend-mid {
+    --ph: 76px;
+    --chain: 40px;
+  }
+}
+
+/* a slow computer: the background motion rests, the things you touch still move */
+.dream-lite .pend-arm:not(.is-moving),
+.dream-lite .interlude .interlude-arm:not(.is-moving),
+.dream-lite .dream-fog,
+.dream-lite .dream-scan::after,
+.dream-lite .dream-floor::before,
+.dream-lite .dream-cloud,
+.dream-lite .dream-star:not(.is-new),
+.dream-lite .dream-water::after,
+.dream-lite .dream-caustic,
+.dream-lite .dream-ring,
+.dream-lite .dream-light,
+.dream-lite .dream-frames-layer,
+.dream-lite .dream-balloon:not(.is-held),
+.dream-lite .pw-blades,
+.dream-lite .tv-cloud,
+.dream-lite .dream-chandelier-glow,
+.dream-lite .mirror-shimmer,
+.dream-lite .dream-mirror-floor {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pend-arm:not(.is-moving),
+  .interlude .interlude-arm:not(.is-moving),
+  .dream-photo img,
+  .dream-bloom,
+  .dream-fog,
+  .dream-scan::after,
+  .dream-grain,
+  .dl-grain,
+  .dream-floor,
+  .dream-cloud,
+  .dream-star,
+  .dream-water::after,
+  .dream-caustic,
+  .dream-ring,
+  .dream-light,
+  .dream-rec,
+  .dream-arrow,
+  .dream-frames-layer,
+  .dream-balloon,
+  .pw-blades,
+  .tv-static,
+  .tv-cloud,
+  .stay-cursor,
+  .ribbon:hover,
+  .rocaille:hover,
+  .pend-sec {
+    animation: none !important;
+  }
+
+  .dream-hall-walk,
+  .dream-stairs-walk,
+  .dream-frame {
+    transition: none;
+  }
+}
+
 
 /* the eye */
 .dream-eye {
@@ -9766,35 +11443,6 @@ body {
   animation: dream-rec 1s steps(2) infinite;
 }
 
-@media (max-width: 700px) {
-  .dream {
-    min-height: 88vh;
-  }
-
-  .dream-caption {
-    white-space: normal;
-    width: 86%;
-    text-align: center;
-  }
-
-  .dream-eye-pos {
-    width: 84px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .dream-floor,
-  .dream-cloud,
-  .dream-star,
-  .dream-water::after,
-  .dream-caustic,
-  .dream-watch,
-  .dream-light,
-  .dream-rec,
-  .stay-cursor {
-    animation: none;
-  }
-}
 
 /* the floating watch can be set swinging too (its track lets clicks through) */
 .float-obj > img[data-swing] {

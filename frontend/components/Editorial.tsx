@@ -31,9 +31,27 @@ export function GiantWord({
       className={`giant${outline ? " giant-outline" : ""}${italic ? " giant-italic" : ""}${script ? " giant-script" : ""} ${className}`}
       aria-hidden="true"
       data-drift={drift}
+      data-letters=""
     >
-      {word}
+      <Letters text={word} />
     </p>
+  );
+}
+
+/** One span per letter, so a word's letters can lift one by one near the pointer. */
+export function Letters({ text }: { text: string }) {
+  return (
+    <>
+      {Array.from(text).map((ch, i) =>
+        ch === " " ? (
+          " "
+        ) : (
+          <span key={i} className="fl">
+            {ch}
+          </span>
+        ),
+      )}
+    </>
   );
 }
 

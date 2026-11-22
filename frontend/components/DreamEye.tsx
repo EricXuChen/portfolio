@@ -9,6 +9,7 @@ import { useEffect, useId, useRef, useState } from "react";
 export default function DreamEye({ className = "" }: { className?: string }) {
   const ref = useRef<SVGSVGElement>(null);
   const [blink, setBlink] = useState(false);
+  const [squint, setSquint] = useState(false);
   const uid = useId().replace(/:/g, "");
 
   useEffect(() => {
@@ -24,11 +25,16 @@ export default function DreamEye({ className = "" }: { className?: string }) {
         const dy = e.clientY - (r.top + r.height / 2);
         const d = Math.hypot(dx, dy) || 1;
         const k = Math.min(1, d / 400);
+        /* too close: it narrows its eye at you */
+        setSquint(d < Math.max(90, r.width * 0.9));
         svg.style.setProperty("--px", `${((dx / d) * 15 * k).toFixed(1)}px`);
         svg.style.setProperty("--py", `${((dy / d) * 7 * k).toFixed(1)}px`);
       });
     };
-    if (!reduced) window.addEventListener("pointermove", onMove, { passive: true });
+    if (!reduced) {
+      window.addEventListener("pointermove", onMove, { passive: true });
+      window.addEventListener("pointerdown", onMove, { passive: true });
+    }
     const timer = reduced
       ? 0
       : window.setInterval(() => {
@@ -37,6 +43,7 @@ export default function DreamEye({ className = "" }: { className?: string }) {
         }, 6400);
     return () => {
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerdown", onMove);
       cancelAnimationFrame(raf);
       window.clearInterval(timer);
     };
@@ -46,7 +53,7 @@ export default function DreamEye({ className = "" }: { className?: string }) {
   return (
     <svg
       ref={ref}
-      className={`dream-eye${blink ? " is-blinking" : ""} ${className}`}
+      className={`dream-eye${blink ? " is-blinking" : squint ? " is-squinting" : ""} ${className}`}
       viewBox="0 0 200 110"
       role="img"
       aria-label="An eye"

@@ -4,7 +4,10 @@ import { chapters, timeline } from "@/content/experiences";
 import { nav, site, navMore } from "@/content/site";
 import { publicOnly } from "@/content/types";
 import { collection } from "@/content/watches";
-import { DecoRule, Sunburst } from "./Deco";
+import { DecoRule, Rocaille, Sunburst } from "./Deco";
+import DreamEye from "./DreamEye";
+import Pendulum from "./Pendulum";
+import { DREAM_HREF } from "@/content/dream";
 import { GuillocheDial } from "./Illustrations";
 import LiveDial from "./LiveDial";
 import { T, dateBi } from "./T";
@@ -24,7 +27,9 @@ export default function Footer() {
   return (
     <footer className="site-footer">
       <Sunburst className="footer-sun" rays={56} />
+      <Pendulum size="mid" className="footer-pend" label="A small pocket watch hanging over the footer — click it, or pull it and let go" />
       <div className="footer-top">
+        <Rocaille className="rocaille footer-rocaille" />
         <p className="footer-wordmark" aria-label={site.mark}>
           {site.mark}
         </p>
@@ -32,7 +37,10 @@ export default function Footer() {
         <p className="footer-tag">
           <T v={{ en: "Horology · Entrepreneurship · Art", zh: "制表 · 创业 · 艺术" }} />
         </p>
-        <StayClock />
+        <div className="footer-watching">
+          <DreamEye className="footer-eye" />
+          <StayClock />
+        </div>
       </div>
 
       <div className="footer-inner">
@@ -61,6 +69,11 @@ export default function Footer() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link href={DREAM_HREF}>
+                <span className="nav-num">☾</span> <T v={{ en: "The dream", zh: "梦" }} />
+              </Link>
+            </li>
             <li>
               <Link href="/credits">
                 <span className="nav-num">—</span> <T v={{ en: "Picture credits", zh: "图片来源" }} />

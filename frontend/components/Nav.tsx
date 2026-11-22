@@ -85,8 +85,12 @@ export default function Nav() {
           <ul>{renderLinks(left)}</ul>
         </nav>
 
-        <Link className="mark" href="/" aria-label={`${site.mark} — home`}>
-          {site.mark}
+        <Link className="mark" href="/" aria-label={`${site.mark} — home`} data-letters="">
+          {Array.from(site.mark).map((ch, i) => (
+            <span key={i} className="fl" aria-hidden="true">
+              {ch}
+            </span>
+          ))}
         </Link>
 
         <div className="site-nav-right">

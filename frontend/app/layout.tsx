@@ -5,6 +5,7 @@ import Reveal from "@/components/Reveal";
 import { site } from "@/content/site";
 import "./globals.css";
 import Interactions from "@/components/Interactions";
+import DreamLayer from "@/components/DreamLayer";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -51,6 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <Reveal />
         <Interactions />
+        <DreamLayer />
       </body>
     </html>
   );
