@@ -148,6 +148,11 @@ export const PAGE_SCENES = {
   notFound: {
     page: { id: "doorway", kind: "ghost", side: "left", o: 0.62, pos: "50% 40%", bleed: true },
   },
+  repeater: {
+    mast: { id: "empire-pendulum", kind: "ghost", side: "right", o: 0.78, pos: "50% 35%" },
+    listen: { id: "damask", kind: "wallpaper", o: 0.12 },
+    why: { id: "clock-dial", kind: "frieze" },
+  },
 } satisfies Record<string, Record<string, SceneUse>>;
 
 /** One opening photograph per chapter (and one band for the chapter on debate). */

@@ -5,6 +5,7 @@ import Scene from "@/components/Scene";
 import { PAGE_SCENES } from "@/content/scenes";
 import DreamEye from "@/components/DreamEye";
 import RetroWindow from "@/components/RetroWindow";
+import RepeaterButton from "@/components/RepeaterButton";
 
 export default function NotFound() {
   return (
@@ -41,6 +42,9 @@ export default function NotFound() {
       >
         <T v={{ en: "this room was here a moment ago.", zh: "这个房间刚才还在这里。" }} />
       </RetroWindow>
+      <p className="nf-repeater repeater-host">
+        <RepeaterButton variant="pill" shake=".nf-watch" label={<T v={{ en: "What time is it here?", zh: "这里现在几点？" }} />} />
+      </p>
       <p className="nf-dream">
         <Link className="text-link" href="/dream">
           <T v={{ en: "Or get lost in the dream instead", zh: "或者，去梦里迷一会儿路" }} /> →

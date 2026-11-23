@@ -19,6 +19,7 @@ type Drag = { id: number; x: number; y: number; grab: number; start: number; mov
 type Swing = {
   el: HTMLElement;
   host: HTMLElement | null;
+  follows: HTMLElement[];
   theta: number;
   omega: number;
   w0: number;
@@ -48,9 +49,11 @@ export default function Interactions() {
       let s = swings.get(el);
       if (!s) {
         const period = parseFloat(el.dataset.period || "1.8");
+        const host = el.closest<HTMLElement>("[data-swing-host]");
         s = {
           el,
-          host: el.closest<HTMLElement>("[data-swing-host]"),
+          host,
+          follows: host ? Array.from(host.querySelectorAll<HTMLElement>("[data-swing-follow]")) : [],
           theta: 0,
           omega: 0,
           w0: (2 * Math.PI) / period,
@@ -64,9 +67,15 @@ export default function Interactions() {
 
     const paint = (s: Swing) => {
       const deg = (s.theta * 180) / Math.PI;
-      s.el.style.rotate = `${deg.toFixed(3)}deg`;
+      const rot = `${deg.toFixed(3)}deg`;
+      const moving = Math.abs(deg) > 0.05 || !!s.drag;
+      s.el.style.rotate = rot;
       s.host?.style.setProperty("--swing", Math.sin(s.theta).toFixed(4));
-      s.el.classList.toggle("is-moving", Math.abs(deg) > 0.05 || !!s.drag);
+      s.el.classList.toggle("is-moving", moving);
+      for (const f of s.follows) {
+        f.style.rotate = rot;
+        f.classList.toggle("is-moving", moving);
+      }
     };
 
     const step = (t: number) => {
@@ -121,6 +130,7 @@ export default function Interactions() {
 
     const onDown = (e: PointerEvent) => {
       if (e.button !== 0) return;
+      if ((e.target as Element | null)?.closest("[data-no-swing]")) return; // the repeater slide is pressed, not swung
       const el = (e.target as Element | null)?.closest<HTMLElement>("[data-swing]");
       if (!el) return;
       if (e.pointerType === "mouse") e.preventDefault(); // no text selection or image drag
@@ -172,6 +182,7 @@ export default function Interactions() {
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Enter" && e.key !== " ") return;
+      if ((e.target as Element | null)?.closest("[data-no-swing]")) return;
       const el = (e.target as Element | null)?.closest<HTMLElement>("[data-swing]");
       if (!el) return;
       e.preventDefault();

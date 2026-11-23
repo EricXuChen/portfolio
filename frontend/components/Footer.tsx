@@ -12,6 +12,7 @@ import { GuillocheDial } from "./Illustrations";
 import LiveDial from "./LiveDial";
 import { T, dateBi } from "./T";
 import StayClock from "./StayClock";
+import RepeaterButton from "./RepeaterButton";
 
 /** Counts come straight from the content files — never typed in by hand. */
 export function archiveCounts() {
@@ -45,10 +46,11 @@ export default function Footer() {
 
       <div className="footer-inner">
         <div className="footer-brand">
-          <div className="footer-dial">
+          <div className="footer-dial repeater-host">
             <LiveDial>
-              <GuillocheDial className="dial" />
+              <GuillocheDial className="dial repeater-shake" />
             </LiveDial>
+            <RepeaterButton variant="pill" className="footer-repeater" label={<T v={{ en: "Repeater", zh: "三问" }} />} />
           </div>
           <p className="footer-note">
             <T

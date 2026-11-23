@@ -1,4 +1,5 @@
 import Image from "next/image";
+import RepeaterButton from "./RepeaterButton";
 
 /**
  * A breath between sections: a whole screen of empty burgundy wall with one
@@ -12,6 +13,9 @@ export default function Interlude({ align = "right", tone = "deep" }: { align?: 
         <div className="interlude-arm" data-swing="" data-period="2.6" role="button" tabIndex={0} aria-label="A small pocket watch on a long chain — click it, or pull it and let go">
           <span className="interlude-chain" aria-hidden="true" />
           <Image className="interlude-watch" src="/objects/pocket-watch-plain.webp" width={619} height={860} alt="" sizes="110px" draggable={false} />
+        </div>
+        <div className="interlude-arm interlude-arm-follow" data-swing-follow="">
+          <RepeaterButton className="interlude-repeater" />
         </div>
       </div>
     </section>

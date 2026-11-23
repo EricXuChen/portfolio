@@ -29,6 +29,7 @@ export const nav: { href: string; num: string; label: Bi }[] = [
 export const navMore: { href: string; num: string; label: Bi }[] = [
   { href: "/projects", num: "05", label: { en: "Projects", zh: "进行中的项目" } },
   { href: "/catalogue", num: "06", label: { en: "Catalogue", zh: "总目录" } },
+  { href: "/watches/minute-repeater", num: "♪", label: { en: "The minute repeater", zh: "三问" } },
   { href: "/colophon", num: "—", label: { en: "Colophon", zh: "版本说明" } },
 ];
 

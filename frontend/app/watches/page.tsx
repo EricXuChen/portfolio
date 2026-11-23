@@ -12,6 +12,7 @@ import { PAGE_SCENES } from "@/content/scenes";
 import Interlude from "@/components/Interlude";
 import { ERAS, eraHref } from "@/content/pages";
 import DreamRoom from "@/components/DreamRoom";
+import { REPEATER_HREF } from "@/content/repeater";
 
 export const metadata: Metadata = {
   title: "The Collection",
@@ -51,6 +52,9 @@ export default function CollectionPage() {
             <T v={e.title} />
           </Link>
         ))}
+        <Link href={REPEATER_HREF} className="era-strip-link era-strip-repeater">
+          ♪ <T v={{ en: "Listen: the minute repeater", zh: "听：三问" }} />
+        </Link>
       </nav>
 
       <section className="wrap section exhibit has-scene" aria-label="Watches">

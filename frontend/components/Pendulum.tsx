@@ -1,4 +1,5 @@
 import Image from "next/image";
+import RepeaterButton from "./RepeaterButton";
 
 /**
  * A pocket watch hanging on a chain from the top of its room. Click it and it
@@ -46,6 +47,12 @@ export default function Pendulum({
             </g>
           </svg>
           <span className="pend-glint" aria-hidden="true" />
+        </span>
+      </div>
+      {/* the repeater slide rides on the case: a twin of the arm that turns with it */}
+      <div className="pend-arm pend-arm-follow" data-swing-follow="">
+        <span className="pend-watch pend-watch-follow">
+          <RepeaterButton className="pend-repeater" />
         </span>
       </div>
     </div>

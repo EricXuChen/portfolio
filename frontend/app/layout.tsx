@@ -6,6 +6,7 @@ import { site } from "@/content/site";
 import "./globals.css";
 import Interactions from "@/components/Interactions";
 import DreamLayer from "@/components/DreamLayer";
+import RepeaterReadout from "@/components/RepeaterReadout";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Reveal />
         <Interactions />
         <DreamLayer />
+        <RepeaterReadout />
       </body>
     </html>
   );
